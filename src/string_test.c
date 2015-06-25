@@ -5,15 +5,17 @@
 #include "test.h"
 #include "string.h"
 
-void case_string_empty();
+void case_string_isempty();
 void case_string_ncmp();
 void case_string_cmp();
+void case_string_isspace();
 
 int
 main(int argc, const char *argv[])
 {
     struct test_case cases[] = {
-        { "string_empty", &case_string_empty },
+        { "string_isempty", &case_string_isempty },
+        { "string_isspace", &case_string_isspace },
         { "string_ncmp", &case_string_ncmp },
         { "string_cmp", &case_string_cmp },
         { NULL, NULL },
@@ -24,12 +26,23 @@ main(int argc, const char *argv[])
 }
 
 void
-case_string_empty()
+case_string_isempty()
 {
     struct string s1 = {0, NULL};
     struct string s2 = string("s");
-    assert(string_empty(&s1));
-    assert(!string_empty(&s2));
+    assert(string_isempty(&s1));
+    assert(!string_isempty(&s2));
+}
+
+void
+case_string_isspace()
+{
+    struct string s1 = {0, NULL};
+    struct string s2 = string(" \t\n");
+    struct string s3 = string("abc");
+    assert(!string_isspace(&s1));
+    assert(string_isspace(&s2));
+    assert(!string_isspace(&s3));
 }
 
 void

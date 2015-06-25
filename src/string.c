@@ -3,12 +3,13 @@
  */
 
 #include <assert.h>
+#include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
 #include "string.h"
 
 bool
-string_empty(struct string *s)
+string_isempty(struct string *s)
 {
     assert(s != NULL);
 
@@ -19,6 +20,21 @@ string_empty(struct string *s)
         assert(s->data != NULL);
         return false;
     }
+}
+
+bool
+string_isspace(struct string *s)
+{
+    assert(s != NULL);
+
+    uint32_t idx;
+
+    for (idx = 0; idx < s->len; idx++)
+        if (!isspace(s->data[idx]))
+            return false;
+    if (s->len > 0)
+        return true;
+    return false;
 }
 
 int
