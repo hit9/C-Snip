@@ -11,6 +11,7 @@ void case_string_startswith();
 void case_string_endswith();
 void case_string_ncmp();
 void case_string_cmp();
+void case_string_index();
 
 int
 main(int argc, const char *argv[])
@@ -22,6 +23,7 @@ main(int argc, const char *argv[])
         { "string_endswith", &case_string_endswith },
         { "string_ncmp", &case_string_ncmp },
         { "string_cmp", &case_string_cmp },
+        { "string_index", &case_string_index },
         { NULL, NULL },
     };
 
@@ -97,4 +99,14 @@ case_string_cmp()
     assert(string_cmp(&s1, &s2) < 0);
     assert(string_cmp(&s2, &s1) > 0);
     assert(string_cmp(&s1, &s3) == 0);
+}
+
+void
+case_string_index()
+{
+    struct string s = string("abcdefg");
+    assert(string_index(&s, (uint8_t)'a', 0) == 0);
+    assert(string_index(&s, (uint8_t)'b', 0) == 1);
+    assert(string_index(&s, (uint8_t)'c', 1) == 2);
+    assert(string_index(&s, (uint8_t)'g', 3) == 6);
 }

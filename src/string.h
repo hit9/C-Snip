@@ -26,6 +26,7 @@ bool string_startswith(struct string *s, struct string *prefix);
 bool string_endswith(struct string *s, struct string *suffix);
 int string_cmp(struct string *s1, struct string *s2);
 int string_ncmp(struct string *s1, struct string *s2, uint32_t n);
+uint32_t string_index(struct string *s, uint8_t ch, uint32_t start);
 
 #if defined(__cplusplus)
 }

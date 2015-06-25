@@ -88,3 +88,15 @@ string_cmp(struct string *s1, struct string *s2)
 
     return string_ncmp(s1, s2, s1->len);
 }
+
+uint32_t
+string_index(struct string *s, uint8_t ch, uint32_t start)
+{
+    size_t idx;
+
+    for (idx = start; idx < s->len && s->data[idx] != ch; idx++);
+
+    if (idx < s->len)
+        return idx;
+    return s->len;
+}
