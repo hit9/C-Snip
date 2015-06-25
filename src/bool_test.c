@@ -5,15 +5,15 @@
 #include "test.h"
 #include "bool.h"
 
-void case_true();
-void case_false();
+void case_bool_true();
+void case_bool_false();
 
 int
 main(int argc, const char *argv[])
 {
     struct test_case cases[] = {
-        { "test true", &case_true },
-        { "test false", &case_false },
+        { "bool true", &case_bool_true },
+        { "bool false", &case_bool_false },
         { NULL, NULL },
     };
 
@@ -21,13 +21,13 @@ main(int argc, const char *argv[])
 }
 
 void
-case_true()
+case_bool_true()
 {
     assert(true);
 }
 
 void
-case_false()
+case_bool_false()
 {
     assert(!false);
 }
