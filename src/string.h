@@ -18,9 +18,11 @@ struct string {
 };
 
 #define string_null  { 0, NULL }
-#define string(cstring)  { sizeof(cstring) - 1, (uint8_t *)(cstring) }
+#define string(cs)  { sizeof(cs) - 1, (uint8_t *)(cs) }
 
-bool string_is_empty(struct string *);
+bool string_empty(struct string *);
+int string_cmp(struct string *, struct string *);
+int string_ncmp(struct string *, struct string *, uint32_t);
 
 #if defined(__cplusplus)
 }
