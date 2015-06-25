@@ -13,6 +13,7 @@ struct string *
 string_new(const char *cs)
 {
     struct string *s = malloc(sizeof(struct string));
+
     if (cs != NULL) {
         s->len = strlen(cs);
         s->data = (uint8_t *)cs;
@@ -20,7 +21,15 @@ string_new(const char *cs)
         s->len = 0;
         s->data = NULL;
     }
+
     return s;
+}
+
+struct string *
+string_free(struct string *s)
+{
+    if (s != NULL)
+        free(s);
 }
 
 bool

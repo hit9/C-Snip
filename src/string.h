@@ -15,11 +15,12 @@ extern "C" {
 #define string(cs) string_new(cs)
 
 struct string {
-    uint32_t    len;   /* string length */
+    uint32_t    len;    /* string length */
     uint8_t     *data;  /* string data */
 };
 
 struct string *string_new(const char *cs);
+void string_free(struct string *s);
 bool string_isempty(struct string *s);
 bool string_isspace(struct string *s);
 bool string_startswith(struct string *s, struct string *prefix);
