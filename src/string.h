@@ -2,8 +2,8 @@
  * Copyright (c) 2015, Chao Wang <hit9@icloud.com>
  */
 
-#ifndef _STRING_H
-#define _STRING_H
+#ifndef _CW_STRING_H
+#define _CW_STRING_H    1
 
 #include <stdint.h>
 #include "bool.h"
@@ -13,8 +13,8 @@ extern "C" {
 #endif
 
 struct string {
-    uint32_t len;   /* string length */
-    uint8_t *data;  /* string data */
+    uint32_t    len;   /* string length */
+    uint8_t     *data;  /* string data */
 };
 
 #define string_null  { 0, NULL }

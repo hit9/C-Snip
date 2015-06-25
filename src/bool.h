@@ -2,8 +2,8 @@
  * Copyright (c) 2015, Chao Wang <hit9@icloud.com>
  */
 
-#ifndef _BOOL_H
-#define _BOOL_H
+#ifndef _CW_BOOL_H
+#define _CW_BOOL_H  1
 
 #if !defined(__cplusplus)
 
@@ -14,8 +14,8 @@
 #else
 
 typedef enum {
-    false = 0,
-    true = 1,
+    false   = 0,
+    true    = 1,
 } bool;
 
 #endif
