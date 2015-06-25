@@ -11,7 +11,7 @@
 
 struct test_case {
     const char *name;
-    void (* fn)();
+    void (*fn)();
 };
 
 static void

@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) 2015, Chao Wang <hit9@icloud.com>
+ */
+
 #include "test.h"
 #include "bool.h"
 
