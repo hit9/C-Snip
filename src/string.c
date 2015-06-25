@@ -9,6 +9,20 @@
 
 #include "string.h"
 
+struct string *
+string_new(const char *cs)
+{
+    struct string *s = malloc(sizeof(struct string));
+    if (cs != NULL) {
+        s->len = strlen(cs);
+        s->data = (uint8_t *)cs;
+    } else {
+        s->len = 0;
+        s->data = NULL;
+    }
+    return s;
+}
+
 bool
 string_isempty(struct string *s)
 {

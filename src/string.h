@@ -12,14 +12,14 @@
 extern "C" {
 #endif
 
+#define string(cs) string_new(cs)
+
 struct string {
     uint32_t    len;   /* string length */
     uint8_t     *data;  /* string data */
 };
 
-#define string_null  { 0, NULL }
-#define string(cs)  { sizeof(cs) - 1, (uint8_t *)(cs) }
-
+struct string *string_new(const char *cs);
 bool string_isempty(struct string *s);
 bool string_isspace(struct string *s);
 bool string_startswith(struct string *s, struct string *prefix);
