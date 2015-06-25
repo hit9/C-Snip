@@ -10,8 +10,8 @@
 #endif
 
 struct test_case {
-    const char *name;
-    void (*fn)();
+    const char *name;  /* test case name */
+    void (*fn)();      /* test case function */
 };
 
 static void
