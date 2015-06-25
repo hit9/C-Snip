@@ -1,3 +1,4 @@
 .*.sw[opn]
 *.out
 *.so
+*_test
