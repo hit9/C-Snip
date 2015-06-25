@@ -7,6 +7,7 @@
 
 void case_string_empty();
 void case_string_ncmp();
+void case_string_cmp();
 
 int
 main(int argc, const char *argv[])
@@ -14,6 +15,7 @@ main(int argc, const char *argv[])
     struct test_case cases[] = {
         { "string_empty", &case_string_empty },
         { "string_ncmp", &case_string_ncmp },
+        { "string_cmp", &case_string_cmp },
         { NULL, NULL },
     };
 
@@ -41,4 +43,15 @@ case_string_ncmp()
     assert(string_ncmp(&s1, &s3, 2) == 0);
     assert(string_ncmp(&s1, &s3, 3) < 0);
     assert(string_ncmp(&s3, &s1, 3) > 0);
+}
+
+void
+case_string_cmp()
+{
+    struct string s1 = string("abc");
+    struct string s2 = string("abcd");
+    struct string s3 = string("abc");
+    assert(string_cmp(&s1, &s2) < 0);
+    assert(string_cmp(&s2, &s1) > 0);
+    assert(string_cmp(&s1, &s3) == 0);
 }
