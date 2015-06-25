@@ -37,6 +37,37 @@ string_isspace(struct string *s)
     return false;
 }
 
+bool
+string_startswith(struct string *s, struct string *prefix)
+{
+    assert(s != NULL && prefix != NULL);
+
+    uint32_t idx = 0;
+
+    while (idx < s->len && idx < prefix->len) {
+        if (s->data[idx] != prefix->data[idx])
+            return false;
+        idx++;
+    }
+    return true;
+}
+
+bool
+string_endswith(struct string *s, struct string *suffix)
+{
+    assert(s != NULL && suffix != NULL);
+
+    size_t idx = 0;
+
+    while (idx < s->len && idx < suffix->len) {
+        if (s->data[s->len - 1 - idx] !=
+                (uint8_t)(suffix->data[suffix->len - 1 - idx]))
+            return false;
+        idx++;
+    }
+    return true;
+}
+
 int
 string_ncmp(struct string *s1, struct string *s2, uint32_t n)
 {

@@ -6,9 +6,11 @@
 #include "string.h"
 
 void case_string_isempty();
+void case_string_isspace();
+void case_string_startswith();
+void case_string_endswith();
 void case_string_ncmp();
 void case_string_cmp();
-void case_string_isspace();
 
 int
 main(int argc, const char *argv[])
@@ -16,6 +18,8 @@ main(int argc, const char *argv[])
     struct test_case cases[] = {
         { "string_isempty", &case_string_isempty },
         { "string_isspace", &case_string_isspace },
+        { "string_startswith", &case_string_startswith },
+        { "string_endswith", &case_string_endswith },
         { "string_ncmp", &case_string_ncmp },
         { "string_cmp", &case_string_cmp },
         { NULL, NULL },
@@ -43,6 +47,32 @@ case_string_isspace()
     assert(!string_isspace(&s1));
     assert(string_isspace(&s2));
     assert(!string_isspace(&s3));
+}
+
+void
+case_string_startswith()
+{
+    struct string s1 = string("abc");
+    struct string s2 = string("ab");
+    struct string s3 = string("ac");
+    assert(string_startswith(&s1, &s2));
+    assert(!string_startswith(&s1, &s3));
+}
+
+void
+case_string_endswith()
+{
+    struct string s1 = string("abcd");
+    struct string s2 = string("bcd");
+    struct string s3 = string("ecd");
+    struct string s4 = string("d");
+    assert(string_endswith(&s1, &s2));
+    assert(!string_endswith(&s1, &s3));
+    assert(!string_endswith(&s2, &s3));
+    assert(string_endswith(&s1, &s4));
+    assert(string_endswith(&s2, &s4));
+    assert(string_endswith(&s3, &s4));
+    assert(string_endswith(&s4, &s4));
 }
 
 void
