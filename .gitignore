@@ -3,4 +3,4 @@
 *.out
 *.so
 .*.sw[opn]
-*_test
+src/test
