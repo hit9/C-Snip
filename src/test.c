@@ -22,6 +22,7 @@ static struct test_case bool_test_cases[] = {
 /**
  * string_test
  */
+void case_string_clear();
 void case_string_isempty();
 void case_string_isspace();
 void case_string_startswith();
@@ -30,6 +31,7 @@ void case_string_ncmp();
 void case_string_cmp();
 void case_string_index();
 static struct test_case string_test_cases[] = {
+    { "string_clear", &case_string_clear },
     { "string_isempty", &case_string_isempty },
     { "string_isspace", &case_string_isspace },
     { "string_startswith", &case_string_startswith },

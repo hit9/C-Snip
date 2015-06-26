@@ -6,14 +6,32 @@
 #include "string.h"
 
 void
+case_string_clear()
+{
+    struct string *s1 = string("test");
+    struct string *s2 = string(NULL);
+    assert(!string_isempty(s1));
+    assert(string_isempty(s2));
+    string_clear(s1);
+    string_clear(s2);
+    assert(string_isempty(s1));
+    assert(string_isempty(s2));
+    string_free(s1);
+    string_free(s2);
+}
+
+void
 case_string_isempty()
 {
     struct string *s1 = string(NULL);
     struct string *s2 = string("s");
+    struct string *s3 = string("");
     assert(string_isempty(s1));
     assert(!string_isempty(s2));
+    assert(string_isempty(s3));
     string_free(s1);
     string_free(s2);
+    string_free(s3);
 }
 
 void

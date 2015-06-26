@@ -50,6 +50,20 @@ string_free(struct string *s)
     }
 }
 
+/* Clear a string into an empty string. And the content memory
+ * will be freed. */
+void
+string_clear(struct string *s)
+{
+    assert(s != NULL);
+
+    if (s->buf != NULL)
+        free(s->buf);
+    s->buf = NULL;
+    s->len = 0;
+    s->cap = 0;
+}
+
 /* Grow a string's buffer capacity to given size, the new
  * capacity is calculated like k*unit>=size, by default, the
  * unit size is current cap, if the unit is large enough, use
