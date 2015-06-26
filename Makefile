@@ -1,6 +1,6 @@
 # vim:set noet:
 
-default: all
+default: test
 
 .DEFAULT:
 	make $@ -C src

@@ -1,35 +1,24 @@
 # vim:set noet:
 
-default: all
+default: test
 
-ifeq ($(shell uname), Linux)
-define runtest
-	$(eval name := $(strip $1))
-	touch $(name).log
-	env MALLOC_TRACE=$(name).log ./$(name)
-	mtrace $(name) $(name).log
-endef
+NAME   = test
+CC     = cc
+CFLAGS = 
+SRC    = test.c bool_test.c string.c string_test.c
+OBJ    = $(SRC:c=o)
+UNAME  = $(shell uname)
+
+test: $(OBJ)
+	$(CC) $(OBJ) -o $(NAME) $(CFLAGS)
+ifeq ($(UNAME), Linux)
+	@touch $(NAME).log
+	@env MALLOC_TRACE=$(NAME).log ./$(NAME)
+	@echo "======> leaks detection <======="
+	@mtrace $(NAME) $(NAME).log
 else
-define runtest
-	$(eval name := $(strip $1))
-	./$(name)
-endef
+	./$(NAME)
 endif
 
-###
-# Test Items
-###
-bool_test: bool_test.c
-string_test: string_test.c string.c
-
-###
-# Other Rules
-###
-all: bool_test string_test
-
-test: all
-	$(call runtest, bool_test)
-	$(call runtest, string_test)
-
 clean:
-	rm *_test *.log
+	rm -rf $(NAME) $(NAME).log $(OBJ)

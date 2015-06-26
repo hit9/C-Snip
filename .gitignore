@@ -1,5 +1,6 @@
-.*.sw[opn]
+*.log
+*.o
 *.out
 *.so
+.*.sw[opn]
 *_test
-*.log

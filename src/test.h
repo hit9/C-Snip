@@ -5,21 +5,15 @@
 #include <assert.h>
 #include <stdio.h>
 
-#ifdef __linux
-#include <mcheck.h>
-#endif
-
 struct test_case {
     const char  *name;    /* test case name */
     void        (*fn)();  /* test case function */
 };
 
 static void
-run_cases(struct test_case cases[])
+run_cases(const char *name, struct test_case cases[])
 {
-#ifdef __linux
-    mtrace();
-#endif
+    printf("======> %s <======\n", name);
 
     int idx = 0;
 

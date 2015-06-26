@@ -5,32 +5,6 @@
 #include "test.h"
 #include "string.h"
 
-void case_string_isempty();
-void case_string_isspace();
-void case_string_startswith();
-void case_string_endswith();
-void case_string_ncmp();
-void case_string_cmp();
-void case_string_index();
-
-int
-main(int argc, const char *argv[])
-{
-    struct test_case cases[] = {
-        { "string_isempty", &case_string_isempty },
-        { "string_isspace", &case_string_isspace },
-        { "string_startswith", &case_string_startswith },
-        { "string_endswith", &case_string_endswith },
-        { "string_ncmp", &case_string_ncmp },
-        { "string_cmp", &case_string_cmp },
-        { "string_index", &case_string_index },
-        { NULL, NULL },
-    };
-
-    run_cases(cases);
-    return 0;
-}
-
 void
 case_string_isempty()
 {
