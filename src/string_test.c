@@ -143,9 +143,9 @@ void
 case_string_index()
 {
     struct string *s = string("abcdefg");
-    assert(string_index(s, (uint8_t)'a', 0) == 0);
-    assert(string_index(s, (uint8_t)'b', 0) == 1);
-    assert(string_index(s, (uint8_t)'c', 1) == 2);
-    assert(string_index(s, (uint8_t)'g', 3) == 6);
+    assert(string_index(s, 'a', 0) == 0);
+    assert(string_index(s, 'b', 0) == 1);
+    assert(string_index(s, 'c', 1) == 2);
+    assert(string_index(s, 'g', 3) == 6);
     string_free(s);
 }
