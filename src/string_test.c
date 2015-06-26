@@ -36,6 +36,15 @@ case_string_put()
 }
 
 void
+case_string_puts()
+{
+    struct string *s = string("abc");
+    assert(string_puts(s, "efg") == ERR_OK);
+    assert(strcmp(cstring(s), "abcefg") == 0);
+    string_free(s);
+}
+
+void
 case_string_isempty()
 {
     struct string *s1 = string(NULL);

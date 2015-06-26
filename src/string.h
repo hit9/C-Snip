@@ -20,6 +20,7 @@ extern "C" {
 #define STRING_MAX_REALLOC_UNIT   1024*1024      /* max string realloc unit: 1mb */
 
 #define string(cs)                string_new(cs)
+#define cstring(s)                string_cstring(s)
 
 struct string {
     size_t  len;    /* string length */
@@ -31,6 +32,7 @@ struct string *string_new(const char *cs);
 struct string *string_empty(void);
 void string_free(struct string *s);
 void string_clear(struct string *s);
+char *string_cstring(struct string *s);
 error_t string_grow(struct string *s, size_t size);
 error_t string_put(struct string *s, char *buf, size_t len);
 error_t string_puts(struct string *s, const char *cs);

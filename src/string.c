@@ -64,6 +64,26 @@ string_clear(struct string *s)
     s->cap = 0;
 }
 
+/**
+ * Return a null-terminated c string.
+ */
+char *
+string_cstring(struct string *s)
+{
+    assert(s != NULL);
+
+    if (s->len < s->cap && s->buf[s->len] == '\0')
+        return s->buf;
+
+    if (s->len + 1 <= s->cap ||
+            string_grow(s, s->len + 1) == ERR_OK) {
+        s->buf[s->len] = '\0';
+        return s->buf;
+    }
+
+    return NULL;
+}
+
 /* Grow a string's buffer capacity to given size, the new
  * capacity is calculated like k*unit>=size, by default, the
  * unit size is current cap, if the unit is large enough, use
