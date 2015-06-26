@@ -222,6 +222,15 @@ string_cmp(struct string *s1, struct string *s2)
     return string_ncmp(s1, s2, s1->len);
 }
 
+/* Returns true if two string equals on content. */
+bool
+string_equals(struct string *s1, struct string *s2)
+{
+    if (0 == string_cmp(s1, s2))
+        return true;
+    return false;
+}
+
 /* Index a char in a string. */
 size_t
 string_index(struct string *s, char ch, size_t start)

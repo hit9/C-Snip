@@ -2,6 +2,7 @@
  * Copyright (c) 2015, Chao Wang <hit9@icloud.com>
  */
 
+#include <string.h>
 #include "test.h"
 #include "string.h"
 
@@ -16,6 +17,20 @@ case_string_clear()
     string_clear(s2);
     assert(string_isempty(s1));
     assert(string_isempty(s2));
+    string_free(s1);
+    string_free(s2);
+}
+
+void
+case_string_put()
+{
+    struct string *s1 = string(NULL);
+    struct string *s2 = string("abcdef");
+    const char *p = "abc";
+    const char *q = "def";
+    assert(string_put(s1, (char *)p, strlen(p)) == ERR_OK);
+    assert(string_put(s1, (char *)q, strlen(q)) == ERR_OK);
+    assert(string_equals(s1, s2));
     string_free(s1);
     string_free(s2);
 }
@@ -106,6 +121,19 @@ case_string_cmp()
     assert(string_cmp(s1, s2) < 0);
     assert(string_cmp(s2, s1) > 0);
     assert(string_cmp(s1, s3) == 0);
+    string_free(s1);
+    string_free(s2);
+    string_free(s3);
+}
+
+void
+case_string_equals()
+{
+    struct string *s1 = string("abc");
+    struct string *s2 = string("abc");
+    struct string *s3 = string("abe");
+    assert(string_equals(s1, s2));
+    assert(!string_equals(s1, s3));
     string_free(s1);
     string_free(s2);
     string_free(s3);

@@ -23,21 +23,25 @@ static struct test_case bool_test_cases[] = {
  * string_test
  */
 void case_string_clear();
+void case_string_put();
 void case_string_isempty();
 void case_string_isspace();
 void case_string_startswith();
 void case_string_endswith();
 void case_string_ncmp();
 void case_string_cmp();
+void case_string_equals();
 void case_string_index();
 static struct test_case string_test_cases[] = {
     { "string_clear", &case_string_clear },
+    { "string_put", &case_string_put },
     { "string_isempty", &case_string_isempty },
     { "string_isspace", &case_string_isspace },
     { "string_startswith", &case_string_startswith },
     { "string_endswith", &case_string_endswith },
     { "string_ncmp", &case_string_ncmp },
     { "string_cmp", &case_string_cmp },
+    { "string_equals", &case_string_equals },
     { "string_index", &case_string_index },
     { NULL, NULL },
 };
