@@ -2,6 +2,20 @@
 
 default: all
 
+ifeq ($(shell uname), Linux)
+define runtest
+	$(eval name := $(strip $1))
+	touch $(name).log
+	env MALLOC_TRACE=$(name).log ./$(name)
+	mtrace $(name) $(name).log
+endef
+else
+define runtest
+	$(eval name := $(strip $1))
+	./$(name)
+endef
+endif
+
 ###
 # Test Items
 ###
@@ -14,8 +28,8 @@ string_test: string_test.c string.c
 all: bool_test string_test
 
 test: all
-	./bool_test
-	./string_test
+	$(call runtest, bool_test)
+	$(call runtest, string_test)
 
 clean:
-	rm -r *_test
+	rm *_test *.log
