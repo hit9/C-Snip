@@ -202,12 +202,19 @@ case_string_sprintf()
 void
 case_string_search()
 {
-    struct string *s = string("this is a simple example");
-    assert(string_search(s, "this", 0) == 0);
-    assert(string_search(s, "is", 0) == 2);
-    assert(string_search(s, "is", 3) == 5);
-    assert(string_search(s, "mp", 0) == 12);
-    assert(string_search(s, "mp", 13) == 20);
-    assert(string_search(s, "not exist", 0) == s->len);
-    string_free(s);
+    struct string *s1 = string("this is a simple example");
+    assert(string_search(s1, "this", 0) == 0);
+    assert(string_search(s1, "is", 0) == 2);
+    assert(string_search(s1, "is", 3) == 5);
+    assert(string_search(s1, "mp", 0) == 12);
+    assert(string_search(s1, "mp", 13) == 20);
+    assert(string_search(s1, "not exist", 0) == s1->len);
+    string_free(s1);
+
+    struct string *s2 = string("这是中文是的");
+    assert(string_search(s2, "这是", 0) == 0);
+    assert(string_search(s2, "中文", 0) == 6);
+    assert(string_search(s2, "是", 0) == 3);
+    assert(string_search(s2, "是", 6) == 12);
+    string_free(s2);
 }
