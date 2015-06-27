@@ -179,3 +179,12 @@ case_string_index()
     assert(string_index(s, 'g', 3) == 6);
     string_free(s);
 }
+
+void
+case_string_reverse()
+{
+    struct string *s = string("abcdefg");
+    string_reverse(s);
+    assert(strcmp(cstring(s), "gfedcba") == 0);
+    string_free(s);
+}

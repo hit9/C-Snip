@@ -30,9 +30,10 @@ struct string {
 
 struct string *string_new(const char *cs);
 struct string *string_empty(void);
+char *string_cstring(struct string *s);
 void string_free(struct string *s);
 void string_clear(struct string *s);
-char *string_cstring(struct string *s);
+void string_reverse(struct string *s);
 error_t string_grow(struct string *s, size_t size);
 error_t string_put(struct string *s, char *buf, size_t len);
 error_t string_puts(struct string *s, const char *cs);

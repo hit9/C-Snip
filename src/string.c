@@ -64,6 +64,30 @@ string_clear(struct string *s)
     s->cap = 0;
 }
 
+/* Reverse a string in place. */
+void
+string_reverse(struct string *s)
+{
+    assert(s != NULL);
+
+    if (s->len == 0)
+        return;
+
+    char tmp;
+    size_t idx = 0;
+    size_t end = s->len - 1;
+
+    while (idx < end) {
+        // swap
+        tmp = s->buf[idx];
+        s->buf[idx] = s->buf[end];
+        s->buf[end] = tmp;
+        // move
+        idx ++;
+        end --;
+    }
+}
+
 /**
  * Return a null-terminated c string.
  */
