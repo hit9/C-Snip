@@ -155,6 +155,13 @@ string_putc(struct string *s, char ch)
     return error;
 }
 
+/* Concat string on the end of a string. */
+error_t
+string_concat(struct string *s, struct string *t)
+{
+    return string_puts(s, cstring(t));
+}
+
 /* Return true if a string is empty. */
 bool
 string_isempty(struct string *s)

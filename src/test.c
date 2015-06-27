@@ -26,6 +26,7 @@ void case_string_clear();
 void case_string_put();
 void case_string_puts();
 void case_string_putc();
+void case_string_concat();
 void case_string_isempty();
 void case_string_isspace();
 void case_string_startswith();
@@ -39,6 +40,7 @@ static struct test_case string_test_cases[] = {
     { "string_put", &case_string_put },
     { "string_puts", &case_string_puts },
     { "string_putc", &case_string_putc },
+    { "string_concat", &case_string_concat },
     { "string_isempty", &case_string_isempty },
     { "string_isspace", &case_string_isspace },
     { "string_startswith", &case_string_startswith },

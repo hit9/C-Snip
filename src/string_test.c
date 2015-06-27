@@ -55,6 +55,17 @@ case_string_putc()
 }
 
 void
+case_string_concat()
+{
+    struct string *s = string("abc");
+    struct string *t = string("efg");
+    assert(string_concat(s, t) == ERR_OK);
+    assert(strcmp(cstring(s), "abcefg") == 0);
+    string_free(s);
+    string_free(t);
+}
+
+void
 case_string_isempty()
 {
     struct string *s1 = string(NULL);
