@@ -4,6 +4,8 @@
 
 #include <assert.h>
 #include <ctype.h>
+#include <stdarg.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -295,4 +297,54 @@ string_index(struct string *s, char ch, size_t start)
     if (idx < s->len)
         return idx;
     return s->len;
+}
+
+void
+string_print(struct string *s)
+{
+    printf("%s", cstring(s));
+}
+
+void
+string_println(struct string *s)
+{
+    printf("%s\n", cstring(s));
+}
+
+/* Formatted printing to a string. */
+error_t
+string_sprintf(struct string *s, const char *fmt, ...)
+{
+    assert(s != NULL);
+
+    if (s->len >= s->cap &&
+            string_grow(s, s->len + 1) != ERR_OK)
+        return ERR_NOMEM;
+
+    va_list ap;
+    int num;
+
+    va_start(ap, fmt);
+    num = vsnprintf(s->buf + s->len, s->cap - s->len, fmt, ap);
+    va_end(ap);
+
+    if (num < 0)
+        return ERR_FAILED;
+
+    size_t size = (size_t)num;
+
+    if (size >= s->cap - s->len) {
+        if (string_grow(s, s->len + size + 1) != ERR_OK)
+            return ERR_NOMEM;
+        va_start(ap, fmt);
+        num = vsnprintf(s->buf + s->len,
+                s->cap - s->len, fmt, ap);
+        va_end(ap);
+    }
+
+    if (num < 0)
+        return ERR_FAILED;
+
+    s->len += num;
+    return ERR_OK;
 }

@@ -12,6 +12,7 @@ extern "C" {
 typedef enum {
     ERR_OK = 0,
     ERR_NOMEM = 1,
+    ERR_FAILED = 2,
 } error_t;
 
 #if defined(__cplusplus)

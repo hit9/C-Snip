@@ -39,6 +39,7 @@ error_t string_put(struct string *s, char *buf, size_t len);
 error_t string_puts(struct string *s, const char *cs);
 error_t string_putc(struct string *s, char ch);
 error_t string_concat(struct string *s, struct string *t);
+error_t string_sprintf(struct string *s, const char *fmt, ...);
 bool string_isempty(struct string *s);
 bool string_isspace(struct string *s);
 bool string_startswith(struct string *s, struct string *prefix);

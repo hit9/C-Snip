@@ -188,3 +188,13 @@ case_string_reverse()
     assert(strcmp(cstring(s), "gfedcba") == 0);
     string_free(s);
 }
+
+void
+case_string_sprintf()
+{
+    struct string *s = string(NULL);
+    string_sprintf(s, "%s%s%s", "a", "bc", "d");
+    string_sprintf(s, "%s %s %d", "x", "yz", 123);
+    assert(strcmp(cstring(s), "abcdx yz 123") == 0);
+    string_free(s);
+}

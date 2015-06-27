@@ -36,6 +36,7 @@ void case_string_cmp();
 void case_string_equals();
 void case_string_index();
 void case_string_reverse();
+void case_string_sprintf();
 static struct test_case string_test_cases[] = {
     { "string_clear", &case_string_clear },
     { "string_put", &case_string_put },
@@ -51,6 +52,7 @@ static struct test_case string_test_cases[] = {
     { "string_equals", &case_string_equals },
     { "string_index", &case_string_index },
     { "string_reverse", &case_string_reverse },
+    { "string_sprintf", &case_string_sprintf },
     { NULL, NULL },
 };
 
