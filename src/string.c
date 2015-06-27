@@ -348,3 +348,43 @@ string_sprintf(struct string *s, const char *fmt, ...)
     s->len += num;
     return ERR_OK;
 }
+
+/* Search null-terminated sub-string in a string, return the first
+ * position of the sub-string in the string, return the string's
+ * length on failure. */
+size_t
+string_search(struct string *s, char *sub, size_t start)
+{
+    assert(s != NULL);
+
+    size_t len = strlen(sub);
+    size_t last = len - 1;
+    size_t idx;
+
+    size_t table[256] = {0};
+
+    // build bad char table
+    for (idx = 0; idx < 256; idx++)
+        table[idx] = len;
+    for (idx = 0; idx < len; idx++)
+        table[sub[idx]] = last - idx;
+
+    // search
+    size_t i, j, k, t, skip;
+
+    for (i = start; i < s->len; i += skip) {
+        skip = 0;
+        for (j = 0; j < len; j++) {
+            k = last - j;
+            if (sub[k] != s->buf[i + k]) {
+                t = table[s->buf[i + k]];
+                skip = t > j? t - j : 1;
+                break;
+            }
+        }
+        if (skip == 0)
+            return i;
+    }
+
+    return s->len;
+}

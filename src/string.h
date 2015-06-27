@@ -50,6 +50,7 @@ bool string_equals(struct string *s1, struct string *s2);
 int string_cmp(struct string *s1, struct string *s2);
 int string_ncmp(struct string *s1, struct string *s2, size_t n);
 size_t string_index(struct string *s, char ch, size_t start);
+size_t string_search(struct string *s, char *sub, size_t start);
 
 #if defined(__cplusplus)
 }

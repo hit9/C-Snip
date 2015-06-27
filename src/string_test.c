@@ -198,3 +198,16 @@ case_string_sprintf()
     assert(strcmp(cstring(s), "abcdx yz 123") == 0);
     string_free(s);
 }
+
+void
+case_string_search()
+{
+    struct string *s = string("this is a simple example");
+    assert(string_search(s, "this", 0) == 0);
+    assert(string_search(s, "is", 0) == 2);
+    assert(string_search(s, "is", 3) == 5);
+    assert(string_search(s, "mp", 0) == 12);
+    assert(string_search(s, "mp", 13) == 20);
+    assert(string_search(s, "not exist", 0) == s->len);
+    string_free(s);
+}
