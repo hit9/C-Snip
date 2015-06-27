@@ -34,6 +34,8 @@ char *string_cstring(struct string *s);
 void string_free(struct string *s);
 void string_clear(struct string *s);
 void string_reverse(struct string *s);
+void string_print(struct string *s);
+void string_println(struct string *s);
 error_t string_grow(struct string *s, size_t size);
 error_t string_put(struct string *s, char *buf, size_t len);
 error_t string_puts(struct string *s, const char *cs);
