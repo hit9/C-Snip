@@ -29,7 +29,7 @@ void stack_free(struct stack *stack);
 void stack_clear(struct stack *stack);
 void *stack_pop(struct stack *stack);
 void *stack_top(struct stack *stack);
-error_t stack_push(struct stack *stack, void *item);
+error_t stack_push(struct stack *stack, void *data);
 error_t stack_grow(struct stack *stack, size_t size);
 
 #if defined(__cplusplus)

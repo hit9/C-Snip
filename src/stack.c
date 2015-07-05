@@ -78,7 +78,7 @@ stack_grow(struct stack *stack, size_t size)
 
 /* Push an item on the top of the stack. */
 error_t
-stack_push(struct stack *stack, void *item)
+stack_push(struct stack *stack, void *data)
 {
     assert(stack != NULL);
 
@@ -86,7 +86,7 @@ stack_push(struct stack *stack, void *item)
             stack_grow(stack, stack->size + 1) != ERR_OK)
         return ERR_OK;
 
-    stack->data[stack->size++] = item;
+    stack->data[stack->size++] = data;
     return ERR_OK;
 }
 
