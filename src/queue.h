@@ -28,5 +28,8 @@ void queue_node_free(struct queue_node *node);
 struct queue *queue_new(void);
 void queue_free(struct queue *queue);
 void queue_clear(struct queue *queue);
+error_t queue_push(struct queue *queue, void *data);
+void *queue_pop(struct queue *queue);
+void *queue_top(struct queue *queue);
 
 #endif

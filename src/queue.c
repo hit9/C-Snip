@@ -33,7 +33,7 @@ queue_node_free(struct queue_node *node)
 struct queue *
 queue_new(void)
 {
-    struct queue *queue = malloc(sizeof(sruct queue));
+    struct queue *queue = malloc(sizeof(struct queue));
     if (queue != NULL) {
         queue->head = NULL;
         queue->tail = NULL;

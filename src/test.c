@@ -73,6 +73,17 @@ static struct test_case stack_test_cases[] = {
     { NULL, NULL },
 };
 
+/**
+ * queue_test
+ */
+void case_queue_clear();
+void case_queue_push_pop_top();
+static struct test_case queue_test_cases[] = {
+    { "queue_clear", &case_queue_clear },
+    { "case_queue_push_pop_top", &case_queue_push_pop_top },
+    { NULL, NULL },
+};
+
 int main(int argc, const char *argv[])
 {
 #ifdef __linux
@@ -81,5 +92,6 @@ int main(int argc, const char *argv[])
     run_cases("bool_test", bool_test_cases);
     run_cases("string_test", string_test_cases);
     run_cases("stack_test", stack_test_cases);
+    run_cases("queue_test", queue_test_cases);
     return 0;
 }
