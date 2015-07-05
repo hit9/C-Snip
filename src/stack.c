@@ -48,7 +48,7 @@ stack_clear(struct stack *stack)
         stack->data = NULL;
     }
 
-    stack->cap = 0;  /* FIXME: Should reset cap to 0? */
+    stack->cap = 0;
     stack->size = 0;
 }
 
