@@ -1,5 +1,5 @@
 - [ ] heap
-- [ ] stack
+- [x] stack
 - [ ] queue
 - [ ] dict
 - [ ] rbtree
