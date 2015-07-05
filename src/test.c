@@ -58,6 +58,21 @@ static struct test_case string_test_cases[] = {
     { NULL, NULL },
 };
 
+/**
+ * stack_test
+ */
+void case_stack_clear();
+void case_stack_push();
+void case_stack_pop();
+void case_stack_top();
+static struct test_case stack_test_cases[] = {
+    { "stack_clear", &case_stack_clear },
+    { "stack_push", &case_stack_push },
+    { "stack_pop", &case_stack_pop },
+    { "stack_top", &case_stack_top },
+    { NULL, NULL },
+};
+
 int main(int argc, const char *argv[])
 {
 #ifdef __linux
@@ -65,5 +80,6 @@ int main(int argc, const char *argv[])
 #endif
     run_cases("bool_test", bool_test_cases);
     run_cases("string_test", string_test_cases);
+    run_cases("stack_test", stack_test_cases);
     return 0;
 }
