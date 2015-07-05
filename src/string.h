@@ -25,7 +25,7 @@ extern "C" {
 struct string {
     size_t  len;    /* string length */
     size_t  cap;    /* string capacity */
-    char    *buf;   /* string dynamic buffer */
+    char *  buf;    /* string dynamic buffer */
 };
 
 struct string *string_new(const char *cs);
