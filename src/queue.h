@@ -10,6 +10,10 @@
 #include <stdint.h>
 #include "errors.h"
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 #define queue()  queue_new()
 
 struct queue_node {
@@ -31,5 +35,9 @@ void queue_clear(struct queue *queue);
 error_t queue_push(struct queue *queue, void *data);
 void *queue_pop(struct queue *queue);
 void *queue_top(struct queue *queue);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif
