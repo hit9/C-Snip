@@ -3,6 +3,8 @@
  */
 
 #include <assert.h>
+#include <stdlib.h>
+
 #include "errors.h"
 #include "list.h"
 
@@ -104,7 +106,7 @@ list_rpush(struct list *list, void *data)
         list->tail = node;
     } else {
         assert(list->head != NULL && list->tail != NULL);
-        struct list_node *node = list->tail;
+        struct list_node *tail = list->tail;
         assert(tail->next == NULL && node->next == NULL);
         tail->next = node;
         node->prev = tail;
