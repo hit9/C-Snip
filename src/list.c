@@ -208,3 +208,80 @@ list_tail(struct list *list)
     assert(list->head != NULL && list->tail != NULL);
     return list->tail->data;
 }
+
+/* Create list iterator, example:
+ *
+ *    struct list_iterator iterator = list_iterator_new(list)
+ *    void *data;
+ *
+ *    while ((data = list_iterator_next(iterator)) != NULL) {
+ *       ...
+ *    }
+ */
+struct list_iterator *
+list_iterator_new(struct list *list)
+{
+    assert(list != NULL);
+
+    struct list_iterator *iterator = malloc(sizeof(struct list_iterator));
+
+    if (iterator != NULL) {
+        iterator->list = list;
+        iterator->node = list->head;
+    }
+    return iterator;
+}
+
+/* Free list iterator. */
+void
+list_iterator_free(struct list_iterator *iterator)
+{
+    if (iterator != NULL)
+        free(iterator);
+}
+
+/* Get current node data and seek next, NULL on tail. */
+void *
+list_iterator_next(struct list_iterator *iterator)
+{
+    assert(iterator != NULL);
+
+    struct list_node *node = iterator->node;
+
+    if (node == NULL)
+        return NULL;
+
+    iterator->node = node->next;
+    return node->data;
+}
+
+/* Get current node data and seek prev, NULL on head. */
+void *
+list_iterator_prev(struct list_iterator *iterator)
+{
+    assert(iterator != NULL);
+
+    struct list_node *node = iterator->node;
+
+    if (node == NULL)
+        return NULL;
+
+    iterator->node = node->prev;
+    return node->data;
+}
+
+/* Seek iterator to list's head. */
+void
+list_iterator_seek_head(struct list_iterator *iterator)
+{
+    assert(iterator != NULL && iterator->list != NULL);
+    iterator->node = iterator->list->head;
+}
+
+/* Seek iterator to list's tail. */
+void
+list_iterator_seek_tail(struct list_iterator *iterator)
+{
+    assert(iterator != NULL && iterator->list != NULL);
+    iterator->node = iterator->list->tail;
+}
