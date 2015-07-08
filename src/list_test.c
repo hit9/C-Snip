@@ -62,3 +62,25 @@ case_list_rpush()
     assert(list->size == 3);
     list_free(list);
 }
+
+void
+case_list_lpop()
+{
+    struct list *list = list();
+    char *s1 = "s1", *s2 = "s2", *s3 = "s3";
+    assert(list_rpush(list, s1) == ERR_OK);
+    assert(list_rpush(list, s2) == ERR_OK);
+    assert(list_rpush(list, s3) == ERR_OK);
+    assert(list->size == 3);
+    assert(list->head->data == s1);
+    assert(list_lpop(list) == s1);
+    assert(list->size == 2);
+    assert(list->head->data == s2);
+    assert(list_lpop(list) == s2);
+    assert(list->size == 1);
+    assert(list->head->data == s3);
+    assert(list_lpop(list) == s3);
+    assert(list->size == 0);
+    assert(list->head == NULL);
+    list_free(list);
+}

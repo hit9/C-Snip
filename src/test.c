@@ -90,10 +90,12 @@ static struct test_case queue_test_cases[] = {
 void case_list_clear();
 void case_list_lpush();
 void case_list_rpush();
+void case_list_lpop();
 static struct test_case list_test_cases[] = {
     { "list_clear", &case_list_clear },
     { "list_lpush", &case_list_lpush },
     { "list_rpush", &case_list_rpush },
+    { "list_lpop", &case_list_lpop },
 };
 
 int main(int argc, const char *argv[])
