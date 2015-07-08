@@ -13,10 +13,9 @@ struct test_case {
 static void
 run_cases(const char *name, struct test_case cases[])
 {
-    printf("======> %s <======\n", name);
-
     int idx = 0;
 
+    printf("[%s]\n", name);
     while (1) {
         struct test_case c = cases[idx];
 
@@ -25,6 +24,6 @@ run_cases(const char *name, struct test_case cases[])
 
         (c.fn)();
         idx += 1;
-        printf("[%d] ok => %s\n", idx, c.name);
+        printf("  ok: %s\n", c.name);
     }
 }
