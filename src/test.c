@@ -92,12 +92,14 @@ void case_list_lpush();
 void case_list_rpush();
 void case_list_lpop();
 void case_list_rpop();
+void case_list_iterator();
 static struct test_case list_test_cases[] = {
     { "list_clear", &case_list_clear },
     { "list_lpush", &case_list_lpush },
     { "list_rpush", &case_list_rpush },
     { "list_lpop", &case_list_lpop },
     { "list_rpop", &case_list_rpop },
+    { "list_iterator", &case_list_iterator },
 };
 
 int main(int argc, const char *argv[])

@@ -14,7 +14,10 @@
 extern "C" {
 #endif
 
-#define list()  list_new()
+#define list()                 list_new()
+#define list_iterator(list)    list_iterator_new(list)
+#define list_push(list, data)  list_rpush(list, data)
+#define list_pop(list)         list_lpop(list)
 
 struct list_node {
     struct list_node *prev;  /* prev node */

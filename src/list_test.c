@@ -106,3 +106,25 @@ case_list_rpop()
     assert(list->tail == NULL);
     list_free(list);
 }
+
+void
+case_list_iterator()
+{
+    struct list *list = list();
+    char *s1 = "s1", *s2 = "s2", *s3 = "s3";
+    list_push(list, s1);
+    list_push(list, s2);
+    list_push(list, s3);
+    struct list_iterator *iterator = list_iterator(list);
+    assert(iterator->list == list);
+    assert(iterator->node == list->head);
+    assert(list_iterator_next(iterator) == s1);
+    assert(list_iterator_next(iterator) == s2);
+    assert(list_iterator_next(iterator) == s3);
+    list_iterator_seek_tail(iterator);
+    assert(list_iterator_prev(iterator) == s3);
+    assert(list_iterator_prev(iterator) == s2);
+    assert(list_iterator_prev(iterator) == s1);
+    list_iterator_free(iterator);
+    list_free(list);
+}
