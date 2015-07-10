@@ -2,9 +2,9 @@
  * Copyright (c) 2015, Chao Wang <hit9@icloud.com>
  */
 
-#include <stdlib.h>
 #include <assert.h>
 #include <memory.h>
+#include <stdlib.h>
 #include "dict.h"
 
 /* BKDRHash algorithm. */
@@ -61,7 +61,7 @@ dict_resize(struct dict *dict)
     if (new_idx > dict_idx_max)
         return ERR_NOMEM;
 
-    struct new_size = dict_table_sizes[idx];
+    size_t new_size = dict_table_sizes[new_idx];
     struct dict_node **new_table = malloc(
             new_size * sizeof(struct dict_node *));
 
@@ -77,7 +77,7 @@ dict_resize(struct dict *dict)
 
         while (node != NULL) {
             struct dict_node *new_node = dict_node_new(
-                    node->key, node->key_len, node->val);
+                    node->key, node->len, node->val);
 
             if (new_node == NULL)
                 return ERR_NOMEM;
@@ -110,7 +110,7 @@ dict_resize(struct dict *dict)
 
 /* Create new empty dict. */
 struct dict *
-dict_new()
+dict_new(void)
 {
     struct dict *dict = malloc(sizeof(struct dict));
 

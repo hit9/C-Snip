@@ -100,6 +100,16 @@ static struct test_case list_test_cases[] = {
     { "list_lpop", &case_list_lpop },
     { "list_rpop", &case_list_rpop },
     { "list_iterator", &case_list_iterator },
+    { NULL, NULL },
+};
+
+/**
+ * dict_test.c
+ */
+void case_dict_set();
+static struct test_case dict_test_cases[] = {
+    { "dict_set", &case_dict_set },
+    { NULL, NULL },
 };
 
 int main(int argc, const char *argv[])
@@ -112,5 +122,6 @@ int main(int argc, const char *argv[])
     run_cases("stack_test", stack_test_cases);
     run_cases("queue_test", queue_test_cases);
     run_cases("list_test", list_test_cases);
+    run_cases("dict_test", dict_test_cases);
     return 0;
 }

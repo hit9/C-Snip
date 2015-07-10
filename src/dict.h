@@ -8,6 +8,7 @@
 #define _CW_DICT_H 1
 
 #include <stdint.h>
+#include "bool.h"
 #include "errors.h"
 
 #if defined(__cplusplus)
@@ -15,6 +16,7 @@ extern "C" {
 #endif
 
 #define DICT_LOAD_LIMIT     0.75  /* load factor */
+#define dict()              dict_new()
 
 struct dict_node {
     char *key;                /* key string address */
@@ -62,6 +64,14 @@ static size_t dict_table_sizes[] = {
 
 static size_t dict_idx_max = sizeof(dict_table_sizes)/\
                              sizeof(dict_table_sizes[0])-1;  /* 28 */
+
+struct dict *dict_new(void);
+void dict_clear(struct dict *dict);
+void dict_free(struct dict *dict);
+void *dict_get(struct dict *dict, char *key, size_t len);
+error_t dict_set(struct dict *dict, char *key, size_t len, void *val);
+error_t dict_del(struct dict *dict, char *key, size_t len);
+bool dict_has(struct dict *dict, char *key, size_t len);
 
 #if defined(__cplusplus)
 }
