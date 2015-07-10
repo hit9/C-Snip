@@ -1,6 +1,6 @@
 # vim:set noet:
 
-default: test
+default: runtest
 
 .DEFAULT:
 	make $@ -C src

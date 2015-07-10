@@ -5,3 +5,5 @@
 - [ ] rbtree
 - [ ] skiplist
 - [ ] event loop
+- [ ] iterators for all
+- [ ] list foreach
