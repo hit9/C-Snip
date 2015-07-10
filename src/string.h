@@ -16,7 +16,7 @@ extern "C" {
 #endif
 
 #define STRING_MAX_CAPACITY_SIZE  16*1024*1024   /* max string capacity: 16mb */
-#define STRING_MIN_REALLOC_UNIT   1              /* min string realloc unit: 1mb */
+#define STRING_MIN_REALLOC_UNIT   1              /* min string realloc unit: 1 */
 #define STRING_MAX_REALLOC_UNIT   1024*1024      /* max string realloc unit: 1mb */
 
 #define string(cs)                string_new(cs)
