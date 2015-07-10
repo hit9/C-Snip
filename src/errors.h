@@ -13,7 +13,14 @@ typedef enum {
     ERR_OK = 0,
     ERR_NOMEM = 1,
     ERR_FAILED = 2,
+    ERR_NOTFOUND = 3,
 } error_t;
+
+/* static const char *errors[] = { */
+/*     "Operation is OK", */
+/*     "No memory or data is too large", */
+/*     "Operation failed", */
+/* }; */
 
 #if defined(__cplusplus)
 }
