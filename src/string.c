@@ -33,7 +33,7 @@ string_new(const char *cs)
     return s;
 }
 
-/* Create a empty string. */
+/* Create empty string. */
 struct string *
 string_empty(void)
 {
