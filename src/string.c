@@ -188,19 +188,27 @@ string_concat(struct string *s, struct string *t)
     return string_puts(s, cstring(t));
 }
 
+/* Truncate string, do nothing if len >= s->len, note that
+ * buf will not be freed even if you truncate the string to
+ * size 0. */
+void
+string_truncate(struct string *s, size_t len)
+{
+    assert(s != NULL);
+
+    if (len < s->len)
+        s->len = len;
+}
+
 /* Return true if a string is empty. */
 bool
 string_isempty(struct string *s)
 {
     assert(s != NULL);
 
-    if (s->len == 0) {
-        assert(s->buf == NULL);
+    if (s->len == 0)
         return true;
-    } else {
-        assert(s->buf != NULL);
-        return false;
-    }
+    return false;
 }
 
 /* Return true if a string is space. */

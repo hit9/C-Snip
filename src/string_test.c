@@ -66,6 +66,19 @@ case_string_concat()
 }
 
 void
+case_string_truncate()
+{
+    struct string *s = string("abcdefg");
+    string_truncate(s, 10);
+    assert(strcmp(cstring(s), "abcdefg") == 0);
+    string_truncate(s, 4);
+    assert(strcmp(cstring(s), "abcd") == 0);
+    string_truncate(s, 0);
+    assert(string_isempty(s));
+    string_free(s);
+}
+
+void
 case_string_isempty()
 {
     struct string *s1 = string(NULL);
