@@ -3,8 +3,8 @@
  */
 
 #include <assert.h>
-#include <memory.h>
 #include <stdlib.h>
+#include <string.h>
 #include "dict.h"
 
 /* BKDRHash algorithm. */

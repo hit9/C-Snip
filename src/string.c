@@ -8,7 +8,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <memory.h>
 
 #include "errors.h"
 #include "string.h"
