@@ -193,8 +193,8 @@ void
 case_string_sprintf()
 {
     struct string *s = string(NULL);
-    string_sprintf(s, "%s%s%s", "a", "bc", "d");
-    string_sprintf(s, "%s %s %d", "x", "yz", 123);
+    assert(string_sprintf(s, "%s%s%s", "a", "bc", "d") == ERR_OK);
+    assert(string_sprintf(s, "%s %s %d", "x", "yz", 123) == ERR_OK);
     assert(strcmp(cstring(s), "abcdx yz 123") == 0);
     string_free(s);
 }
