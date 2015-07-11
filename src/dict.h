@@ -18,7 +18,7 @@ extern "C" {
 #define DICT_LOAD_LIMIT     0.75  /* load factor */
 
 #define dict()              dict_new()
-#define dict_iterator(dict) dict_iterator_new(dict)
+#define dict_iter(dict)     dict_iter_new(dict)
 
 struct dict_node {
     char *key;                 /* key string address */
@@ -33,7 +33,7 @@ struct dict {
     struct dict_node **table;  /* node table */
 };
 
-struct dict_iterator {
+struct dict_iter {
     struct dict *dict;         /* dict to work on */
     size_t index;              /* current table index */
     struct dict_node *node;    /* current dict node */
@@ -57,10 +57,10 @@ error_t dict_set(struct dict *dict, char *key, size_t len, void *val);
 void *dict_get(struct dict *dict, char *key, size_t len);
 void *dict_pop(struct dict *dict, char *key, size_t len);
 bool dict_has(struct dict *dict, char *key, size_t len);
-struct dict_iterator *dict_iterator_new(struct dict *dict);
-void dict_iterator_free(struct dict_iterator *iterator);
-struct dict_node *dict_iterator_next(struct dict_iterator *iterator);
-void dict_iterator_rewind(struct dict_iterator *iterator);
+struct dict_iter *dict_iter_new(struct dict *dict);
+void dict_iter_free(struct dict_iter *iter);
+struct dict_node *dict_iter_next(struct dict_iter *iter);
+void dict_iter_rewind(struct dict_iter *iter);
 
 #if defined(__cplusplus)
 }

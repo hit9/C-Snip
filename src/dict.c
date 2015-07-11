@@ -290,49 +290,49 @@ dict_pop(struct dict *dict, char *key, size_t len)
     return NULL;
 }
 
-/* Create dict iterator, e.g.
+/* Create dict iter, e.g.
  *
- *   struct dict_iterator *iterator = dict_iterator_new(dict);
+ *   struct dict_iter *iter = dict_iter_new(dict);
  *   struct dict_node *node = NULL;
  *
- *   while ((node = dict_iterator_new(iterator)) != NULL) {
+ *   while ((node = dict_iter_new(iter)) != NULL) {
  *      node->key..
  *      node->len..
  *      node->val..
  *   }
- *   dict_iterator_free(iterator);
+ *   dict_iter_free(iter);
  * */
-struct dict_iterator *
-dict_iterator_new(struct dict *dict)
+struct dict_iter *
+dict_iter_new(struct dict *dict)
 {
     assert (dict != NULL);
 
-    struct dict_iterator *iterator = malloc(sizeof(struct dict_iterator));
+    struct dict_iter *iter = malloc(sizeof(struct dict_iter));
 
-    if (iterator != NULL) {
-        iterator->dict = dict;
-        iterator->index = 0;
-        iterator->node = NULL;
+    if (iter != NULL) {
+        iter->dict = dict;
+        iter->index = 0;
+        iter->node = NULL;
     }
-    return iterator;
+    return iter;
 }
 
-/* Free dict iterator. */
+/* Free dict iter. */
 void
-dict_iterator_free(struct dict_iterator *iterator)
+dict_iter_free(struct dict_iter *iter)
 {
-    if (iterator != NULL)
-        free(iterator);
+    if (iter != NULL)
+        free(iter);
 }
 
 /* Get current node and seek next, NULL on end. */
 struct dict_node *
-dict_iterator_next(struct dict_iterator *iterator)
+dict_iter_next(struct dict_iter *iter)
 {
-    assert(iterator != NULL &&
-            iterator->dict != NULL);
+    assert(iter != NULL &&
+            iter->dict != NULL);
 
-    struct dict *dict = iterator->dict;
+    struct dict *dict = iter->dict;
 
     if (dict->table == NULL) {
         assert(dict->size == 0);
@@ -341,24 +341,24 @@ dict_iterator_next(struct dict_iterator *iterator)
 
     assert(dict->idx <= dict_idx_max);
     size_t table_size = dict_table_sizes[dict->idx];
-    assert(iterator->index < table_size);
+    assert(iter->index < table_size);
 
-    while (iterator->node == NULL) {
-        if (iterator->index >= table_size)
+    while (iter->node == NULL) {
+        if (iter->index >= table_size)
             return NULL;
-        iterator->node = (dict->table)[iterator->index++];
+        iter->node = (dict->table)[iter->index++];
     }
 
-    struct dict_node *node = iterator->node;
-    iterator->node = node->next;
+    struct dict_node *node = iter->node;
+    iter->node = node->next;
     return node;
 }
 
-/* Rewind dict iterator. */
+/* Rewind dict iter. */
 void
-dict_iterator_rewind(struct dict_iterator *iterator)
+dict_iter_rewind(struct dict_iter *iter)
 {
-    assert(iterator != NULL);
-    iterator->node = NULL;
-    iterator->index = 0;
+    assert(iter != NULL);
+    iter->node = NULL;
+    iter->index = 0;
 }

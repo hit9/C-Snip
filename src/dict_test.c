@@ -96,7 +96,7 @@ case_dict_resize()
 }
 
 void
-case_dict_iterator()
+case_dict_iter()
 {
     struct dict *dict = dict();
     char *key1 = "key1"; size_t len1 = 4;
@@ -112,13 +112,13 @@ case_dict_iterator()
     assert(dict_set(dict, key5, len5, "val5") == ERR_OK);
     assert(dict_set(dict, key6, len6, "val6") == ERR_OK);
 
-    struct dict_iterator *iterator = dict_iterator(dict);
-    assert(strncmp(dict_iterator_next(iterator)->key, key1, len1) == 0);
-    assert(strncmp(dict_iterator_next(iterator)->key, key2, len2) == 0);
-    assert(strncmp(dict_iterator_next(iterator)->key, key3, len3) == 0);
-    assert(strncmp(dict_iterator_next(iterator)->key, key4, len4) == 0);
-    assert(strncmp(dict_iterator_next(iterator)->key, key5, len5) == 0);
-    assert(strncmp(dict_iterator_next(iterator)->key, key6, len6) == 0);
-    dict_iterator_free(iterator);
+    struct dict_iter *iter = dict_iter(dict);
+    assert(strncmp(dict_iter_next(iter)->key, key1, len1) == 0);
+    assert(strncmp(dict_iter_next(iter)->key, key2, len2) == 0);
+    assert(strncmp(dict_iter_next(iter)->key, key3, len3) == 0);
+    assert(strncmp(dict_iter_next(iter)->key, key4, len4) == 0);
+    assert(strncmp(dict_iter_next(iter)->key, key5, len5) == 0);
+    assert(strncmp(dict_iter_next(iter)->key, key6, len6) == 0);
+    dict_iter_free(iter);
     dict_free(dict);
 }

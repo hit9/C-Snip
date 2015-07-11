@@ -211,79 +211,79 @@ list_tail(struct list *list)
     return list->tail->data;
 }
 
-/* Create list iterator, example:
+/* Create list iter, example:
  *
- *    struct list_iterator iterator = list_iterator_new(list)
+ *    struct list_iter iter = list_iter_new(list)
  *    void *data;
  *
- *    while ((data = list_iterator_next(iterator)) != NULL) {
+ *    while ((data = list_iter_next(iter)) != NULL) {
  *       ...
  *    }
  */
-struct list_iterator *
-list_iterator_new(struct list *list)
+struct list_iter *
+list_iter_new(struct list *list)
 {
     assert(list != NULL);
 
-    struct list_iterator *iterator = malloc(sizeof(struct list_iterator));
+    struct list_iter *iter = malloc(sizeof(struct list_iter));
 
-    if (iterator != NULL) {
-        iterator->list = list;
-        iterator->node = list->head;
+    if (iter != NULL) {
+        iter->list = list;
+        iter->node = list->head;
     }
-    return iterator;
+    return iter;
 }
 
-/* Free list iterator. */
+/* Free list iter. */
 void
-list_iterator_free(struct list_iterator *iterator)
+list_iter_free(struct list_iter *iter)
 {
-    if (iterator != NULL)
-        free(iterator);
+    if (iter != NULL)
+        free(iter);
 }
 
 /* Get current node data and seek next, NULL on tail. */
 void *
-list_iterator_next(struct list_iterator *iterator)
+list_iter_next(struct list_iter *iter)
 {
-    assert(iterator != NULL);
+    assert(iter != NULL);
 
-    struct list_node *node = iterator->node;
+    struct list_node *node = iter->node;
 
     if (node == NULL)
         return NULL;
 
-    iterator->node = node->next;
+    iter->node = node->next;
     return node->data;
 }
 
 /* Get current node data and seek prev, NULL on head. */
 void *
-list_iterator_prev(struct list_iterator *iterator)
+list_iter_prev(struct list_iter *iter)
 {
-    assert(iterator != NULL);
+    assert(iter != NULL);
 
-    struct list_node *node = iterator->node;
+    struct list_node *node = iter->node;
 
     if (node == NULL)
         return NULL;
 
-    iterator->node = node->prev;
+    iter->node = node->prev;
     return node->data;
 }
 
-/* Seek iterator to list's head. */
+/* Seek iter to list's head. */
 void
-list_iterator_seek_head(struct list_iterator *iterator)
+list_iter_seek_head(struct list_iter *iter)
 {
-    assert(iterator != NULL && iterator->list != NULL);
-    iterator->node = iterator->list->head;
+    assert(iter != NULL && iter->list != NULL);
+    iter->node = iter->list->head;
 }
 
-/* Seek iterator to list's tail. */
+/* Seek iter to list's tail. */
 void
-list_iterator_seek_tail(struct list_iterator *iterator)
+list_iter_seek_tail(struct list_iter *iter)
 {
-    assert(iterator != NULL && iterator->list != NULL);
-    iterator->node = iterator->list->tail;
+    assert(iter != NULL && iter->list != NULL);
+    iter->node = iter->list->tail;
 }

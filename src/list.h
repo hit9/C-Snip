@@ -15,7 +15,7 @@ extern "C" {
 #endif
 
 #define list()                 list_new()
-#define list_iterator(list)    list_iterator_new(list)
+#define list_iter(list)        list_iter_new(list)
 #define list_push(list, data)  list_rpush(list, data)
 #define list_pop(list)         list_lpop(list)
 
@@ -31,7 +31,7 @@ struct list {
     size_t size;             /* list size */
 };
 
-struct list_iterator {
+struct list_iter {
     struct list *list;
     struct list_node *node;
 };
@@ -47,12 +47,12 @@ void *list_lpop(struct list *list);
 void *list_rpop(struct list *list);
 void *list_head(struct list *list);
 void *list_tail(struct list *list);
-struct list_iterator *list_iterator_new(struct list *list);
-void list_iterator_free(struct list_iterator *iterator);
-void *list_iterator_next(struct list_iterator *iterator);
-void *list_iterator_prev(struct list_iterator *iterator);
-void list_iterator_seek_head(struct list_iterator *iterator);
-void list_iterator_seek_tail(struct list_iterator *iterator);
+struct list_iter *list_iter_new(struct list *list);
+void list_iter_free(struct list_iter *iter);
+void *list_iter_next(struct list_iter *iter);
+void *list_iter_prev(struct list_iter *iter);
+void list_iter_seek_head(struct list_iter *iter);
+void list_iter_seek_tail(struct list_iter *iter);
 
 #if defined(__cplusplus)
 }

@@ -92,14 +92,14 @@ void case_list_lpush();
 void case_list_rpush();
 void case_list_lpop();
 void case_list_rpop();
-void case_list_iterator();
+void case_list_iter();
 static struct test_case list_test_cases[] = {
     { "list_clear", &case_list_clear },
     { "list_lpush", &case_list_lpush },
     { "list_rpush", &case_list_rpush },
     { "list_lpop", &case_list_lpop },
     { "list_rpop", &case_list_rpop },
-    { "list_iterator", &case_list_iterator },
+    { "list_iter", &case_list_iter },
     { NULL, NULL },
 };
 
@@ -112,7 +112,7 @@ void case_dict_pop();
 void case_dict_has();
 void case_dict_clear();
 void case_dict_resize();
-void case_dict_iterator();
+void case_dict_iter();
 static struct test_case dict_test_cases[] = {
     { "dict_set", &case_dict_set },
     { "dict_get", &case_dict_get },
@@ -120,7 +120,7 @@ static struct test_case dict_test_cases[] = {
     { "dict_has", &case_dict_has },
     { "dict_clear", &case_dict_clear },
     { "dict_resize", &case_dict_resize },
-    { "dict_iterator", &case_dict_iterator },
+    { "dict_iter", &case_dict_iter },
     { NULL, NULL },
 };
 
