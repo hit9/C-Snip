@@ -69,9 +69,9 @@ struct dict *dict_new(void);
 void dict_clear(struct dict *dict);
 void dict_free(struct dict *dict);
 void *dict_get(struct dict *dict, char *key, size_t len);
-error_t dict_set(struct dict *dict, char *key, size_t len, void *val);
-error_t dict_del(struct dict *dict, char *key, size_t len);
+void *dict_pop(struct dict *dict, char *key, size_t len);
 bool dict_has(struct dict *dict, char *key, size_t len);
+error_t dict_set(struct dict *dict, char *key, size_t len, void *val);
 
 #if defined(__cplusplus)
 }

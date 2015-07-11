@@ -27,6 +27,15 @@ dict_table_idx(size_t idx, char *key, size_t len)
     return dict_bkdrhash(key, len) % dict_table_sizes[idx];
 }
 
+/* If two key equals. */
+bool
+dict_key_equals(char *key1, size_t len1, char *key2, size_t len2)
+{
+    if (len1 == len2 && (memcmp(key1, key2, len1) == 0))
+        return true;
+    return false;
+}
+
 /* Create dict node. */
 struct dict_node *
 dict_node_new(char *key, size_t len, void *val)
@@ -174,7 +183,7 @@ dict_set(struct dict *dict, char *key, size_t len, void *val)
 {
     assert(dict != NULL);
 
-    if ((dict_table_sizes[dict->idx] * DICT_LOAD_LIMIT < dict->size) &&
+    if ((dict_table_sizes[dict->idx] * DICT_LOAD_LIMIT < dict->size + 1) &&
             dict_resize(dict) != ERR_OK)
         return ERR_NOMEM;
 
@@ -183,7 +192,7 @@ dict_set(struct dict *dict, char *key, size_t len, void *val)
 
     /* try to find this key. */
     while (node != NULL) {
-        if (memcmp(node->key, key, len) == 0) {
+        if (dict_key_equals(node->key, node->len, key, len)) {
             node->key = key;
             node->len = len;
             node->val = val;
@@ -225,7 +234,7 @@ dict_get(struct dict *dict, char *key, size_t len)
     struct dict_node *node = (dict->table)[index];
 
     while (node != NULL) {
-        if (memcmp(node->key, key, len) == 0)
+        if (dict_key_equals(node->key, node->len, key, len))
             return node->val;
         node = node->next;
     }
@@ -243,7 +252,7 @@ dict_has(struct dict *dict, char *key, size_t len)
     struct dict_node *node = (dict->table)[index];
 
     while (node != NULL) {
-        if (memcmp(node->key, key, len) == 0)
+        if (dict_key_equals(node->key, node->len, key, len))
             return true;
         node = node->next;
     }
@@ -251,9 +260,9 @@ dict_has(struct dict *dict, char *key, size_t len)
     return false;
 }
 
-/* Delete a key from dict. */
-error_t
-dict_del(struct dict *dict, char *key, size_t len)
+/* Pop a key from dict, NULL on not found. */
+void *
+dict_pop(struct dict *dict, char *key, size_t len)
 {
     assert(dict != NULL);
 
@@ -262,20 +271,21 @@ dict_del(struct dict *dict, char *key, size_t len)
     struct dict_node *prev = NULL;
 
     while (node != NULL) {
-        if (memcmp(node->key, key, len) == 0) {
+        if (dict_key_equals(node->key, node->len, key, len)) {
             if (prev == NULL) {
                 (dict->table)[index] = node->next;
             } else {
                 prev->next = node->next;
             }
+            void *val = node->val;
             dict_node_free(node);
             dict->size -= 1;
-            return ERR_OK;
+            return val;
         }
 
         prev = node;
         node = node->next;
     }
 
-    return ERR_NOTFOUND;
+    return NULL;
 }
