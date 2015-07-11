@@ -32,8 +32,8 @@ struct list {
 };
 
 struct list_iter {
-    struct list *list;
-    struct list_node *node;
+    struct list *list;       /* list to iterate */
+    struct list_node *node;  /* current list node */
 };
 
 struct list_node *list_node_new(void *data);

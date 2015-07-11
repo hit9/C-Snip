@@ -34,7 +34,7 @@ struct dict {
 };
 
 struct dict_iter {
-    struct dict *dict;         /* dict to work on */
+    struct dict *dict;         /* dict to iterate */
     size_t index;              /* current table index */
     struct dict_node *node;    /* current dict node */
 };

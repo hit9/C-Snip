@@ -84,7 +84,7 @@ queue_push(struct queue *queue, void *data)
     return ERR_OK;
 }
 
-/* Pop an item from the queue. */
+/* Pop an item from the queue, NULL on empty */
 void *
 queue_pop(struct queue *queue)
 {
@@ -110,7 +110,7 @@ queue_pop(struct queue *queue)
     return data;
 }
 
-/* Get an item from the top if the queue. */
+/* Get an item from the top if the queue, NULL on empty. */
 void *
 queue_top(struct queue *queue)
 {

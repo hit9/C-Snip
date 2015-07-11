@@ -90,7 +90,7 @@ stack_push(struct stack *stack, void *data)
     return ERR_OK;
 }
 
-/* Pop an item from the top of the stack. */
+/* Pop an item from the top of the stack, NULL on empty. */
 void *
 stack_pop(struct stack *stack)
 {
@@ -102,7 +102,7 @@ stack_pop(struct stack *stack)
     return stack->data[--stack->size];
 }
 
-/* Get an item from the top of the stack. */
+/* Get an item from the top of the stack, NULL on empty. */
 void *
 stack_top(struct stack *stack)
 {
