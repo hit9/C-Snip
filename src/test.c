@@ -109,12 +109,14 @@ static struct test_case list_test_cases[] = {
 void case_dict_set();
 void case_dict_get();
 void case_dict_pop();
+void case_dict_has();
 void case_dict_clear();
 void case_dict_resize();
 static struct test_case dict_test_cases[] = {
     { "dict_set", &case_dict_set },
     { "dict_get", &case_dict_get },
     { "dict_pop", &case_dict_pop },
+    { "dict_has", &case_dict_has },
     { "dict_clear", &case_dict_clear },
     { "dict_resize", &case_dict_resize },
     { NULL, NULL },

@@ -41,7 +41,7 @@ void
 case_dict_pop()
 {
     struct dict *dict = dict();
-    char *key = "key", *val = "val1";
+    char *key = "key", *val = "val";
     size_t len = strlen(key);
     assert(dict_set(dict, key, len, val) == ERR_OK);
     assert(dict->size == 1);
@@ -49,6 +49,18 @@ case_dict_pop()
     assert(dict->size == 0);
     assert(dict_pop(dict, key, len) == NULL);
     assert(dict->size == 0);
+    dict_free(dict);
+}
+
+void
+case_dict_has()
+{
+    struct dict *dict = dict();
+    char *key = "key", *val = "val";
+    size_t len = strlen(key);
+    assert(dict_set(dict, key, len, val) == ERR_OK);
+    assert(!dict_has(dict, "not exist", 9));
+    assert(dict_has(dict, key, len));
     dict_free(dict);
 }
 
