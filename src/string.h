@@ -48,6 +48,7 @@ bool string_isspace(struct string *s);
 bool string_startswith(struct string *s, struct string *prefix);
 bool string_endswith(struct string *s, struct string *suffix);
 bool string_equals(struct string *s1, struct string *s2);
+bool string_has(struct string *s1, char ch);
 int string_cmp(struct string *s1, struct string *s2);
 int string_ncmp(struct string *s1, struct string *s2, size_t n);
 size_t string_index(struct string *s, char ch, size_t start);

@@ -307,6 +307,17 @@ string_index(struct string *s, char ch, size_t start)
     return s->len;
 }
 
+/* If a char is in string. */
+bool
+string_has(struct string *s, char ch)
+{
+    assert(s != NULL);
+
+    if (string_index(s, ch, 0) < s->len)
+        return true;
+    return false;
+}
+
 void
 string_print(struct string *s)
 {

@@ -35,6 +35,7 @@ void case_string_endswith();
 void case_string_ncmp();
 void case_string_cmp();
 void case_string_equals();
+void case_string_has();
 void case_string_index();
 void case_string_reverse();
 void case_string_sprintf();
@@ -53,6 +54,7 @@ static struct test_case string_test_cases[] = {
     { "string_ncmp", &case_string_ncmp },
     { "string_cmp", &case_string_cmp },
     { "string_equals", &case_string_equals },
+    { "string_has",  &case_string_has },
     { "string_index", &case_string_index },
     { "string_reverse", &case_string_reverse },
     { "string_sprintf", &case_string_sprintf },

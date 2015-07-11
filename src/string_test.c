@@ -183,6 +183,15 @@ case_string_equals()
 }
 
 void
+case_string_has()
+{
+    struct string *s = string("abcde");
+    assert(string_has(s, 'c'));
+    assert(!string_has(s, 'f'));
+    string_free(s);
+}
+
+void
 case_string_index()
 {
     struct string *s = string("abcdefg");
