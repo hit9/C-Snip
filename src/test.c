@@ -112,6 +112,7 @@ void case_dict_pop();
 void case_dict_has();
 void case_dict_clear();
 void case_dict_resize();
+void case_dict_iterator();
 static struct test_case dict_test_cases[] = {
     { "dict_set", &case_dict_set },
     { "dict_get", &case_dict_get },
@@ -119,6 +120,7 @@ static struct test_case dict_test_cases[] = {
     { "dict_has", &case_dict_has },
     { "dict_clear", &case_dict_clear },
     { "dict_resize", &case_dict_resize },
+    { "dict_iterator", &case_dict_iterator },
     { NULL, NULL },
 };
 

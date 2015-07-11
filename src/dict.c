@@ -70,18 +70,18 @@ dict_resize(struct dict *dict)
     if (new_idx > dict_idx_max)
         return ERR_NOMEM;
 
-    size_t new_size = dict_table_sizes[new_idx];
+    size_t new_table_size = dict_table_sizes[new_idx];
     struct dict_node **new_table = malloc(
-            new_size * sizeof(struct dict_node *));
+            new_table_size * sizeof(struct dict_node *));
 
     /* init table to all NULL */
     size_t index;
-    for (index = 0; index < new_size; index++)
+    for (index = 0; index < new_table_size; index++)
         new_table[index] = NULL;
 
-    size_t size = dict_table_sizes[dict->idx];
+    size_t table_size = dict_table_sizes[dict->idx];
 
-    for (index = 0; index < size; index++) {
+    for (index = 0; index < table_size; index++) {
         struct dict_node *node = (dict->table)[index];
 
         while (node != NULL) {
@@ -288,4 +288,77 @@ dict_pop(struct dict *dict, char *key, size_t len)
     }
 
     return NULL;
+}
+
+/* Create dict iterator, e.g.
+ *
+ *   struct dict_iterator *iterator = dict_iterator_new(dict);
+ *   struct dict_node *node = NULL;
+ *
+ *   while ((node = dict_iterator_new(iterator)) != NULL) {
+ *      node->key..
+ *      node->len..
+ *      node->val..
+ *   }
+ *   dict_iterator_free(iterator);
+ * */
+struct dict_iterator *
+dict_iterator_new(struct dict *dict)
+{
+    assert (dict != NULL);
+
+    struct dict_iterator *iterator = malloc(sizeof(struct dict_iterator));
+
+    if (iterator != NULL) {
+        iterator->dict = dict;
+        iterator->index = 0;
+        iterator->node = NULL;
+    }
+    return iterator;
+}
+
+/* Free dict iterator. */
+void
+dict_iterator_free(struct dict_iterator *iterator)
+{
+    if (iterator != NULL)
+        free(iterator);
+}
+
+/* Get current node and seek next, NULL on end. */
+struct dict_node *
+dict_iterator_next(struct dict_iterator *iterator)
+{
+    assert(iterator != NULL &&
+            iterator->dict != NULL);
+
+    struct dict *dict = iterator->dict;
+
+    if (dict->table == NULL) {
+        assert(dict->size == 0);
+        return NULL;
+    }
+
+    assert(dict->idx <= dict_idx_max);
+    size_t table_size = dict_table_sizes[dict->idx];
+    assert(iterator->index < table_size);
+
+    while (iterator->node == NULL) {
+        if (iterator->index >= table_size)
+            return NULL;
+        iterator->node = (dict->table)[iterator->index++];
+    }
+
+    struct dict_node *node = iterator->node;
+    iterator->node = node->next;
+    return node;
+}
+
+/* Rewind dict iterator. */
+void
+dict_iterator_rewind(struct dict_iterator *iterator)
+{
+    assert(iterator != NULL);
+    iterator->node = NULL;
+    iterator->index = 0;
 }

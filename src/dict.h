@@ -16,19 +16,27 @@ extern "C" {
 #endif
 
 #define DICT_LOAD_LIMIT     0.75  /* load factor */
+
 #define dict()              dict_new()
+#define dict_iterator(dict) dict_iterator_new(dict)
 
 struct dict_node {
-    char *key;                /* key string address */
-    size_t len;               /* key string length */
-    void *val;                /* value data */
-    struct dict_node *next;   /* next node */
+    char *key;                 /* key string address */
+    size_t len;                /* key string length */
+    void *val;                 /* value data */
+    struct dict_node *next;    /* next node */
 };
 
 struct dict {
     size_t idx;                /* index in table sizes */
     size_t size;               /* dict size */
     struct dict_node **table;  /* node table */
+};
+
+struct dict_iterator {
+    struct dict *dict;         /* dict to work on */
+    size_t index;              /* current table index */
+    struct dict_node *node;    /* current dict node */
 };
 
 static size_t dict_table_sizes[] = {
@@ -68,10 +76,14 @@ static size_t dict_idx_max = sizeof(dict_table_sizes)/\
 struct dict *dict_new(void);
 void dict_clear(struct dict *dict);
 void dict_free(struct dict *dict);
+error_t dict_set(struct dict *dict, char *key, size_t len, void *val);
 void *dict_get(struct dict *dict, char *key, size_t len);
 void *dict_pop(struct dict *dict, char *key, size_t len);
 bool dict_has(struct dict *dict, char *key, size_t len);
-error_t dict_set(struct dict *dict, char *key, size_t len, void *val);
+struct dict_iterator *dict_iterator_new(struct dict *dict);
+void dict_iterator_free(struct dict_iterator *iterator);
+struct dict_node *dict_iterator_next(struct dict_iterator *iterator);
+void dict_iterator_rewind(struct dict_iterator *iterator);
 
 #if defined(__cplusplus)
 }
