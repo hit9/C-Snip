@@ -14,10 +14,10 @@
 extern "C" {
 #endif
 
-#define DICT_LOAD_LIMIT     0.75  /* load factor */
+#define DICT_LOAD_LIMIT         0.75                 /* load factor */
 
-#define dict()              dict_new()
-#define dict_iter(dict)     dict_iter_new(dict)
+#define dict()                  dict_new()
+#define dict_iter(dict)         dict_iter_new(dict)
 
 enum {
     DICT_OK = 0,               /* operation is ok */
@@ -33,7 +33,7 @@ struct dict_node {
 
 struct dict {
     size_t idx;                /* index in table sizes */
-    size_t size;               /* dict size */
+    size_t len;                /* dict length */
     struct dict_node **table;  /* node table */
 };
 
@@ -57,6 +57,7 @@ static size_t dict_idx_max = sizeof(dict_table_sizes)/\
 struct dict *dict_new(void);
 void dict_clear(struct dict *dict);
 void dict_free(struct dict *dict);
+size_t dict_len(struct dict *dict);
 int dict_set(struct dict *dict, char *key, size_t len, void *val);
 void *dict_get(struct dict *dict, char *key, size_t len);
 void *dict_pop(struct dict *dict, char *key, size_t len);

@@ -125,6 +125,7 @@ dict_new(void)
 
     if (dict != NULL) {
         dict->idx = 0;
+        dict->len = 0;
 
         size_t table_size = dict_table_sizes[dict->idx];
         dict->table = malloc(table_size * sizeof(struct node *));
@@ -155,7 +156,7 @@ dict_clear(struct dict *dict)
         while (node != NULL) {
             struct dict_node *next = node->next;
             dict_node_free(node);
-            dict->size -= 1;
+            dict->len -= 1;
             node = next;
         }
 
@@ -177,13 +178,21 @@ dict_free(struct dict *dict)
     }
 }
 
+/* Get dict length. */
+size_t
+dict_len(struct dict *dict)
+{
+    assert(dict != NULL);
+    return dict->len;
+}
+
 /* Set a key into dict. */
 int
 dict_set(struct dict *dict, char *key, size_t len, void *val)
 {
     assert(dict != NULL);
 
-    if ((dict_table_sizes[dict->idx] * DICT_LOAD_LIMIT < dict->size + 1) &&
+    if ((dict_table_sizes[dict->idx] * DICT_LOAD_LIMIT < dict->len + 1) &&
             dict_resize(dict) != DICT_OK)
         return DICT_ENOMEM;
 
@@ -220,7 +229,7 @@ dict_set(struct dict *dict, char *key, size_t len, void *val)
         node->next = new_node;
     }
 
-    dict->size += 1;
+    dict->len += 1;
     return DICT_OK;
 }
 
@@ -279,7 +288,7 @@ dict_pop(struct dict *dict, char *key, size_t len)
             }
             void *val = node->val;
             dict_node_free(node);
-            dict->size -= 1;
+            dict->len -= 1;
             return val;
         }
 
@@ -335,7 +344,7 @@ dict_iter_next(struct dict_iter *iter)
     struct dict *dict = iter->dict;
 
     if (dict->table == NULL) {
-        assert(dict->size == 0);
+        assert(dict->len == 0);
         return NULL;
     }
 

@@ -14,7 +14,7 @@ case_dict_set()
     char *key = "key", *val = "val";
     size_t len = strlen(key);
     assert(dict_set(dict, key, len, val) == DICT_OK);
-    assert(dict->size == 1);
+    assert(dict_len(dict) == 1);
     char *val_ = "val_";
     assert(dict_get(dict, key, len) == val);
     assert(dict_set(dict, key, len, val_) == DICT_OK);
@@ -29,7 +29,7 @@ case_dict_get()
     char *key = "key", *val = "val";
     size_t len = strlen(key);
     assert(dict_set(dict, key, len, val) == DICT_OK);
-    assert(dict->size == 1);
+    assert(dict_len(dict) == 1);
     assert(dict_get(dict, key, len) == val);
     assert(dict_get(dict, key, 1) == NULL);
     assert(dict_get(dict, key, 8) == NULL);
@@ -43,11 +43,11 @@ case_dict_pop()
     char *key = "key", *val = "val";
     size_t len = strlen(key);
     assert(dict_set(dict, key, len, val) == DICT_OK);
-    assert(dict->size == 1);
+    assert(dict_len(dict) == 1);
     assert(dict_pop(dict, key, len) == val);
-    assert(dict->size == 0);
+    assert(dict_len(dict) == 0);
     assert(dict_pop(dict, key, len) == NULL);
-    assert(dict->size == 0);
+    assert(dict_len(dict) == 0);
     dict_free(dict);
 }
 
@@ -71,9 +71,9 @@ case_dict_clear()
     assert(dict_set(dict, "key2", 4, "val2") == DICT_OK);
     assert(dict_set(dict, "key3", 4, "val3") == DICT_OK);
     assert(dict_set(dict, "key4", 4, "val4") == DICT_OK);
-    assert(dict->size == 4);
+    assert(dict_len(dict) == 4);
     dict_clear(dict);
-    assert(dict->size == 0);
+    assert(dict_len(dict) == 0);
     dict_free(dict);
 }
 
@@ -85,11 +85,11 @@ case_dict_resize()
     assert(dict_set(dict, "key2", 4, "val2") == DICT_OK);
     assert(dict_set(dict, "key3", 4, "val3") == DICT_OK);
     assert(dict_set(dict, "key4", 4, "val4") == DICT_OK);
-    assert(dict->size == 4);
+    assert(dict_len(dict) == 4);
     assert(dict->idx == 0);
     assert(dict_set(dict, "key5", 4, "val5") == DICT_OK);
     assert(dict_set(dict, "key6", 4, "val6") == DICT_OK);
-    assert(dict->size == 6);
+    assert(dict_len(dict) == 6);
     assert(dict->idx == 1);
     dict_free(dict);
 }
