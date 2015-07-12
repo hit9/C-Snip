@@ -39,3 +39,37 @@ array_free(struct array *array)
         free(array);
     }
 }
+
+/* Grow array capacity to given size. */
+int
+array_grow(struct array *array, size_t size)
+{
+    assert(array != NULL);
+
+    if (size > ARRAY_MAX_CAPACITY_SIZE)
+        return ARRAY_ENOMEM;
+
+    if (size <= array->cap)
+        return ARRAY_OK;
+
+    size_t cap = array->cap;
+    size_t unit = array->cap;
+
+    if (unit > ARRAY_MAX_REALLOC_UNIT)
+        unit = ARRAY_MAX_REALLOC_UNIT;
+
+    if (unit < ARRAY_MIN_REALLOC_UNIT)
+        unit = ARRAY_MIN_REALLOC_UNIT;
+
+    while (cap < size)
+        cap += unit;
+
+    char *buf = realloc(array->buf, cap);
+
+    if (buf == NULL)
+        return STRING_ENOMEM;
+
+    array->buf = buf;
+    array->cap = cap;
+    return ARRAY_OK;
+}
