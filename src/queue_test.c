@@ -15,7 +15,7 @@ case_queue_clear()
     queue_clear(queue);
     assert(queue->head == NULL);
     assert(queue->tail == NULL);
-    assert(queue->size == 0);
+    assert(queue_len(queue) == 0);
     queue_free(queue);
 }
 
@@ -27,13 +27,13 @@ case_queue_push_pop_top()
     assert(queue_push(queue, s1) == QUEUE_OK);
     assert(queue_push(queue, s2) == QUEUE_OK);
     assert(queue_push(queue, s3) == QUEUE_OK);
-    assert(queue->size == 3);
+    assert(queue_len(queue) == 3);
     assert(queue_top(queue) == s1);
     assert(queue_pop(queue) == s1);
     assert(queue_top(queue) == s2);
     assert(queue_pop(queue) == s2);
     assert(queue_top(queue) == s3);
     assert(queue_pop(queue) == s3);
-    assert(queue->size == 0);
+    assert(queue_len(queue) == 0);
     queue_free(queue);
 }

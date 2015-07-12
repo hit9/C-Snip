@@ -15,7 +15,7 @@ stack_new(size_t size)
 
     if (stack != NULL) {
         stack->data = NULL;
-        stack->size = 0;
+        stack->len = 0;
         stack->cap = 0;
 
         if (size > 0 && stack_grow(stack, size) != STACK_OK)
@@ -48,7 +48,15 @@ stack_clear(struct stack *stack)
     }
 
     stack->cap = 0;
-    stack->size = 0;
+    stack->len = 0;
+}
+
+/* Get stack length */
+size_t
+stack_len(struct stack *stack)
+{
+    assert(stack != NULL);
+    return stack->len;
 }
 
 /* Grow a stack's memory capacity to given size. */
@@ -70,8 +78,8 @@ stack_grow(struct stack *stack, size_t size)
     stack->data = data;
     stack->cap = size;
 
-    if (stack->size > size)
-        stack->size = size;
+    if (stack->len > size)
+        stack->len = size;
     return STACK_OK;
 }
 
@@ -81,11 +89,11 @@ stack_push(struct stack *stack, void *data)
 {
     assert(stack != NULL);
 
-    if (stack->size <= stack->cap &&
-            stack_grow(stack, stack->size + 1) != STACK_OK)
+    if (stack->len <= stack->cap &&
+            stack_grow(stack, stack->len + 1) != STACK_OK)
         return STACK_OK;
 
-    stack->data[stack->size++] = data;
+    stack->data[stack->len++] = data;
     return STACK_OK;
 }
 
@@ -95,10 +103,10 @@ stack_pop(struct stack *stack)
 {
     assert(stack != NULL);
 
-    if (stack->size == 0 || stack->data == NULL)
+    if (stack->len == 0 || stack->data == NULL)
         return NULL;
 
-    return stack->data[--stack->size];
+    return stack->data[--stack->len];
 }
 
 /* Get an item from the top of the stack, NULL on empty. */
@@ -107,8 +115,8 @@ stack_top(struct stack *stack)
 {
     assert(stack != NULL);
 
-    if (stack->size == 0 || stack->data == NULL)
+    if (stack->len == 0 || stack->data == NULL)
         return NULL;
 
-    return stack->data[stack->size - 1];
+    return stack->data[stack->len - 1];
 }

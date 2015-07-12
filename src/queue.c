@@ -36,7 +36,7 @@ queue_new(void)
     if (queue != NULL) {
         queue->head = NULL;
         queue->tail = NULL;
-        queue->size = 0;
+        queue->len = 0;
     }
     return queue;
 }
@@ -59,6 +59,14 @@ queue_clear(struct queue *queue)
     while(queue_pop(queue) != NULL);
 }
 
+/* Get queue length. */
+size_t
+queue_len(struct queue *queue)
+{
+    assert(queue != NULL);
+    return queue->len;
+}
+
 /* Push an item into the queue. */
 int
 queue_push(struct queue *queue, void *data)
@@ -69,7 +77,7 @@ queue_push(struct queue *queue, void *data)
     if (node == NULL)
         return QUEUE_ENOMEM;
 
-    if (queue->size == 0) {
+    if (queue->len == 0) {
         assert(queue->head == NULL && queue->tail == NULL);
         queue->head = node;
         queue->tail = node;
@@ -79,7 +87,7 @@ queue_push(struct queue *queue, void *data)
         queue->tail = node;
     }
 
-    queue->size += 1;
+    queue->len += 1;
     return QUEUE_OK;
 }
 
@@ -89,7 +97,7 @@ queue_pop(struct queue *queue)
 {
     assert(queue != NULL);
 
-    if (queue->size == 0) {
+    if (queue->len == 0) {
         assert(queue->head == NULL && queue->tail == NULL);
         return NULL;
     }
@@ -97,10 +105,10 @@ queue_pop(struct queue *queue)
     struct queue_node *head = queue->head;
 
     queue->head = head->next;
-    queue->size -= 1;
+    queue->len -= 1;
 
     if (queue->head == NULL) {
-        assert(queue->size == 0);
+        assert(queue->len == 0);
         queue->tail = NULL;
     }
 
@@ -115,7 +123,7 @@ queue_top(struct queue *queue)
 {
     assert(queue != NULL);
 
-    if (queue->size == 0) {
+    if (queue->len == 0) {
         assert(queue->head == NULL && queue->tail == NULL);
         return NULL;
     }

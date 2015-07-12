@@ -13,7 +13,7 @@ case_stack_clear()
     stack_push(stack, "hello");
     stack_clear(stack);
     assert(stack->data == NULL);
-    assert(stack->size == 0);
+    assert(stack_len(stack) == 0);
     assert(stack->cap == 0);
     stack_free(stack);
 }
@@ -25,10 +25,10 @@ case_stack_push()
     char *s1 = "a", *s2 = "b";
     assert(stack_push(stack, s1) == STACK_OK);
     assert(stack_push(stack, s2) == STACK_OK);
-    assert(stack->size == 2);
+    assert(stack_len(stack) == 2);
     assert(stack->cap == 2);
     assert(stack_pop(stack) == s2);
-    assert(stack->size == 1);
+    assert(stack_len(stack) == 1);
     assert(stack->cap == 2);
     assert(stack_pop(stack) == s1);
     stack_free(stack);
@@ -41,11 +41,11 @@ case_stack_pop()
     char *s1 = "a", *s2 = "b";
     assert(stack_push(stack, s1) == STACK_OK);
     assert(stack_push(stack, s2) == STACK_OK);
-    assert(stack->size == 2);
+    assert(stack_len(stack) == 2);
     assert(stack->cap == 3);
     assert(stack_pop(stack) == s2);
     assert(stack_pop(stack) == s1);
-    assert(stack->size == 0);
+    assert(stack_len(stack) == 0);
     assert(stack->cap == 3);
     stack_free(stack);
 }
@@ -61,7 +61,7 @@ case_stack_top()
     assert(stack_top(stack) == s2);
     assert(stack_push(stack, s3) == STACK_OK);
     assert(stack_top(stack) == s3);
-    assert(stack->size == 3);
+    assert(stack_len(stack) == 3);
     assert(stack->cap == 3);
     stack_free(stack);
 }

@@ -23,7 +23,7 @@ enum {
 };
 
 struct stack {
-    size_t  size;       /* stack size */
+    size_t  len;        /* stack length */
     size_t  cap;        /* stack capacity */
     void ** data;       /* stack data */
 };
@@ -31,6 +31,7 @@ struct stack {
 struct stack *stack_new(size_t size);
 void stack_free(struct stack *stack);
 void stack_clear(struct stack *stack);
+size_t stack_len(struct stack *stack);
 void *stack_pop(struct stack *stack);
 void *stack_top(struct stack *stack);
 int stack_push(struct stack *stack, void *data);
