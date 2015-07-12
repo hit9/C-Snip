@@ -32,7 +32,7 @@ struct list_node {
 struct list {
     struct list_node *head;  /* head node */
     struct list_node *tail;  /* last node */
-    size_t size;             /* list size */
+    size_t len;              /* list length */
 };
 
 struct list_iter {
@@ -45,6 +45,7 @@ void list_node_free(struct list_node *node);
 struct list *list_new(void);
 void list_free(struct list *list);
 void list_clear(struct list *list);
+size_t list_len(struct list *list);
 int list_lpush(struct list *list, void *data);
 int list_rpush(struct list *list, void *data);
 void *list_lpop(struct list *list);

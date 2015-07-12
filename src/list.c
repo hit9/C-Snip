@@ -38,7 +38,7 @@ list_new(void)
     if (list != NULL) {
         list->head = NULL;
         list->tail = NULL;
-        list->size = 0;
+        list->len = 0;
     }
     return list;
 }
@@ -60,6 +60,13 @@ list_clear(struct list *list) {
     while(list_lpop(list) != NULL);
 }
 
+/* Get list length. */
+size_t
+list_len(struct list *list) {
+    assert(list != NULL);
+    return list->len;
+}
+
 /* Push an item to list on the left. */
 int
 list_lpush(struct list *list, void *data)
@@ -71,7 +78,7 @@ list_lpush(struct list *list, void *data)
     if (node == NULL)
         return LIST_ENOMEM;
 
-    if (list->size == 0) {
+    if (list->len == 0) {
         assert(list->head == NULL && list->tail == NULL);
         list->head = node;
         list->tail = node;
@@ -84,7 +91,7 @@ list_lpush(struct list *list, void *data)
         list->head = node;
     }
 
-    list->size += 1;
+    list->len += 1;
     return LIST_OK;
 }
 
@@ -99,7 +106,7 @@ list_rpush(struct list *list, void *data)
     if (node == NULL)
         return LIST_ENOMEM;
 
-    if (list->size == 0) {
+    if (list->len == 0) {
         assert(list->head == NULL && list->tail == NULL);
         list->head = node;
         list->tail = node;
@@ -112,7 +119,7 @@ list_rpush(struct list *list, void *data)
         list->tail = node;
     }
 
-    list->size += 1;
+    list->len += 1;
     return LIST_OK;
 }
 
@@ -122,7 +129,7 @@ list_lpop(struct list *list)
 {
     assert(list != NULL);
 
-    if (list->size == 0) {
+    if (list->len == 0) {
         assert(list->head == NULL && list->tail == NULL);
         return NULL;
     }
@@ -133,15 +140,15 @@ list_lpop(struct list *list)
     struct list_node *node = head->next;
 
     if (node == NULL) {
-        assert(list->size == 1);
+        assert(list->len == 1);
         list->tail = NULL;
     } else {
-        assert(list->size >= 2);
+        assert(list->len >= 2);
         node->prev = NULL;
     }
 
     list->head = node;
-    list->size -= 1;
+    list->len -= 1;
 
     void *data = head->data;
     list_node_free(head);
@@ -154,7 +161,7 @@ list_rpop(struct list *list)
 {
     assert(list != NULL);
 
-    if (list->size == 0) {
+    if (list->len == 0) {
         assert(list->head == NULL && list->tail == NULL);
         return NULL;
     }
@@ -165,15 +172,15 @@ list_rpop(struct list *list)
     struct list_node *node = tail->prev;
 
     if (node == NULL) {
-        assert(list->size == 1);
+        assert(list->len == 1);
         list->head = NULL;
     } else {
-        assert(list->size >= 2);
+        assert(list->len >= 2);
         node->next = NULL;
     }
 
     list->tail = node;
-    list->size -= 1;
+    list->len -= 1;
 
     void *data = tail->data;
     list_node_free(tail);
@@ -186,7 +193,7 @@ list_head(struct list *list)
 {
     assert(list != NULL);
 
-    if (list->size == 0) {
+    if (list->len == 0) {
         assert(list->head == NULL && list->tail == NULL);
         return NULL;
     }
@@ -201,7 +208,7 @@ list_tail(struct list *list)
 {
     assert(list != NULL);
 
-    if (list->size == 0) {
+    if (list->len == 0) {
         assert(list->head == NULL && list->tail == NULL);
         return NULL;
     }

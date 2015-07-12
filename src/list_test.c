@@ -14,9 +14,9 @@ case_list_clear()
     assert(list_lpush(list, s1) == LIST_OK);
     assert(list_lpush(list, s2) == LIST_OK);
     assert(list_lpush(list, s3) == LIST_OK);
-    assert(list->size == 3);
+    assert(list_len(list) == 3);
     list_clear(list);
-    assert(list->size == 0);
+    assert(list_len(list) == 0);
     assert(list->head == NULL);
     assert(list->tail == NULL);
     list_free(list);
@@ -30,15 +30,15 @@ case_list_lpush()
     assert(list_lpush(list, s1) == LIST_OK);
     assert(list->head->data == s1);
     assert(list->tail->data == s1);
-    assert(list->size == 1);
+    assert(list_len(list) == 1);
     assert(list_lpush(list, s2) == LIST_OK);
     assert(list->head->data == s2);
     assert(list->tail->data == s1);
-    assert(list->size == 2);
+    assert(list_len(list) == 2);
     assert(list_lpush(list, s3) == LIST_OK);
     assert(list->head->data == s3);
     assert(list->tail->data == s1);
-    assert(list->size == 3);
+    assert(list_len(list) == 3);
     list_free(list);
 }
 
@@ -50,15 +50,15 @@ case_list_rpush()
     assert(list_rpush(list, s1) == LIST_OK);
     assert(list->head->data == s1);
     assert(list->tail->data == s1);
-    assert(list->size == 1);
+    assert(list_len(list) == 1);
     assert(list_rpush(list, s2) == LIST_OK);
     assert(list->head->data == s1);
     assert(list->tail->data == s2);
-    assert(list->size == 2);
+    assert(list_len(list) == 2);
     assert(list_rpush(list, s3) == LIST_OK);
     assert(list->head->data == s1);
     assert(list->tail->data == s3);
-    assert(list->size == 3);
+    assert(list_len(list) == 3);
     list_free(list);
 }
 
@@ -70,16 +70,16 @@ case_list_lpop()
     assert(list_rpush(list, s1) == LIST_OK);
     assert(list_rpush(list, s2) == LIST_OK);
     assert(list_rpush(list, s3) == LIST_OK);
-    assert(list->size == 3);
+    assert(list_len(list) == 3);
     assert(list->head->data == s1);
     assert(list_lpop(list) == s1);
-    assert(list->size == 2);
+    assert(list_len(list) == 2);
     assert(list->head->data == s2);
     assert(list_lpop(list) == s2);
-    assert(list->size == 1);
+    assert(list_len(list) == 1);
     assert(list->head->data == s3);
     assert(list_lpop(list) == s3);
-    assert(list->size == 0);
+    assert(list_len(list) == 0);
     assert(list->head == NULL);
     list_free(list);
 }
@@ -92,16 +92,16 @@ case_list_rpop()
     assert(list_lpush(list, s1) == LIST_OK);
     assert(list_lpush(list, s2) == LIST_OK);
     assert(list_lpush(list, s3) == LIST_OK);
-    assert(list->size == 3);
+    assert(list_len(list) == 3);
     assert(list->tail->data == s1);
     assert(list_rpop(list) == s1);
-    assert(list->size == 2);
+    assert(list_len(list) == 2);
     assert(list->tail->data == s2);
     assert(list_rpop(list) == s2);
-    assert(list->size == 1);
+    assert(list_len(list) == 1);
     assert(list->tail->data == s3);
     assert(list_rpop(list) == s3);
-    assert(list->size == 0);
+    assert(list_len(list) == 0);
     assert(list->tail == NULL);
     list_free(list);
 }
