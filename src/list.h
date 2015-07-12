@@ -8,7 +8,6 @@
 #define _CW_LIST_H 1
 
 #include <stdint.h>
-#include "errors.h"
 
 #if defined(__cplusplus)
 extern "C" {
@@ -18,6 +17,11 @@ extern "C" {
 #define list_iter(list)        list_iter_new(list)
 #define list_push(list, data)  list_rpush(list, data)
 #define list_pop(list)         list_lpop(list)
+
+enum {
+    LIST_OK = 0,             /* operation is ok */
+    LIST_ENOMEM = 1,         /* no memory error */
+};
 
 struct list_node {
     struct list_node *prev;  /* prev node */
@@ -41,8 +45,8 @@ void list_node_free(struct list_node *node);
 struct list *list_new(void);
 void list_free(struct list *list);
 void list_clear(struct list *list);
-error_t list_lpush(struct list *list, void *data);
-error_t list_rpush(struct list *list, void *data);
+int list_lpush(struct list *list, void *data);
+int list_rpush(struct list *list, void *data);
 void *list_lpop(struct list *list);
 void *list_rpop(struct list *list);
 void *list_head(struct list *list);

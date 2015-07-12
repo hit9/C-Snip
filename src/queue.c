@@ -5,7 +5,6 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#include "errors.h"
 #include "queue.h"
 
 /* Create new queue node. */
@@ -61,14 +60,14 @@ queue_clear(struct queue *queue)
 }
 
 /* Push an item into the queue. */
-error_t
+int
 queue_push(struct queue *queue, void *data)
 {
     assert(queue != NULL);
 
     struct queue_node *node = queue_node_new(data);
     if (node == NULL)
-        return ERR_NOMEM;
+        return QUEUE_ENOMEM;
 
     if (queue->size == 0) {
         assert(queue->head == NULL && queue->tail == NULL);
@@ -81,7 +80,7 @@ queue_push(struct queue *queue, void *data)
     }
 
     queue->size += 1;
-    return ERR_OK;
+    return QUEUE_OK;
 }
 
 /* Pop an item from the queue, NULL on empty */

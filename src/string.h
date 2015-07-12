@@ -8,7 +8,6 @@
 #define _CW_STRING_H    1
 
 #include <stdint.h>
-#include "errors.h"
 #include "bool.h"
 
 #if defined(__cplusplus)
@@ -21,6 +20,12 @@ extern "C" {
 
 #define string(cs)                string_new(cs)
 #define cstring(s)                string_cstring(s)
+
+enum {
+    STRING_OK = 0,               /* operation is ok */
+    STRING_ENOMEM = 1,           /* no memory error */
+    STRING_EFAILED = 2,           /* operation failed */
+};
 
 struct string {
     size_t  len;    /* string length */
@@ -37,12 +42,12 @@ void string_reverse(struct string *s);
 void string_print(struct string *s);
 void string_println(struct string *s);
 void string_truncate(struct string *s, size_t len);
-error_t string_grow(struct string *s, size_t size);
-error_t string_put(struct string *s, char *buf, size_t len);
-error_t string_puts(struct string *s, const char *cs);
-error_t string_putc(struct string *s, char ch);
-error_t string_concat(struct string *s, struct string *t);
-error_t string_sprintf(struct string *s, const char *fmt, ...);
+int string_grow(struct string *s, size_t size);
+int string_put(struct string *s, char *buf, size_t len);
+int string_puts(struct string *s, const char *cs);
+int string_putc(struct string *s, char ch);
+int string_concat(struct string *s, struct string *t);
+int string_sprintf(struct string *s, const char *fmt, ...);
 bool string_isempty(struct string *s);
 bool string_isspace(struct string *s);
 bool string_startswith(struct string *s, struct string *prefix);

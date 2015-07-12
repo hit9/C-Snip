@@ -28,8 +28,8 @@ case_string_put()
     struct string *s2 = string("abcdef");
     const char *p = "abc";
     const char *q = "def";
-    assert(string_put(s1, (char *)p, strlen(p)) == ERR_OK);
-    assert(string_put(s1, (char *)q, strlen(q)) == ERR_OK);
+    assert(string_put(s1, (char *)p, strlen(p)) == STRING_OK);
+    assert(string_put(s1, (char *)q, strlen(q)) == STRING_OK);
     assert(string_equals(s1, s2));
     string_free(s1);
     string_free(s2);
@@ -39,7 +39,7 @@ void
 case_string_puts()
 {
     struct string *s = string("abc");
-    assert(string_puts(s, "efg") == ERR_OK);
+    assert(string_puts(s, "efg") == STRING_OK);
     assert(strcmp(cstring(s), "abcefg") == 0);
     string_free(s);
 }
@@ -48,8 +48,8 @@ void
 case_string_putc()
 {
     struct string *s = string(NULL);
-    assert(string_putc(s, 'a') == ERR_OK);
-    assert(string_putc(s, 'b') == ERR_OK);
+    assert(string_putc(s, 'a') == STRING_OK);
+    assert(string_putc(s, 'b') == STRING_OK);
     assert(strcmp(cstring(s), "ab") == 0);
     string_free(s);
 }
@@ -59,7 +59,7 @@ case_string_concat()
 {
     struct string *s = string("abc");
     struct string *t = string("efg");
-    assert(string_concat(s, t) == ERR_OK);
+    assert(string_concat(s, t) == STRING_OK);
     assert(strcmp(cstring(s), "abcefg") == 0);
     string_free(s);
     string_free(t);
@@ -215,8 +215,8 @@ void
 case_string_sprintf()
 {
     struct string *s = string(NULL);
-    assert(string_sprintf(s, "%s%s%s", "a", "bc", "d") == ERR_OK);
-    assert(string_sprintf(s, "%s %s %d", "x", "yz", 123) == ERR_OK);
+    assert(string_sprintf(s, "%s%s%s", "a", "bc", "d") == STRING_OK);
+    assert(string_sprintf(s, "%s %s %d", "x", "yz", 123) == STRING_OK);
     assert(strcmp(cstring(s), "abcdx yz 123") == 0);
     string_free(s);
 }

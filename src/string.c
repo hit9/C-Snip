@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "errors.h"
 #include "string.h"
 
 /* Create a new string and init it with a C null-terminated
@@ -25,7 +24,7 @@ string_new(const char *cs)
         s->buf = NULL;
 
         if (cs != NULL) {
-            if (string_puts(s, cs) != ERR_OK)
+            if (string_puts(s, cs) != STRING_OK)
                 return NULL;
         }
     }
@@ -102,7 +101,7 @@ string_cstring(struct string *s)
         return s->buf;
 
     if (s->len + 1 <= s->cap ||
-            string_grow(s, s->len + 1) == ERR_OK) {
+            string_grow(s, s->len + 1) == STRING_OK) {
         s->buf[s->len] = '\0';
         return s->buf;
     }
@@ -114,16 +113,16 @@ string_cstring(struct string *s)
  * capacity is calculated like k*unit>=size, by default, the
  * unit size is current cap, if the unit is large enough, use
  * STRING_MAX_REALLOC_UNIT instead. */
-error_t
+int
 string_grow(struct string *s, size_t size)
 {
     assert(s != NULL);
 
     if (size > STRING_MAX_CAPACITY_SIZE)
-        return ERR_NOMEM;
+        return STRING_ENOMEM;
 
     if (size <= s->cap)
-        return ERR_OK;
+        return STRING_OK;
 
     size_t cap = s->cap;
     size_t unit = s->cap;
@@ -140,20 +139,20 @@ string_grow(struct string *s, size_t size)
     char *buf = realloc(s->buf, cap);
 
     if (buf == NULL)
-        return ERR_NOMEM;
+        return STRING_ENOMEM;
 
     s->buf = buf;
     s->cap = cap;
-    return ERR_OK;
+    return STRING_OK;
 }
 
 /* Put buffer on the end of a string. */
-error_t
+int
 string_put(struct string *s, char *buf, size_t len)
 {
-    error_t error = string_grow(s, s->len + len);
+    int error = string_grow(s, s->len + len);
 
-    if (error == ERR_OK) {
+    if (error == STRING_OK) {
         memcpy(s->buf + s->len, buf, len);
         s->len += len;
     }
@@ -162,19 +161,19 @@ string_put(struct string *s, char *buf, size_t len)
 }
 
 /* Put null-terminated c string to the end of a string. */
-error_t
+int
 string_puts(struct string *s, const char *cs)
 {
     return string_put(s, (char *)cs, strlen(cs));
 }
 
 /* Put single char to the end of a string. */
-error_t
+int
 string_putc(struct string *s, char ch)
 {
-    error_t error = string_grow(s, s->len + 1);
+    int error = string_grow(s, s->len + 1);
 
-    if (error == ERR_OK) {
+    if (error == STRING_OK) {
         s->buf[s->len] = ch;
         s->len += 1;
     }
@@ -182,7 +181,7 @@ string_putc(struct string *s, char ch)
 }
 
 /* Concat string on the end of a string. */
-error_t
+int
 string_concat(struct string *s, struct string *t)
 {
     return string_puts(s, cstring(t));
@@ -331,14 +330,14 @@ string_println(struct string *s)
 }
 
 /* Formatted printing to a string. */
-error_t
+int
 string_sprintf(struct string *s, const char *fmt, ...)
 {
     assert(s != NULL);
 
     if (s->len >= s->cap &&
-            string_grow(s, s->len + 1) != ERR_OK)
-        return ERR_NOMEM;
+            string_grow(s, s->len + 1) != STRING_OK)
+        return STRING_ENOMEM;
 
     va_list ap;
     int num;
@@ -348,13 +347,13 @@ string_sprintf(struct string *s, const char *fmt, ...)
     va_end(ap);
 
     if (num < 0)
-        return ERR_FAILED;
+        return STRING_EFAILED;
 
     size_t size = (size_t)num;
 
     if (size >= s->cap - s->len) {
-        if (string_grow(s, s->len + size + 1) != ERR_OK)
-            return ERR_NOMEM;
+        if (string_grow(s, s->len + size + 1) != STRING_OK)
+            return STRING_ENOMEM;
         va_start(ap, fmt);
         num = vsnprintf(s->buf + s->len,
                 s->cap - s->len, fmt, ap);
@@ -362,10 +361,10 @@ string_sprintf(struct string *s, const char *fmt, ...)
     }
 
     if (num < 0)
-        return ERR_FAILED;
+        return STRING_EFAILED;
 
     s->len += num;
-    return ERR_OK;
+    return STRING_OK;
 }
 
 /* Search null-terminated sub-string in a string, return the first

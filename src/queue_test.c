@@ -4,7 +4,6 @@
 
 #include <assert.h>
 #include "test.h"
-#include "errors.h"
 #include "queue.h"
 
 void
@@ -25,9 +24,9 @@ case_queue_push_pop_top()
 {
     struct queue *queue = queue();
     char *s1 = "a", *s2 = "b", *s3 = "c";
-    assert(queue_push(queue, s1) == ERR_OK);
-    assert(queue_push(queue, s2) == ERR_OK);
-    assert(queue_push(queue, s3) == ERR_OK);
+    assert(queue_push(queue, s1) == QUEUE_OK);
+    assert(queue_push(queue, s2) == QUEUE_OK);
+    assert(queue_push(queue, s3) == QUEUE_OK);
     assert(queue->size == 3);
     assert(queue_top(queue) == s1);
     assert(queue_pop(queue) == s1);

@@ -5,7 +5,6 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#include "errors.h"
 #include "list.h"
 
 /* Create list node with data. */
@@ -62,7 +61,7 @@ list_clear(struct list *list) {
 }
 
 /* Push an item to list on the left. */
-error_t
+int
 list_lpush(struct list *list, void *data)
 {
     assert(list != NULL);
@@ -70,7 +69,7 @@ list_lpush(struct list *list, void *data)
     struct list_node *node = list_node_new(data);
 
     if (node == NULL)
-        return ERR_NOMEM;
+        return LIST_ENOMEM;
 
     if (list->size == 0) {
         assert(list->head == NULL && list->tail == NULL);
@@ -86,11 +85,11 @@ list_lpush(struct list *list, void *data)
     }
 
     list->size += 1;
-    return ERR_OK;
+    return LIST_OK;
 }
 
 /* Push an item to list on the right. */
-error_t
+int
 list_rpush(struct list *list, void *data)
 {
     assert(list != NULL);
@@ -98,7 +97,7 @@ list_rpush(struct list *list, void *data)
     struct list_node *node = list_node_new(data);
 
     if (node == NULL)
-        return ERR_NOMEM;
+        return LIST_ENOMEM;
 
     if (list->size == 0) {
         assert(list->head == NULL && list->tail == NULL);
@@ -114,7 +113,7 @@ list_rpush(struct list *list, void *data)
     }
 
     list->size += 1;
-    return ERR_OK;
+    return LIST_OK;
 }
 
 /* Pop an item from list on the left. */

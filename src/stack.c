@@ -5,7 +5,6 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#include "errors.h"
 #include "stack.h"
 
 /* Create new stack with an initialized capacity. */
@@ -19,7 +18,7 @@ stack_new(size_t size)
         stack->size = 0;
         stack->cap = 0;
 
-        if (size > 0 && stack_grow(stack, size) != ERR_OK)
+        if (size > 0 && stack_grow(stack, size) != STACK_OK)
             return NULL;
     }
 
@@ -53,41 +52,41 @@ stack_clear(struct stack *stack)
 }
 
 /* Grow a stack's memory capacity to given size. */
-error_t
+int
 stack_grow(struct stack *stack, size_t size)
 {
     assert(stack != NULL);
 
     if (size > STACK_MAX_CAPACITY_SIZE)
-        return ERR_NOMEM;
+        return STACK_ENOMEM;
 
     if (size <= stack->cap)
-        return ERR_OK;
+        return STACK_OK;
 
     void **data = realloc(stack->data, size * sizeof(void *));
     if (data == NULL)
-        return ERR_NOMEM;
+        return STACK_ENOMEM;
 
     stack->data = data;
     stack->cap = size;
 
     if (stack->size > size)
         stack->size = size;
-    return ERR_OK;
+    return STACK_OK;
 }
 
 /* Push an item on the top of the stack. */
-error_t
+int
 stack_push(struct stack *stack, void *data)
 {
     assert(stack != NULL);
 
     if (stack->size <= stack->cap &&
-            stack_grow(stack, stack->size + 1) != ERR_OK)
-        return ERR_OK;
+            stack_grow(stack, stack->size + 1) != STACK_OK)
+        return STACK_OK;
 
     stack->data[stack->size++] = data;
-    return ERR_OK;
+    return STACK_OK;
 }
 
 /* Pop an item from the top of the stack, NULL on empty. */

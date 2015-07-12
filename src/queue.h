@@ -8,13 +8,17 @@
 #define _CW_QUEUE_H 1
 
 #include <stdint.h>
-#include "errors.h"
 
 #if defined(__cplusplus)
 extern "C" {
 #endif
 
 #define queue()  queue_new()
+
+enum {
+    QUEUE_OK = 0,             /* operation is ok */
+    QUEUE_ENOMEM = 1,         /* no memory error */
+};
 
 struct queue_node {
     void **data;              /* node data */
@@ -32,7 +36,7 @@ void queue_node_free(struct queue_node *node);
 struct queue *queue_new(void);
 void queue_free(struct queue *queue);
 void queue_clear(struct queue *queue);
-error_t queue_push(struct queue *queue, void *data);
+int queue_push(struct queue *queue, void *data);
 void *queue_pop(struct queue *queue);
 void *queue_top(struct queue *queue);
 

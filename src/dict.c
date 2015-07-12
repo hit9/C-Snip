@@ -60,7 +60,7 @@ dict_node_free(struct dict_node *node)
 }
 
 /* Resize and rehash dict. */
-error_t
+int
 dict_resize(struct dict *dict)
 {
     assert(dict != NULL && dict->idx <= dict_idx_max);
@@ -178,7 +178,7 @@ dict_free(struct dict *dict)
 }
 
 /* Set a key into dict. */
-error_t
+int
 dict_set(struct dict *dict, char *key, size_t len, void *val)
 {
     assert(dict != NULL);
