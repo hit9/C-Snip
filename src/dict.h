@@ -9,7 +9,6 @@
 
 #include <stdint.h>
 #include "bool.h"
-#include "errors.h"
 
 #if defined(__cplusplus)
 extern "C" {
@@ -19,6 +18,11 @@ extern "C" {
 
 #define dict()              dict_new()
 #define dict_iter(dict)     dict_iter_new(dict)
+
+enum {
+    DICT_OK = 0,               /* operation is ok */
+    DICT_ENOMEM = 1,           /* no memory error */
+};
 
 struct dict_node {
     char *key;                 /* key string address */
@@ -53,7 +57,7 @@ static size_t dict_idx_max = sizeof(dict_table_sizes)/\
 struct dict *dict_new(void);
 void dict_clear(struct dict *dict);
 void dict_free(struct dict *dict);
-error_t dict_set(struct dict *dict, char *key, size_t len, void *val);
+int dict_set(struct dict *dict, char *key, size_t len, void *val);
 void *dict_get(struct dict *dict, char *key, size_t len);
 void *dict_pop(struct dict *dict, char *key, size_t len);
 bool dict_has(struct dict *dict, char *key, size_t len);

@@ -68,7 +68,7 @@ dict_resize(struct dict *dict)
     size_t new_idx = dict->idx + 1;
 
     if (new_idx > dict_idx_max)
-        return ERR_NOMEM;
+        return DICT_ENOMEM;
 
     size_t new_table_size = dict_table_sizes[new_idx];
     struct dict_node **new_table = malloc(
@@ -89,7 +89,7 @@ dict_resize(struct dict *dict)
                     node->key, node->len, node->val);
 
             if (new_node == NULL)
-                return ERR_NOMEM;
+                return DICT_ENOMEM;
 
             size_t new_index = dict_table_idx(
                     new_idx, new_node->key, new_node->len);
@@ -114,7 +114,7 @@ dict_resize(struct dict *dict)
     free(dict->table);
     dict->table = new_table;
     dict->idx = new_idx;
-    return ERR_OK;
+    return DICT_OK;
 }
 
 /* Create new empty dict. */
@@ -184,8 +184,8 @@ dict_set(struct dict *dict, char *key, size_t len, void *val)
     assert(dict != NULL);
 
     if ((dict_table_sizes[dict->idx] * DICT_LOAD_LIMIT < dict->size + 1) &&
-            dict_resize(dict) != ERR_OK)
-        return ERR_NOMEM;
+            dict_resize(dict) != DICT_OK)
+        return DICT_ENOMEM;
 
     size_t index = dict_table_idx(dict->idx, key, len);
     struct dict_node *node = (dict->table)[index];
@@ -196,7 +196,7 @@ dict_set(struct dict *dict, char *key, size_t len, void *val)
             node->key = key;
             node->len = len;
             node->val = val;
-            return ERR_OK;
+            return DICT_OK;
         }
         node = node->next;
     }
@@ -205,7 +205,7 @@ dict_set(struct dict *dict, char *key, size_t len, void *val)
     struct dict_node *new_node = dict_node_new(key, len, val);
 
     if (new_node == NULL)
-        return ERR_NOMEM;
+        return DICT_ENOMEM;
 
     /* rewind to list head */
     node = (dict->table)[index];
@@ -221,7 +221,7 @@ dict_set(struct dict *dict, char *key, size_t len, void *val)
     }
 
     dict->size += 1;
-    return ERR_OK;
+    return DICT_OK;
 }
 
 /* Get val by key from dict, NULL on not found. */
