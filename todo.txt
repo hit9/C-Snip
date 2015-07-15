@@ -7,4 +7,7 @@
 - [ ] event loop
 - [ ] iterators for all
 - [ ] list foreach
-- [ ] 修正error
+- [ ] config
+- [ ] logger
+- [ ] _has
+- [ ] _size

@@ -11,7 +11,8 @@ SRC    = test.c                 \
          stack.c stack_test.c   \
          queue.c queue_test.c   \
          list.c list_test.c     \
-         dict.c dict_test.c
+         dict.c dict_test.c     \
+         array.c array_test.c
 
 OBJ    = $(SRC:c=o)
 BIN    = $(NAME)

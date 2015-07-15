@@ -108,7 +108,7 @@ static struct test_case list_test_cases[] = {
 };
 
 /**
- * dict_test.c
+ * dict_test
  */
 void case_dict_set();
 void case_dict_get();
@@ -128,6 +128,20 @@ static struct test_case dict_test_cases[] = {
     { NULL, NULL },
 };
 
+/**
+ * array_test
+ */
+void case_array_empty();
+void case_array_insert();
+void case_array_push();
+void case_array_pop();
+static struct test_case array_test_cases[] = {
+    { "array_empty", &case_array_empty },
+    { "array_insert", &case_array_insert },
+    { NULL, NULL },
+};
+
+
 int main(int argc, const char *argv[])
 {
 #ifdef __linux
@@ -139,5 +153,6 @@ int main(int argc, const char *argv[])
     run_cases("queue_test", queue_test_cases);
     run_cases("list_test", list_test_cases);
     run_cases("dict_test", dict_test_cases);
+    run_cases("array_test", array_test_cases);
     return 0;
 }
