@@ -92,3 +92,19 @@ case_array_index_has()
     assert(!array_has(array, "s4"));
     array_free(array);
 }
+
+void
+case_array_extend()
+{
+    struct array *a = array(0), *b = array(0);
+    char *data[3] = {"s1", "s2", "s3"};
+    array_mpush(a, (void **)data, 3);
+    array_mpush(b, (void **)data, 3);
+    assert(array_extend(a, b) == ARRAY_OK);
+    assert(array_len(a) == 6);
+    assert(array_get(a, 3) == data[0]);
+    assert(array_get(a, 4) == data[1]);
+    assert(array_get(a, 5) == data[2]);
+    array_free(a);
+    array_free(b);
+}

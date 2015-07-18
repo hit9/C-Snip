@@ -137,6 +137,7 @@ void case_array_push();
 void case_array_mpush();
 void case_array_pop();
 void case_array_index_has();
+void case_array_extend();
 static struct test_case array_test_cases[] = {
     { "array_empty", &case_array_empty },
     { "array_insert", &case_array_insert },
@@ -144,6 +145,7 @@ static struct test_case array_test_cases[] = {
     { "array_mpush", &case_array_mpush },
     { "array_pop", &case_array_pop },
     { "array_index", &case_array_index_has },
+    { "array_extend", &case_array_extend },
     { NULL, NULL },
 };
 

@@ -210,3 +210,11 @@ array_has(struct array *array, void *data)
         return true;
     return false;
 }
+
+/* Extend array with another in place. */
+int
+array_extend(struct array *a, struct array *b)
+{
+    assert(a != NULL && b != NULL);
+    return array_mpush(a, b->data, b->len);
+}
