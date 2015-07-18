@@ -109,40 +109,40 @@ string_cstring(struct string *s)
     return NULL;
 }
 
-/* Grow a string's buffer capacity to given size, the new
- * capacity is calculated like k*unit>=size, by default, the
- * unit size is current cap, if the unit is large enough, use
- * STRING_MAX_REALLOC_UNIT instead. */
+/* Grow a string's buffer capacity to given cap, the new
+ * capacity is calculated like k*unit>=cap, by default, the
+ * unit is current cap, if the unit is large enough, use
+ * STRING_UNIT_MAX instead. */
 int
-string_grow(struct string *s, size_t size)
+string_grow(struct string *s, size_t cap)
 {
     assert(s != NULL);
 
-    if (size > STRING_MAX_CAPACITY_SIZE)
+    if (cap > STRING_CAP_MAX)
         return STRING_ENOMEM;
 
-    if (size <= s->cap)
+    if (cap <= s->cap)
         return STRING_OK;
 
-    size_t cap = s->cap;
     size_t unit = s->cap;
 
-    if (unit > STRING_MAX_REALLOC_UNIT)
-        unit = STRING_MAX_REALLOC_UNIT;
+    if (unit > STRING_UNIT_MAX)
+        unit = STRING_UNIT_MAX;
 
-    if (unit < STRING_MIN_REALLOC_UNIT)
-        unit = STRING_MIN_REALLOC_UNIT;
+    if (unit < STRING_UNIT_MIN)
+        unit = STRING_UNIT_MIN;
 
-    while (cap < size)
-        cap += unit;
+    size_t new_cap = s->cap + unit;
+    while (new_cap < cap)
+        new_cap += unit;
 
-    char *buf = realloc(s->buf, cap);
+    char *buf = realloc(s->buf, new_cap * sizeof(char));
 
     if (buf == NULL)
         return STRING_ENOMEM;
 
     s->buf = buf;
-    s->cap = cap;
+    s->cap = new_cap;
     return STRING_OK;
 }
 
@@ -189,7 +189,7 @@ string_concat(struct string *s, struct string *t)
 
 /* Truncate string, do nothing if len >= s->len, note that
  * buf will not be freed even if you truncate the string to
- * size 0. */
+ * len 0. */
 void
 string_truncate(struct string *s, size_t len)
 {

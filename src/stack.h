@@ -13,9 +13,11 @@
 extern "C" {
 #endif
 
-#define STACK_MAX_CAPACITY_SIZE  16*1024*1024   /* max stack capacity: 16mb */
 
-#define stack(size)              stack_new(size)
+/* note that real allocated size is cap * sizeof(void *). */
+#define STACK_CAP_MAX  16*1024*1024   /* max stack capacity: 16mb */
+
+#define stack(cap)              stack_new(cap)
 
 enum {
     STACK_OK = 0,       /* operation is ok */
@@ -28,14 +30,14 @@ struct stack {
     void ** data;       /* stack data */
 };
 
-struct stack *stack_new(size_t size);
+struct stack *stack_new(size_t cap);
 void stack_free(struct stack *stack);
 void stack_clear(struct stack *stack);
 size_t stack_len(struct stack *stack);
 void *stack_pop(struct stack *stack);
 void *stack_top(struct stack *stack);
 int stack_push(struct stack *stack, void *data);
-int stack_grow(struct stack *stack, size_t size);
+int stack_grow(struct stack *stack, size_t cap);
 
 #if defined(__cplusplus)
 }

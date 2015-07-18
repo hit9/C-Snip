@@ -6,9 +6,9 @@
 #include <stdlib.h>
 #include "array.h"
 
-/* Create array and init size. */
+/* Create array and init cap. */
 struct array *
-array_new(size_t size)
+array_new(size_t cap)
 {
     struct array *array = malloc(sizeof(struct array));
 
@@ -17,7 +17,7 @@ array_new(size_t size)
         array->cap = 0;
         array->data = NULL;
 
-        if (size > 0 && array_grow(array, size) != ARRAY_OK)
+        if (cap > 0 && array_grow(array, cap) != ARRAY_OK)
             return NULL;
     }
     return array;
@@ -53,37 +53,38 @@ array_isempty(struct array *array)
 }
 
 
-/* Grow array capacity to given size. */
+/* Grow array capacity to given cap. */
 int
-array_grow(struct array *array, size_t size)
+array_grow(struct array *array, size_t cap)
 {
     assert(array != NULL);
 
-    if (size > ARRAY_MAX_CAPACITY_SIZE)
+    if (cap > ARRAY_CAP_MAX)
         return ARRAY_ENOMEM;
 
-    if (size <= array->cap)
+    if (cap <= array->cap)
         return ARRAY_OK;
 
-    size_t cap = array->cap;
     size_t unit = array->cap;
 
-    if (unit > ARRAY_MAX_REALLOC_UNIT)
-        unit = ARRAY_MAX_REALLOC_UNIT;
+    if (unit > ARRAY_UNIT_MAX)
+        unit = ARRAY_UNIT_MAX;
 
-    if (unit < ARRAY_MIN_REALLOC_UNIT)
-        unit = ARRAY_MIN_REALLOC_UNIT;
+    if (unit < ARRAY_UNIT_MIN)
+        unit = ARRAY_UNIT_MIN;
 
-    while (cap < size)
-        cap += unit;
+    size_t new_cap = array->cap + unit;
+    while (new_cap < cap)
+        new_cap += unit;
 
-    void **data = realloc(array->data, cap);
+    void **data = realloc(array->data,
+            new_cap * sizeof(void *));
 
     if (data == NULL)
         return ARRAY_ENOMEM;
 
     array->data = data;
-    array->cap = cap;
+    array->cap = new_cap;
     return ARRAY_OK;
 }
 

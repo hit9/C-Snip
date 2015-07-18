@@ -15,11 +15,12 @@
 extern "C" {
 #endif
 
-#define ARRAY_MAX_CAPACITY_SIZE  16*1024*1024   /* max array capacity: 16mb */
-#define ARRAY_MIN_REALLOC_UNIT   1              /* min array realloc unit: 1 */
-#define ARRAY_MAX_REALLOC_UNIT   1024*1024      /* max array realloc unit: 1mb */
+/* note that real allocated size is cap * sizeof(void *). */
+#define ARRAY_CAP_MAX    16*1024*1024  /* max array capacity: 16mb */
+#define ARRAY_UNIT_MIN   1             /* min array realloc unit: 1 */
+#define ARRAY_UNIT_MAX   1024*1024     /* max array realloc unit: 1mb */
 
-#define array(size)                    array_new(size)
+#define array(cap)      array_new(cap)
 
 enum {
     ARRAY_OK = 0,             /* operation is ok */
@@ -32,13 +33,13 @@ struct array {
     void **data;              /* array data */
 };
 
-struct array *array_new(size_t size);
+struct array *array_new(size_t cap);
 struct array *array_empty(void);
 void array_clear(struct array *array);
 void array_free(struct array *array);
 size_t array_len(struct array *array);
 bool array_isempty(struct array *array);
-int array_grow(struct array *array, size_t size);
+int array_grow(struct array *array, size_t cap);
 int array_insert(struct array *array, void *data, size_t idx);
 int array_push(struct array *array, void *data);
 void *array_pop(struct array *array, size_t idx);

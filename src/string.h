@@ -14,9 +14,10 @@
 extern "C" {
 #endif
 
-#define STRING_MAX_CAPACITY_SIZE  16*1024*1024   /* max string capacity: 16mb */
-#define STRING_MIN_REALLOC_UNIT   1              /* min string realloc unit: 1 */
-#define STRING_MAX_REALLOC_UNIT   1024*1024      /* max string realloc unit: 1mb */
+/* note that real allocated size is cap * sizeof(char). */
+#define STRING_CAP_MAX    16*1024*1024   /* max string capacity: 16mb */
+#define STRING_UNIT_MIN   1              /* min string realloc unit: 1 */
+#define STRING_UNIT_MAX   1024*1024      /* max string realloc unit: 1mb */
 
 #define string(cs)                string_new(cs)
 #define cstring(s)                string_cstring(s)
@@ -42,7 +43,7 @@ void string_reverse(struct string *s);
 void string_print(struct string *s);
 void string_println(struct string *s);
 void string_truncate(struct string *s, size_t len);
-int string_grow(struct string *s, size_t size);
+int string_grow(struct string *s, size_t cap);
 int string_put(struct string *s, char *buf, size_t len);
 int string_puts(struct string *s, const char *cs);
 int string_putc(struct string *s, char ch);

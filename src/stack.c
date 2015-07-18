@@ -9,7 +9,7 @@
 
 /* Create new stack with an initialized capacity. */
 struct stack *
-stack_new(size_t size)
+stack_new(size_t cap)
 {
     struct stack *stack = malloc(sizeof(struct stack));
 
@@ -18,7 +18,7 @@ stack_new(size_t size)
         stack->len = 0;
         stack->cap = 0;
 
-        if (size > 0 && stack_grow(stack, size) != STACK_OK)
+        if (cap > 0 && stack_grow(stack, cap) != STACK_OK)
             return NULL;
     }
 
@@ -36,7 +36,7 @@ stack_free(struct stack *stack)
     }
 }
 
-/* Clear stack data to NULL and clean its size and cap to zero. */
+/* Clear stack data to NULL and clean its len and cap to zero. */
 void
 stack_clear(struct stack *stack)
 {
@@ -59,27 +59,27 @@ stack_len(struct stack *stack)
     return stack->len;
 }
 
-/* Grow a stack's memory capacity to given size. */
+/* Grow a stack's memory capacity to given cap. */
 int
-stack_grow(struct stack *stack, size_t size)
+stack_grow(struct stack *stack, size_t cap)
 {
     assert(stack != NULL);
 
-    if (size > STACK_MAX_CAPACITY_SIZE)
+    if (cap > STACK_CAP_MAX)
         return STACK_ENOMEM;
 
-    if (size <= stack->cap)
+    if (cap <= stack->cap)
         return STACK_OK;
 
-    void **data = realloc(stack->data, size * sizeof(void *));
+    void **data = realloc(stack->data, cap * sizeof(void *));
     if (data == NULL)
         return STACK_ENOMEM;
 
     stack->data = data;
-    stack->cap = size;
+    stack->cap = cap;
 
-    if (stack->len > size)
-        stack->len = size;
+    if (stack->len > cap)
+        stack->len = cap;
     return STACK_OK;
 }
 
