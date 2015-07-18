@@ -134,10 +134,14 @@ static struct test_case dict_test_cases[] = {
 void case_array_empty();
 void case_array_insert();
 void case_array_push();
+void case_array_mpush();
 void case_array_pop();
 static struct test_case array_test_cases[] = {
     { "array_empty", &case_array_empty },
     { "array_insert", &case_array_insert },
+    { "array_push", &case_array_push },
+    { "array_mpush", &case_array_mpush },
+    { "array_pop", &case_array_pop },
     { NULL, NULL },
 };
 

@@ -42,6 +42,7 @@ bool array_isempty(struct array *array);
 int array_grow(struct array *array, size_t cap);
 int array_insert(struct array *array, void *data, size_t idx);
 int array_push(struct array *array, void *data);
+int array_mpush(struct array *array, void **data, size_t len);
 void *array_pop(struct array *array, size_t idx);
 void *array_get(struct array *array, size_t idx);
 size_t array_index(struct array *array, void *data, size_t start);

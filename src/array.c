@@ -164,3 +164,22 @@ array_get(struct array *array, size_t idx)
             array->len > idx);
     return array->data[idx];
 }
+
+/* Push multiple items to array. */
+int
+array_mpush(struct array *array, void **data, size_t len)
+{
+    assert(array != NULL);
+
+    int error = array_grow(array, array->len + len);
+
+    if (error == ARRAY_OK) {
+        size_t idx;
+
+        for (idx = 0; idx < len; idx++)
+            array->data[array->len + idx] = data[idx];
+
+        array->len += len;
+    }
+    return error;
+}

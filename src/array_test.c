@@ -31,3 +31,48 @@ case_array_insert()
     assert(array_get(array, 2) == s1);
     array_free(array);
 }
+
+void
+case_array_push()
+{
+    struct array *array = array(0);
+    char *s1 = "a", *s2 = "b", *s3 = "c";
+    assert(array_push(array, s1) == ARRAY_OK);
+    assert(array_len(array) == 1);
+    assert(array_push(array, s2) == ARRAY_OK);
+    assert(array_len(array) == 2);
+    assert(array_push(array, s3) == ARRAY_OK);
+    assert(array_len(array) == 3);
+    assert(array_get(array, 0) == s1);
+    assert(array_get(array, 1) == s2);
+    assert(array_get(array, 2) == s3);
+    array_free(array);
+}
+
+void
+case_array_mpush()
+{
+    struct array *array = array(0);
+    char *data[3] = {"s1", "s2", "s3"};
+    assert(array_mpush(array, (void **)data, 3) == ARRAY_OK);
+    assert(array_len(array) == 3);
+    assert(array_get(array, 0) == data[0]);
+    assert(array_get(array, 1) == data[1]);
+    assert(array_get(array, 2) == data[2]);
+    array_free(array);
+}
+
+void
+case_array_pop()
+{
+    struct array *array = array(0);
+    char *data[3] = {"s1", "s2", "s3"};
+    assert(array_mpush(array, (void **)data, 3) == ARRAY_OK);
+    assert(array_pop(array, 2) == data[2]);
+    assert(array_len(array) == 2);
+    assert(array_pop(array, 0) == data[0]);
+    assert(array_len(array) == 1);
+    assert(array_pop(array, 0) == data[1]);
+    assert(array_len(array) == 0);
+    array_free(array);
+}
