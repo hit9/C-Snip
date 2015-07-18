@@ -9,5 +9,3 @@
 - [ ] list foreach
 - [ ] config
 - [ ] logger
-- [ ] _has
-- [ ] _size
