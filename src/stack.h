@@ -13,7 +13,6 @@
 extern "C" {
 #endif
 
-
 /* note that real allocated size is cap * sizeof(void *). */
 #define STACK_CAP_MAX  16*1024*1024   /* max stack capacity: 16mb */
 
