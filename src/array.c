@@ -218,3 +218,49 @@ array_extend(struct array *a, struct array *b)
     assert(a != NULL && b != NULL);
     return array_mpush(a, b->data, b->len);
 }
+
+/* Swap i and j in array. */
+void
+array_swap(struct array *array, size_t i, size_t j)
+{
+    assert(array != NULL && i < array->len && j < array->len);
+    void *temp = array->data[i];
+    array->data[i] = array->data[j];
+    array->data[j] = temp;
+}
+
+/* Quicksort implementation */
+void
+array_quicksort(struct array *array, size_t left, size_t right,
+        int (*cmp)(size_t, size_t))
+{
+    if (left >= right)
+        return;
+
+    assert(right <= array->len);
+
+    size_t i = left;
+    size_t j = right;
+
+    while (i < j) {
+        while (i < j && cmp(left, j) <= 0)
+            j--;
+        array->data[i] = array->data[j];
+
+        while (i < j && cmp(left, i) >= 0)
+            i++;
+        array->data[j] = array->data[i];
+    }
+
+    array->data[i] = array->data[left];
+    array_quicksort(array, left, i - 1, cmp);
+    array_quicksort(array, i + 1, right, cmp);
+}
+
+void
+array_sort(struct array *array, int (*cmp)(size_t, size_t))
+{
+    assert(array != NULL);
+    if (array->len > 1)
+        array_quicksort(array, 0, array->len, cmp);
+}

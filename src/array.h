@@ -48,6 +48,8 @@ void *array_get(struct array *array, size_t idx);
 size_t array_index(struct array *array, void *data, size_t start);
 bool array_has(struct array *array, void *data);
 int array_extend(struct array *a, struct array *b);
+void array_swap(struct array *array, size_t i, size_t j);
+void array_sort(struct array *array, int (*cmp)(size_t, size_t));
 
 #if defined(__cplusplus)
 }
