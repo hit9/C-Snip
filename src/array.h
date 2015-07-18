@@ -46,6 +46,7 @@ int array_mpush(struct array *array, void **data, size_t len);
 void *array_pop(struct array *array, size_t idx);
 void *array_get(struct array *array, size_t idx);
 size_t array_index(struct array *array, void *data, size_t start);
+bool array_has(struct array *array, void *data);
 int array_extend(struct array *a, struct array *b);
 
 #if defined(__cplusplus)

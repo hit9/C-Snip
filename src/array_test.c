@@ -76,3 +76,19 @@ case_array_pop()
     assert(array_len(array) == 0);
     array_free(array);
 }
+
+void
+case_array_index_has()
+{
+    struct array *array = array(0);
+    char *data[3] = {"s1", "s2", "s3"};
+    assert(array_mpush(array, (void **)data, 3) == ARRAY_OK);
+    assert(array_index(array, "s1", 0) == 0);
+    assert(array_index(array, "s2", 1) == 1);
+    assert(array_index(array, "s3", 0) >= 2);
+    assert(array_index(array, "s2", 2) == array_len(array));
+    assert(array_has(array, "s1"));
+    assert(array_has(array, "s2"));
+    assert(!array_has(array, "s4"));
+    array_free(array);
+}

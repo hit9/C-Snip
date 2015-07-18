@@ -183,3 +183,30 @@ array_mpush(struct array *array, void **data, size_t len)
     }
     return error;
 }
+
+/* Find item index in array. */
+size_t
+array_index(struct array *array, void *data, size_t start)
+{
+    assert(array != NULL);
+
+    size_t idx;
+
+    for (idx = start; idx < array->len
+            && array->data[idx] != data; idx++);
+
+    if (idx < array->len)
+        return idx;     /* got */
+    return array->len;  /* not found */
+}
+
+/* If an item is in array. */
+bool
+array_has(struct array *array, void *data)
+{
+    assert(array != NULL);
+
+    if (array_index(array, data, 0) < array->len)
+        return true;
+    return false;
+}

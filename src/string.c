@@ -302,8 +302,8 @@ string_index(struct string *s, char ch, size_t start)
     for (idx = start; idx < s->len && s->buf[idx] != ch; idx++);
 
     if (idx < s->len)
-        return idx;
-    return s->len;
+        return idx;  /* got */
+    return s->len;   /* not found */
 }
 
 /* If a char is in string. */
