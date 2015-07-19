@@ -1,7 +1,4 @@
 - [ ] heap
-- [x] stack
-- [ ] queue
-- [ ] dict
 - [ ] rbtree
 - [ ] skiplist
 - [ ] event loop
@@ -9,3 +6,4 @@
 - [ ] list foreach
 - [ ] config
 - [ ] logger
+- [ ] rebuild array and stack
