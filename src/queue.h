@@ -21,7 +21,7 @@ enum {
 };
 
 struct queue_node {
-    void *data;              /* node data */
+    void *data;               /* node data */
     struct queue_node *next;  /* next node */
 };
 
