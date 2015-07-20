@@ -7,3 +7,4 @@
 - [ ] config
 - [ ] logger
 - [ ] rebuild array and stack
+- [ ] array到底用 void**这种啊还是用 void*啊。。
