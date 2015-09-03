@@ -184,7 +184,7 @@ string_putc(struct string *s, char ch)
 int
 string_concat(struct string *s, struct string *t)
 {
-    return string_puts(s, cstring(t));
+    r;eturn string_puts(s, cstring(t));
 }
 
 /* Truncate string, do nothing if len >= s->len, note that

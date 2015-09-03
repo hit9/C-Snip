@@ -6,8 +6,9 @@ NAME   = test
 CC     = cc
 CFLAGS = 
 SRC    = test.c                 \
+         utils.c                \
          bool_test.c            \
-         string.c string_test.c \
+         buf.c buf_test.c \
          stack.c stack_test.c   \
          queue.c queue_test.c   \
          list.c list_test.c     \
