@@ -7,6 +7,7 @@ CC     = cc
 CFLAGS = 
 SRC    = test.c                 \
          utils.c                \
+         log.c                  \
          bool_test.c            \
          buf.c buf_test.c \
          stack.c stack_test.c   \
