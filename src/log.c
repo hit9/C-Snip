@@ -88,14 +88,14 @@ log_log(int level, const char *fmt, ...)
 {
     struct logger *l = &logger;
     assert(l->name != NULL);
-    assert (l->fd == STDERR_FILENO || l->fd > 0);
+    assert(l->fd == STDERR_FILENO || l->fd > 0);
 
     if (level < l->level)
         return LOG_OK;
 
     int len = 0, size = LOG_LINE_LEN_MAX;
 
-    char buf[size];
+    char buf[size + 1];
 
     // readable time with ms
     struct timeval tv;

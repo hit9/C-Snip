@@ -13,7 +13,7 @@
 extern "C" {
 #endif
 
-#define LOG_LINE_LEN_MAX    512
+#define LOG_LINE_LEN_MAX    256
 #define LOG_FILE_MODE       0644
 #define LOG_FILE_PERM       O_WRONLY | O_APPEND | O_CREAT
 
