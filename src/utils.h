@@ -21,6 +21,8 @@ extern "C" {
 int _scnprintf(char *buf, size_t size, const char *fmt, ...);
 int _vscnprintf(char *buf, size_t size, const char *fmt, va_list args);
 
+size_t bm_search(char *s, char *sub, size_t start);
+
 /**
  * ****************  Date Time Utils **********************
  */

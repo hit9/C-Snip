@@ -127,6 +127,15 @@ static struct test_case array_test_cases[] = {
     { NULL, NULL },
 };
 
+/**
+ * utils_test
+ */
+void case_utils_bm_search();
+static struct test_case utils_test_cases[] = {
+    { "bm_search", &case_utils_bm_search},
+    { NULL, NULL },
+};
+
 
 int main(int argc, const char *argv[])
 {
@@ -141,6 +150,7 @@ int main(int argc, const char *argv[])
     run_cases("list_test", list_test_cases);
     run_cases("dict_test", dict_test_cases);
     run_cases("array_test", array_test_cases);
+    run_cases("utils_test", utils_test_cases);
     printf("=========== test end ========\n");
     return 0;
 }
