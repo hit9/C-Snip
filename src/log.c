@@ -84,9 +84,11 @@ log_setlevel(int level)
 
 /* Format logging message to file/stderr. */
 int
-log_log(int level, const char *fmt, ...)
+log_log(int level, char * levelname, const char *fmt, ...)
 {
     struct logger *l = &logger;
+
+    assert(levelname != NULL);
     assert(l->name != NULL);
     assert(l->fd == STDERR_FILENO || l->fd > 0);
 
@@ -103,6 +105,8 @@ log_log(int level, const char *fmt, ...)
 
     len += strftime(buf + len, size - len, "%Y-%m-%d %H:%M:%S.", localtime(&tv.tv_sec));
     len += _scnprintf(buf + len, size - len, "%03ld", tv.tv_usec/1000);
+    // level
+    len += _scnprintf(buf + len, size - len, " %s", levelname);
     // name and pid
     len += _scnprintf(buf + len, size - len, " %s[%ld] ", l->name, getpid());
 

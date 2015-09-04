@@ -1,9 +1,8 @@
-status:
-
-1. array (Unstable)
-2. bool (Alpha)
-3. dict (Alpha)
-4. list (Alpha)
-5. queue (Alpha)
-6. stack (Alpha)
-7. buf (Alpha)
+array (Unstable)
+bool (Alpha)
+dict (Alpha)
+list (Alpha)
+queue (Alpha)
+stack (Alpha)
+buf (Alpha)
+log (Alpha)
