@@ -14,6 +14,7 @@ extern "C" {
 #define EVENT_MIN_RESERVED_FDS  32
 #define EVENT_FDSET_INCR        96
 
+#define EVENT_NONE      0x00  // 000
 #define EVENT_READABLE  0x01  // 001
 #define EVENT_WRITABLE  0x02  // 010
 #define EVENT_ET        0x04  // 100
@@ -40,28 +41,25 @@ enum {
     EVENT_ERANGE = 3,
 };
 
-typedef int (*event_cb_t)(int fd, int op, void *data);
+typedef int (*event_cb_t)(struct event_loop *loop, int fd, int op, void *data);
 
-struct event_data {
-    int op;                         /* one of EVENT_(READABLE|WRITABLE) */
-    event_cb_t cb;                  /* event callback */
-    void *data;                     /* user defined data */
+struct event {
+    int mask;       /* EVENT_(NONE|READABLE|WRITABLE) */
+    event_cb_t cb;  /* callback function */
+    void *data;     /* user defined data */
 };
-
-#ifdef HAVE_EPOLL
-#include <sys/epoll.h>
 
 struct event_loop {
-    int ep;                         /* epoll descriptor */
-    struct epoll_event *events;     /* events to poll */
-    int nevents;                    /* events[] length */
+    int size;               /* the max number of fds to track */
+    struct event *events;   /* struct event[] */
+    void *api;              /* to be implemented */
 };
-#endif
 
 struct event_loop *event_loop_new(int size);
 void event_loop_free(struct event_loop *loop);
-int event_loop_add(struct event_loop *loop, int fd, int op,
+int event_add(struct event_loop *loop, int fd, int mask,
         event_cb_t cb, void *data);
+int event_del(struct event_loop *loop, int fd, int mask);
 
 #if defined(__cplusplus)
 }
