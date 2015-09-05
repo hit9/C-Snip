@@ -26,6 +26,8 @@ event_loop_new(int size)
 {
     assert(size > 0);
 
+    size += EVENT_FDSET_INCR + EVENT_MIN_RESERVED_FDS;
+
     struct event_loop *loop = malloc(sizeof(struct event_loop));
 
     if (loop == NULL)
@@ -84,12 +86,12 @@ event_add(struct event_loop *loop, int fd, int mask,
     if (err != EVENT_OK)
         return err;
 
-    struct event *ev = loop->events[fd];
+    struct event *ev = &loop->events[fd];
     ev->mask |= mask;
 
+    if (mask & EVENT_ERROR) ev->ecb = cb;
     if (mask & EVENT_READABLE) ev->rcb = cb;
     if (mask & EVENT_WRITABLE) ev->wcb = cb;
-    if (mask & EVENT_ERROR) ev->ecb = cb;
 
     ev->data = data;
     return EVENT_OK;
@@ -104,12 +106,12 @@ event_del(struct event_loop *loop, int fd, int mask)
     if (fd > loop->size)
         return EVENT_ERANGE;
 
-    struct event *ev = loop->events[fd];
+    struct event *ev = &loop->events[fd];
 
     if (ev->mask == EVENT_NONE)
         return EVENT_OK;
 
-    int err = event_api_del(eventLoop, fd, mask);
+    int err = event_api_del(loop, fd, mask);
 
     if (err != EVENT_OK)
         return err;

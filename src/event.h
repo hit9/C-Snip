@@ -47,7 +47,10 @@ enum {
     EVENT_ERANGE = 3,
 };
 
-typedef int (*event_cb_t)(struct event_loop *loop, int fd, int mask, void *data);
+struct event_loop;
+struct event_api;
+
+typedef void (*event_cb_t)(struct event_loop *loop, int fd, int mask, void *data);
 
 struct event {
     int mask;        /* EVENT_(NONE|READABLE|WRITABLE..) */
@@ -60,7 +63,7 @@ struct event {
 struct event_loop {
     int size;               /* the max number of fds to track */
     struct event *events;   /* struct event[] */
-    void *api;              /* to be implemented */
+    struct event_api *api;              /* to be implemented */
 };
 
 struct event_loop *event_loop_new(int size);

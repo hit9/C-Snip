@@ -17,7 +17,7 @@ event_api_loop_new(struct event_loop *loop)
 {
     assert(loop != NULL);
     assert(loop->size > 0);
-    asseryt(loop->api == NULL);
+    assert(loop->api == NULL);
 
     struct event_api *api = malloc(sizeof(struct event_api));
 
@@ -34,7 +34,7 @@ event_api_loop_new(struct event_loop *loop)
     api->events = malloc(sizeof(struct epoll_event) * loop->size);
 
     if (api->events == NULL) {
-        close(ep);
+        close(api->ep);
         free(api);
         return EVENT_ENOMEM;
     }
@@ -78,6 +78,7 @@ event_api_add(struct event_loop *loop, int fd, int mask)
     if (mask & EVENT_READABLE) ev.events |= EPOLLIN;
     if (mask & EVENT_WRITABLE) ev.events |= EPOLLOUT;
     if (mask & EVENT_ET) ev.events |= EPOLLET;
+    if (mask & EVENT_ERROR) ev.events |= EPOLLERR;
 
     if (epoll_ctl(loop->api->ep, op, fd, &ev) < 0)
         return EVENT_EFAILED;
@@ -99,6 +100,7 @@ event_api_del(struct event_loop *loop, int fd, int delmask)
     if (mask & EVENT_READABLE) ev.events |= EPOLLIN;
     if (mask & EVENT_WRITABLE) ev.events |= EPOLLOUT;
     if (mask & EVENT_ET) ev.events |= EPOLLET;
+    if (mask & EVENT_ERROR) ev.events |= EPOLLERR;
 
     ev.data.u64 = 0; /* avoid valgrind warning */
     ev.data.fd = fd;
@@ -121,9 +123,11 @@ event_api_wait(struct event_loop *loop, int timeout)
     struct event_api *api = loop->api;
 
     assert(api != NULL);
+    assert(api->ep >= 0);
+    assert(api->events != NULL);
 
     int i;
-    int nfds = epoll_wait(ap->ep, loop->size, api->events, timeout);
+    int nfds = epoll_wait(api->ep, api->events, loop->size, timeout);
 
     if (nfds > 0) {
         for (i = 0; i < nfds; i++) {
@@ -137,9 +141,12 @@ event_api_wait(struct event_loop *loop, int timeout)
             if (ee.events & EPOLLIN) mask |= EVENT_READABLE;
             if (ee.events & EPOLLOUT) mask |= EVENT_WRITABLE;
 
-            if (mask & EVENT_ERROR) ev.ecb(loop, fd, mask, ev.data);
-            if (mask & EVENT_READABLE) ev.rcb(loop, fd, mask, ev.data);
-            if (mask & EVENT_WRITABLE) ev.wcb(loop, fd, mask, ev.data);
+            if (mask & EVENT_ERROR && ev.ecb != NULL)
+                (ev.ecb)(loop, fd, mask, ev.data);
+            if (mask & EVENT_READABLE && ev.rcb != NULL)
+                (ev.rcb)(loop, fd, mask, ev.data);
+            if (mask & EVENT_WRITABLE && ev.wcb != NULL)
+                (ev.wcb)(loop, fd, mask, ev.data);
         }
 
         return EVENT_OK;
