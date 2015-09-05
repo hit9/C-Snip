@@ -36,7 +36,7 @@ event_api_loop_new(struct event_loop *loop)
     if (api->events == NULL) {
         close(ep);
         free(api);
-        return EVENT_ENOMEN;
+        return EVENT_ENOMEM;
     }
 
     loop->api = api;
