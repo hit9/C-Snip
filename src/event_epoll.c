@@ -111,3 +111,44 @@ event_api_del(struct event_loop *loop, int fd, int delmask)
         epoll_ctl(loop->api->ep, EPOLL_CTL_DEL, fd, &ev);
     }
 }
+
+int
+event_api_wait(struct event_loop *loop, int timeout)
+{
+    assert(loop != NULL);
+    assert(loop->events != NULL);
+
+    struct event_api *api = loop->api;
+
+    assert(api != NULL);
+
+    int i;
+    int nfds = epoll_wait(ap->ep, loop->size, api->events, timeout);
+
+    if (nfds > 0) {
+        for (i = 0; i < nfds; i++) {
+            struct epoll_event ee = api->events[i];
+            int fd = ee.data.fd;
+            struct event ev = loop->events[fd];
+
+            int mask = 0;
+
+            if (ee.events & EPOLLERR) mask |= EVENT_ERROR;
+            if (ee.events & EPOLLIN) mask |= EVENT_READABLE;
+            if (ee.events & EPOLLOUT) mask |= EVENT_WRITABLE;
+
+            if (mask & EVENT_ERROR) ev.ecb(loop, fd, mask, ev.data);
+            if (mask & EVENT_READABLE) ev.rcb(loop, fd, mask, ev.data);
+            if (mask & EVENT_WRITABLE) ev.wcb(loop, fd, mask, ev.data);
+        }
+
+        return EVENT_OK;
+    }
+
+    if (nfds == 0) {
+        if (timeout == -1)
+            return EVENT_EFAILED;
+    }
+
+    return EVENT_EFAILED;
+}

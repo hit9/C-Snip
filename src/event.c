@@ -86,7 +86,11 @@ event_add(struct event_loop *loop, int fd, int mask,
 
     struct event *ev = loop->events[fd];
     ev->mask |= mask;
-    ev->cb = cb;
+
+    if (mask & EVENT_READABLE) ev->rcb = cb;
+    if (mask & EVENT_WRITABLE) ev->wcb = cb;
+    if (mask & EVENT_ERROR) ev->ecb = cb;
+
     ev->data = data;
     return EVENT_OK;
 }
@@ -111,5 +115,25 @@ event_del(struct event_loop *loop, int fd, int mask)
         return err;
 
     ev->mask = ev->mask & (~mask);
+    return EVENT_OK;
+}
+
+/* Wait for events. */
+int
+event_wait(struct event_loop *loop, int timeout)
+{
+    return event_api_wait(loop, timeout);
+}
+
+/* Start event loop */
+int
+event_loop_start(struct event_loop *loop, int timeout)
+{
+    int err;
+
+    for(;;)
+        if ((err = event_wait(loop, timeout)) != EVENT_OK)
+            return err;
+
     return EVENT_OK;
 }

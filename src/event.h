@@ -14,10 +14,11 @@ extern "C" {
 #define EVENT_MIN_RESERVED_FDS  32
 #define EVENT_FDSET_INCR        96
 
-#define EVENT_NONE      0x00  // 000
-#define EVENT_READABLE  0x01  // 001
-#define EVENT_WRITABLE  0x02  // 010
-#define EVENT_ET        0x04  // 100
+#define EVENT_NONE      0x00  // 0000
+#define EVENT_READABLE  0x01  // 0001
+#define EVENT_WRITABLE  0x02  // 0010
+#define EVENT_ET        0x04  // 0100
+#define EVENT_ERROR     0x08  // 1000
 
 #ifdef __linux__
 #define HAVE_EPOLL      1
@@ -34,6 +35,11 @@ extern "C" {
 #endif
 #endif
 
+#define event_add_in(loop, fd, cb, data)    event_add(loop, fd, EVENT_READABLE, cb, data);
+#define event_add_out(loop, fd, cb, data)   event_add(loop, fd, EVENT_WRITABLE, cb, data);
+#define event_del_in(loop, fd)              event_del(loop, fd, EVENT_READABLE);
+#define event_del_out(loop, fd)             event_del(loop, fd, EVENT_WRITABLE);
+
 enum {
     EVENT_OK = 0,
     EVENT_ENOMEM = 1,
@@ -41,12 +47,14 @@ enum {
     EVENT_ERANGE = 3,
 };
 
-typedef int (*event_cb_t)(struct event_loop *loop, int fd, int op, void *data);
+typedef int (*event_cb_t)(struct event_loop *loop, int fd, int mask, void *data);
 
 struct event {
-    int mask;       /* EVENT_(NONE|READABLE|WRITABLE) */
-    event_cb_t cb;  /* callback function */
-    void *data;     /* user defined data */
+    int mask;        /* EVENT_(NONE|READABLE|WRITABLE..) */
+    event_cb_t rcb;  /* callback function on EVENT_READABLE */
+    event_cb_t wcb;  /* callback function on EVENT_WRITABLE */
+    event_cb_t ecb;  /* callback function on EVENT_ERROR */
+    void *data;      /* user defined data */
 };
 
 struct event_loop {
