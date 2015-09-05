@@ -14,14 +14,13 @@ extern "C" {
 #define EVENT_MIN_RESERVED_FDS  32
 #define EVENT_FDSET_INCR        96
 
-#define EVENT_NONE      0x00  // 0000
-#define EVENT_READABLE  0x01  // 0001
-#define EVENT_WRITABLE  0x02  // 0010
-#define EVENT_ET        0x04  // 0100
-#define EVENT_ERROR     0x08  // 1000
+#define EVENT_NONE              0b000
+#define EVENT_READABLE          0b001
+#define EVENT_WRITABLE          0b010
+#define EVENT_ERROR             0b100
 
-#define EVENT_LOOP_RUNNING  0
-#define EVENT_LOOP_STOPPED  1
+#define EVENT_LOOP_RUNNING      0
+#define EVENT_LOOP_STOPPED      1
 
 #ifdef __linux__
 #define HAVE_EPOLL      1

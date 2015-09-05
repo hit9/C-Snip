@@ -7,10 +7,15 @@
 #include <sys/epoll.h>
 #include "event.h"
 
+#define EVENT_EPOLL_ALWAYS_ET   1
+#define EVENT_EPOLL_ET          0b1000
+
 struct event_api {
     int ep;                      /* epoll descriptor */
     struct epoll_event *events;  /* struct epoll_events[], with size `loop->size`*/
 };
+
+static int event_epoll_always_et = 1;  /* always use EPOLLET */
 
 static int
 event_api_loop_new(struct event_loop *loop)
@@ -75,9 +80,12 @@ event_api_add(struct event_loop *loop, int fd, int mask)
 
     mask |= loop->events[fd].mask; /* merge old events */
 
+    if (EVENT_EPOLL_ALWAYS_ET)
+        mask |= EVENT_EPOLL_ET;
+
     if (mask & EVENT_READABLE) ev.events |= EPOLLIN;
     if (mask & EVENT_WRITABLE) ev.events |= EPOLLOUT;
-    if (mask & EVENT_ET) ev.events |= EPOLLET;
+    if (mask & EVENT_EPOLL_ET) ev.events |= EPOLLET;
     if (mask & EVENT_ERROR) ev.events |= EPOLLERR;
 
     if (epoll_ctl(loop->api->ep, op, fd, &ev) < 0)
@@ -97,9 +105,12 @@ event_api_del(struct event_loop *loop, int fd, int delmask)
 
     ev.events = 0;
 
+    if (EVENT_EPOLL_ALWAYS_ET)
+        mask |= EVENT_EPOLL_ET;
+
     if (mask & EVENT_READABLE) ev.events |= EPOLLIN;
     if (mask & EVENT_WRITABLE) ev.events |= EPOLLOUT;
-    if (mask & EVENT_ET) ev.events |= EPOLLET;
+    if (mask & EVENT_EPOLL_ET) ev.events |= EPOLLET;
     if (mask & EVENT_ERROR) ev.events |= EPOLLERR;
 
     ev.data.u64 = 0; /* avoid valgrind warning */
