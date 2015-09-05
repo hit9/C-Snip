@@ -72,6 +72,8 @@ struct event_loop {
 
 struct event_loop *event_loop_new(int size);
 void event_loop_free(struct event_loop *loop);
+int event_loop_start(struct event_loop *loop, int timeout);
+void event_loop_stop(struct event_loop *loop);
 int event_add(struct event_loop *loop, int fd, int mask,
         event_cb_t cb, void *data);
 int event_del(struct event_loop *loop, int fd, int mask);
