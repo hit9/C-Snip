@@ -26,6 +26,7 @@ event_loop_new(int size)
 {
     assert(size > 0);
 
+    /* event numbers must be greater than RESERVED_FDS + FDSET_INCR */
     size += EVENT_FDSET_INCR + EVENT_MIN_RESERVED_FDS;
 
     struct event_loop *loop = malloc(sizeof(struct event_loop));
@@ -131,11 +132,23 @@ event_wait(struct event_loop *loop, int timeout)
 int
 event_loop_start(struct event_loop *loop, int timeout)
 {
+    assert(loop != NULL);
+
+    loop->state = EVENT_LOOP_RUNNING;
+
     int err;
 
-    for(;;)
+    while(loop->state != EVENT_LOOP_STOPPED)
         if ((err = event_wait(loop, timeout)) != EVENT_OK)
             return err;
 
     return EVENT_OK;
+}
+
+/* Stop event loop */
+void
+event_loop_stop(struct event_loop *loop)
+{
+    assert(loop != NULL);
+    loop->state = EVENT_LOOP_STOPPED;
 }

@@ -20,6 +20,9 @@ extern "C" {
 #define EVENT_ET        0x04  // 0100
 #define EVENT_ERROR     0x08  // 1000
 
+#define EVENT_LOOP_RUNNING  0
+#define EVENT_LOOP_STOPPED  1
+
 #ifdef __linux__
 #define HAVE_EPOLL      1
 #endif
@@ -61,9 +64,10 @@ struct event {
 };
 
 struct event_loop {
-    int size;               /* the max number of fds to track */
-    struct event *events;   /* struct event[] */
-    struct event_api *api;              /* to be implemented */
+    int size;                /* the max number of fds to track */
+    int state;               /* one of EVENT_LOOP_(STOPPED|RUNNING) */
+    struct event *events;    /* struct event[] */
+    struct event_api *api;   /* to be implemented */
 };
 
 struct event_loop *event_loop_new(int size);
