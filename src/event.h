@@ -26,7 +26,7 @@ extern "C" {
 #define HAVE_EPOLL      1
 #endif
 
-#if (defined(__apple__) && defined(mac_os_x_version_10_6)) || defined(__freebsd__) || defined(__openbsd__) || defined (__netbsd__)
+#if defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__)
 #define HAVE_KQUEUE     1
 #endif
 

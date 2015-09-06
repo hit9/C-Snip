@@ -15,7 +15,7 @@
         #ifdef HAVE_KQUEUE
         #include "event_kqueue.c"
         #else
-        #include "event_select.c"
+        #error "No event lib avaliable"
         #endif
     #endif
 #endif
