@@ -121,7 +121,7 @@ event_del(struct event_loop *loop, int fd, int mask)
     return EVENT_OK;
 }
 
-/* Wait for events. */
+/* Wait for events. (param timeout: ms, -1 for blocking util) */
 int
 event_wait(struct event_loop *loop, int timeout)
 {
