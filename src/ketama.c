@@ -3,20 +3,28 @@
  */
 
 #include <assert.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include "ketama.h"
 
-static int
+/* Jenkins Hash function
+ * https://en.wikipedia.org/wiki/Jenkins_hash_function */
+static uint32_t
 ketama_hash(char *key, size_t len)
 {
-    size_t seed = 13131;  /* 31, 131, 1313, 13131 */
-    size_t hash = 0;
+    uint32_t hash, i;
 
-    for (; len > 0; len--)
-        hash = hash * seed + (*key++);
-    int val = hash & 0x7fffffff;
-    return ((val << 24) | (val << 16) | (val << 8) | val) >> 0;
+    for(hash = i = 0; i < len; ++i) {
+        hash += key[i];
+        hash += (hash << 10);
+        hash ^= (hash >> 6);
+    }
+
+    hash += (hash << 3);
+    hash ^= (hash >> 11);
+    hash += (hash << 15);
+    return hash & 0x7fffffff;
 }
 
 static int
@@ -52,6 +60,7 @@ ketama_ring_new(struct ketama_node *nodes, int size)
     for (i = 0; i < size; i++) {
         node = nodes[i];
         assert(node.key != NULL);
+        assert(node.weight > 0);
         node.digest = ketama_hash(node.key, strlen(node.key));
         ring->nodes[i] = node;
     }
@@ -79,34 +88,32 @@ ketama_node_get(struct ketama_ring *ring, char *key)
     assert(ring->nodes != NULL);
     assert(ring->size >= 0);
 
-    if (ring->size == 0)
+    struct ketama_node *nodes = ring->nodes;
+    int left = 0, right = ring->size, size = ring->size;
+    int mid;
+
+    if (size == 0)
         return ketama_node_null;
 
-    int digest = ketama_hash(key, strlen(key));
-    int left = 0, right = ring->size - 1;
-    int middle;
+    int mid_digest;
+    uint32_t digest = ketama_hash(key, strlen(key));
 
-    struct ketama_node *nodes = ring->nodes;
+    while (1) {
+        mid = (left + right) / 2;
 
-    if (digest >= nodes[right].digest)
-        return nodes[right];
+        if (mid == size || mid == 0)
+            return nodes[0];
 
-    if (digest <= nodes[left].digest)
-        return nodes[left];
+        if (nodes[mid].digest >= digest && digest > nodes[mid - 1].digest)
+            return nodes[mid];
 
-    while (left <= right) {
-        middle = (left + right) / 2;
-
-        if (nodes[middle].digest > digest) {
-            right = middle - 1;
-        } else if (nodes[middle].digest < digest) {
-            left = middle + 1;
+        if (nodes[mid].digest < digest) {
+            left = mid + 1;
         } else {
-            return nodes[middle];
+            right = mid - 1;
         }
-    }
 
-    if (abs(nodes[left].digest - digest) > abs(nodes[right].digest - digest))
-        return nodes[right];
-    return nodes[left];
+        if (left > right)
+            return nodes[0];
+    }
 }

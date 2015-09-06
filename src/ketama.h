@@ -7,6 +7,8 @@
 #ifndef _CW_KETAMA_H
 #define _CW_KETAMA_H 1
 
+#include <stdint.h>
+
 #if defined(__cplusplus)
 extern "C" {
 #endif
@@ -17,10 +19,10 @@ struct ketama_ring {
 };
 
 struct ketama_node {
-    char *key;      /* node key */
-    int weight;     /* node weight */
-    void *data;     /* user data */
-    int digest;     /* hash digest in the ring */
+    char *key;        /* node key */
+    int weight;       /* node weight */
+    void *data;       /* user data */
+    uint32_t digest;  /* hash digest in the ring */
 };
 
 static struct ketama_node ketama_node_null = {NULL, 0, NULL, 0};
