@@ -74,7 +74,6 @@ event_api_add(struct event_loop *loop, int fd, int mask)
 
     ev.events = 0;
     ev.data.fd = fd;
-    ev.data.u64 = 0; /* avoid valgrind warning */
 
     mask |= loop->events[fd].mask; /* merge old events */
 
@@ -85,6 +84,7 @@ event_api_add(struct event_loop *loop, int fd, int mask)
 
     if (epoll_ctl(loop->api->ep, op, fd, &ev) < 0)
         return EVENT_EFAILED;
+
     return EVENT_OK;
 }
 
@@ -105,7 +105,6 @@ event_api_del(struct event_loop *loop, int fd, int delmask)
     if (mask & EVENT_WRITABLE) ev.events |= EPOLLOUT;
     if (mask & EVENT_ERROR) ev.events |= EPOLLERR;
 
-    ev.data.u64 = 0; /* avoid valgrind warning */
     ev.data.fd = fd;
 
     if (mask != EVENT_NONE) {
