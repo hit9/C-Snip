@@ -136,6 +136,15 @@ static struct test_case utils_test_cases[] = {
     { NULL, NULL },
 };
 
+/**
+ * event_test
+ */
+void case_event_simple();
+static struct test_case event_test_cases[] = {
+    { "simple", &case_event_simple},
+    { NULL, NULL },
+};
+
 
 int main(int argc, const char *argv[])
 {
@@ -151,6 +160,7 @@ int main(int argc, const char *argv[])
     run_cases("dict_test", dict_test_cases);
     run_cases("array_test", array_test_cases);
     run_cases("utils_test", utils_test_cases);
+    run_cases("event_test", event_test_cases);
     printf("=========== test end ========\n");
     return 0;
 }
