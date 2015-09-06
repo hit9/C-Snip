@@ -10,8 +10,12 @@
 void
 echo(struct event_loop *loop, int fd, int mask, void *data)
 {
-    if (fd == STDIN_FILENO)
-        printf("stdin readable now\n");
+    char s[256];
+
+    if (fd == STDIN_FILENO) {
+        scanf("%s", s);
+        printf("your input is: %s\n", s);
+    }
 }
 
 int
