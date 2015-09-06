@@ -1,11 +1,11 @@
 default: build
 
 INC = ../../src
-SRC = epoll.c ../../src/event.c
-BIN = epoll
+SRC = echo.c ../../src/event.c
+BIN = echo
 
 build:
 	$(CC) $(SRC) -I$(INC) -o $(BIN)
 
 clean:
-	rm epoll
+	rm $(BIN)

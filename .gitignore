@@ -1,4 +1,4 @@
-example/event/epoll
+example/event/echo
 *.log
 *.o
 *.out
