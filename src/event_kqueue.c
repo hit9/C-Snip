@@ -99,14 +99,19 @@ event_api_del(struct event_loop *loop, int fd, int mask)
     struct kevent ev;
     struct event_api *api = loop->api;
 
+    int op = EV_DELETE;
+
+    if (EVENT_KQUEUE_ALWAYS_CLEAR)
+        op |= EV_CLEAR;
+
     if (mask & EVENT_READABLE) {
-        EV_SET(&ev, fd, EVFILT_READ, EV_DELETE, 0, 0, NULL);
+        EV_SET(&ev, fd, EVFILT_READ, op, 0, 0, NULL);
         if (kevent(api->kp, &ev, 1, NULL, 0, NULL) < 0)
             return  EVENT_EFAILED;
     }
 
     if (mask & EVENT_WRITABLE) {
-        EV_SET(&ev, fd, EVFILT_WRITE, EV_DELETE, 0, 0, NULL);
+        EV_SET(&ev, fd, EVFILT_WRITE, op, 0, 0, NULL);
         if (kevent(api->kp, &ev, 1, NULL, 0, NULL) < 0)
             return EVENT_EFAILED;
     }
@@ -156,6 +161,7 @@ event_api_wait(struct event_loop *loop, int timeout)
             if (mask & EVENT_WRITABLE && ev.wcb != NULL)
                 (ev.wcb)(loop, fd, mask, ev.data);
         }
+
         return EVENT_OK;
     }
 
