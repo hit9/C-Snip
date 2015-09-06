@@ -141,7 +141,16 @@ static struct test_case utils_test_cases[] = {
  */
 void case_event_simple();
 static struct test_case event_test_cases[] = {
-    { "event_simple", &case_event_simple},
+    { "event_simple", &case_event_simple },
+    { NULL, NULL },
+};
+
+/**
+ * ketama_test
+ */
+void case_ketama_new();
+static struct test_case ketama_test_cases[] = {
+    { "ketama_new", &case_ketama_new },
     { NULL, NULL },
 };
 
@@ -161,6 +170,7 @@ int main(int argc, const char *argv[])
     run_cases("array_test", array_test_cases);
     run_cases("utils_test", utils_test_cases);
     run_cases("event_test", event_test_cases);
+    run_cases("ketama_test", ketama_test_cases);
     printf("=========== test end ========\n");
     return 0;
 }

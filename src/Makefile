@@ -16,7 +16,8 @@ SRC     = test.c                 \
           dict.c dict_test.c     \
           array.c array_test.c   \
           utils.c utils_test.c   \
-          event.c event_test.c
+          event.c event_test.c   \
+		  ketama.c ketama_test.c
 
 OBJ    = $(SRC:c=o)
 BIN    = $(NAME)
