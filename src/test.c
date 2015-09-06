@@ -141,7 +141,7 @@ static struct test_case utils_test_cases[] = {
  */
 void case_event_simple();
 static struct test_case event_test_cases[] = {
-    { "simple", &case_event_simple},
+    { "event_simple", &case_event_simple},
     { NULL, NULL },
 };
 

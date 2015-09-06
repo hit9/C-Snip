@@ -17,7 +17,7 @@ int fds[2];
 void *
 write_data(void *data)
 {
-    sleep(1);
+    usleep(1000);
     char buf[256] = "abcdef";
     assert(write(fds[1], buf, 6) == 6);
     return NULL;
