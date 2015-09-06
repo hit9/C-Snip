@@ -43,10 +43,10 @@ extern "C" {
 #define event_del_out(loop, fd)             event_del(loop, fd, EVENT_WRITABLE);
 
 enum {
-    EVENT_OK = 0,
-    EVENT_ENOMEM = 1,
-    EVENT_EFAILED = 2,
-    EVENT_ERANGE = 3,
+    EVENT_OK = 0,       /* operation is ok */
+    EVENT_ENOMEM = 1,   /* no memory error */
+    EVENT_EFAILED = 2,  /* operation is failed */
+    EVENT_ERANGE = 3,   /* range is invalid */
 };
 
 struct event_loop;
