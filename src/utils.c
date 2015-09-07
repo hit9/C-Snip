@@ -91,7 +91,8 @@ bm_search(char *s, char *sub, size_t start)
     return s_len;
 }
 
-/* Create random string with length `len`. */
+/* Create random string with length `len`, you may want
+ * to set rand seed before all your `rand` calls. */
 char *
 random_str(char *s, size_t len)
 {
