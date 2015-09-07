@@ -6,19 +6,16 @@
 #include <stdlib.h>
 #include "event.h"
 
-#ifdef HAVE_EVPORT
-#include "event_evport.c"
+#ifdef HAVE_KQUEUE
+#include "event_kqueue.c"
 #else
     #ifdef HAVE_EPOLL
     #include "event_epoll.c"
     #else
-        #ifdef HAVE_KQUEUE
-        #include "event_kqueue.c"
-        #else
-        #error "No event lib avaliable"
-        #endif
+    #error "no event lib avaliable"
     #endif
 #endif
+
 
 /* Create an event loop. */
 struct event_loop *
