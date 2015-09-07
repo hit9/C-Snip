@@ -24,6 +24,8 @@ int _vscnprintf(char *buf, size_t size, const char *fmt, va_list args);
 
 size_t bm_search(char *s, char *sub, size_t start);
 
+char *random_str(char *s, size_t len);
+
 /**
  * **************** Hash Functions **********************
  */

@@ -91,6 +91,20 @@ bm_search(char *s, char *sub, size_t start)
     return s_len;
 }
 
+/* Create random string with length `len`. */
+char *
+random_str(char *s, size_t len)
+{
+    static const char chs[] = "0123456789"
+        "abcdefghijklmnopqrstuvwxyz"
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    int i;
+    for (i = 0; i < len; i++)
+        s[i] = chs[rand() % (10 + 26 * 2)];
+    s[len] = 0;
+    return s;
+}
+
 /**
  * **************** Hash Functions **********************
  */
