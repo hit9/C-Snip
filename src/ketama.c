@@ -3,6 +3,7 @@
  */
 
 #include <assert.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "ketama.h"
@@ -17,16 +18,15 @@ ketama_hash(char *key, size_t len)
 static int
 ketama_node_cmp(const void *node_a, const void *node_b)
 {
-    return ((struct ketama_node *)node_a)->digest - \
-        ((struct ketama_node *)node_b)->digest;
+    return ((struct ketama_node *)node_a)->hash - \
+        ((struct ketama_node *)node_b)->hash;
 }
 
+/* Create ketama hash ring from nodes array. */
 struct ketama_ring *
-ketama_ring_new(struct ketama_node *nodes, int size)
+ketama_ring_new(struct ketama_node *nodes, size_t len)
 {
-    assert(size >= 0);
-
-    if (size > 0)
+    if (len > 0)
         assert(nodes != NULL);
 
     struct ketama_ring *ring = malloc(sizeof(struct ketama_ring));
@@ -34,29 +34,50 @@ ketama_ring_new(struct ketama_node *nodes, int size)
     if (ring == NULL)
         return NULL;
 
-    ring->nodes = malloc(sizeof(struct ketama_node) * size);
+    int i;
+
+    for (i = 0, ring->len = 0; i < len; i++)
+        ring->len += nodes[i].weight;
+
+    ring->nodes = malloc(sizeof(struct ketama_node) * ring->len);
 
     if (ring->nodes == NULL) {
         free(ring);
         return NULL;
     }
 
-    int i;
+    int j, k, digits;
     struct ketama_node node;
+    unsigned int num;
+    size_t key_len_max;
 
-    for (i = 0; i < size; i++) {
+    for (i = 0, k = 0; i < len; i++) {
         node = nodes[i];
+
+        for (digits = 0, num = node.weight;
+                num > 0; num /= 10, ++digits);
+
         assert(node.key != NULL);
-        assert(node.weight > 0);
-        node.digest = ketama_hash(node.key, strlen(node.key));
-        ring->nodes[i] = node;
+        assert(node.hash == 0);
+
+        key_len_max = strlen(node.key) + digits + 1;
+        char key[key_len_max];
+
+        for (j = 0; j < node.weight; j++, k++) {
+            ring->nodes[k].key = node.key;
+            ring->nodes[k].weight = node.weight;
+            ring->nodes[k].data = node.data;
+            memset(key, 0, key_len_max);
+            sprintf(key, "%s:%d", node.key, j);
+            ring->nodes[k].hash = ketama_hash(key, strlen(key));
+        }
     }
 
-    qsort(ring->nodes, size, sizeof(struct ketama_node), ketama_node_cmp);
-    ring->size = size;
+    qsort(ring->nodes, ring->len, sizeof(struct ketama_node), ketama_node_cmp);
     return ring;
 }
 
+/* Free ketama ring. */
 void
 ketama_ring_free(struct ketama_ring *ring)
 {
@@ -67,43 +88,43 @@ ketama_ring_free(struct ketama_ring *ring)
     }
 }
 
+/* Get node by key from ring. */
 struct ketama_node
 ketama_node_get(struct ketama_ring *ring, char *key)
 {
-    assert(key != NULL);
     assert(ring != NULL);
+    assert(key != NULL);
     assert(ring->nodes != NULL);
-    assert(ring->size >= 0);
 
     struct ketama_node *nodes = ring->nodes;
-    int size = ring->size;
+    size_t len = ring->len;
 
-    if (size == 0)
+    if (len == 0)
         return ketama_node_null;
 
-    if(size == 1)
+    if (len == 1)
         return nodes[0];
 
-    int left = 0, right = size - 1;
-    int mid;
-    int digest = ketama_hash(key, strlen(key));
+    int left = 0, right = len - 1, mid;
+    uint32_t hash = ketama_hash(key, strlen(key));
 
     while (left < right) {
         mid = (left + right) / 2;
 
-        if (nodes[mid].digest < digest) {
+        if (nodes[mid].hash < hash) {
             left = mid + 1;
-        } else if (nodes[mid].digest > digest) {
+        } else if (nodes[mid].hash > hash) {
             right = mid - 1;
         } else {
             return nodes[mid];
         }
     }
 
+    if (left > len - 1) left = len - 1;
     if (right < 0) right = 0;
-    if (left > size - 1) left = size - 1;
 
-    if (abs(nodes[left].digest - digest) > abs(nodes[right].digest - digest))
+    if (abs(nodes[left].hash - hash) >
+            abs(nodes[right].hash - hash))
         return nodes[right];
     return nodes[left];
 }
