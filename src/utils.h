@@ -5,6 +5,7 @@
 #ifndef _CW_UTILS_H
 #define _CW_UTILS_H     1
 
+#include <stdint.h>
 #include <stdarg.h>
 
 #if defined(__cplusplus)
@@ -24,12 +25,18 @@ int _vscnprintf(char *buf, size_t size, const char *fmt, va_list args);
 size_t bm_search(char *s, char *sub, size_t start);
 
 /**
- * ****************  Date Time Utils **********************
+ * **************** Hash Functions **********************
+ */
+uint32_t jenkins_hash(char *key, size_t len);
+
+
+/**
+ * **************** Date Time Utils **********************
  */
 double time_now(void);
 
 /**
- * ****************  IO Utils **********************
+ * **************** IO Utils **********************
  */
 
 #if defined(__cplusplus)

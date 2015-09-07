@@ -6,17 +6,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include "dict.h"
+#include "utils.h"
 
-/* BKDRHash algorithm. */
-static size_t
-dict_bkdrhash(char *key, size_t len)
+static uint32_t
+dict_hash(char *key, size_t len)
 {
-    size_t seed = 13131;  /* 31, 131, 1313, 13131 */
-    size_t hash = 0;
-
-    for (; len > 0; len--)
-        hash = hash * seed + (*key++);
-    return hash & 0x7fffffff;
+    return jenkins_hash(key, len);
 }
 
 /* Get table size idx. */
@@ -24,7 +19,7 @@ size_t
 dict_table_idx(size_t idx, char *key, size_t len)
 {
     assert(idx <= dict_idx_max);
-    return dict_bkdrhash(key, len) % dict_table_sizes[idx];
+    return dict_hash(key, len) % dict_table_sizes[idx];
 }
 
 /* If two key equals. */
@@ -350,7 +345,9 @@ dict_iter_next(struct dict_iter *iter)
 
     assert(dict->idx <= dict_idx_max);
     size_t table_size = dict_table_sizes[dict->idx];
-    assert(iter->index < table_size);
+
+    if (iter->index >= table_size)
+        return NULL;
 
     while (iter->node == NULL) {
         if (iter->index >= table_size)

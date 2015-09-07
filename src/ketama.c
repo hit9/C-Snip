@@ -3,28 +3,15 @@
  */
 
 #include <assert.h>
-#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include "ketama.h"
+#include "utils.h"
 
-/* Jenkins Hash function
- * https://en.wikipedia.org/wiki/Jenkins_hash_function */
 static uint32_t
 ketama_hash(char *key, size_t len)
 {
-    uint32_t hash, i;
-
-    for(hash = i = 0; i < len; ++i) {
-        hash += key[i];
-        hash += (hash << 10);
-        hash ^= (hash >> 6);
-    }
-
-    hash += (hash << 3);
-    hash ^= (hash >> 11);
-    hash += (hash << 15);
-    return hash & 0x7fffffff;
+    return jenkins_hash(key, len) & 0x7fffffff;
 }
 
 static int
@@ -89,31 +76,34 @@ ketama_node_get(struct ketama_ring *ring, char *key)
     assert(ring->size >= 0);
 
     struct ketama_node *nodes = ring->nodes;
-    int left = 0, right = ring->size, size = ring->size;
-    int mid;
+    int size = ring->size;
 
     if (size == 0)
         return ketama_node_null;
 
-    int mid_digest;
-    uint32_t digest = ketama_hash(key, strlen(key));
+    if(size == 1)
+        return nodes[0];
 
-    while (1) {
+    int left = 0, right = size - 1;
+    int mid;
+    int digest = ketama_hash(key, strlen(key));
+
+    while (left < right) {
         mid = (left + right) / 2;
-
-        if (mid == size || mid == 0)
-            return nodes[0];
-
-        if (nodes[mid].digest >= digest && digest > nodes[mid - 1].digest)
-            return nodes[mid];
 
         if (nodes[mid].digest < digest) {
             left = mid + 1;
-        } else {
+        } else if (nodes[mid].digest > digest) {
             right = mid - 1;
+        } else {
+            return nodes[mid];
         }
-
-        if (left > right)
-            return nodes[0];
     }
+
+    if (right < 0) right = 0;
+    if (left > size - 1) left = size - 1;
+
+    if (abs(nodes[left].digest - digest) > abs(nodes[right].digest - digest))
+        return nodes[right];
+    return nodes[left];
 }

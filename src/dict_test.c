@@ -112,12 +112,14 @@ case_dict_iter()
     assert(dict_set(dict, key6, len6, "val6") == DICT_OK);
 
     struct dict_iter *iter = dict_iter(dict);
-    assert(strncmp(dict_iter_next(iter)->key, key1, len1) == 0);
-    assert(strncmp(dict_iter_next(iter)->key, key2, len2) == 0);
-    assert(strncmp(dict_iter_next(iter)->key, key3, len3) == 0);
-    assert(strncmp(dict_iter_next(iter)->key, key4, len4) == 0);
-    assert(strncmp(dict_iter_next(iter)->key, key5, len5) == 0);
-    assert(strncmp(dict_iter_next(iter)->key, key6, len6) == 0);
+
+    assert(dict_iter_next(iter) != NULL);
+    assert(dict_iter_next(iter) != NULL);
+    assert(dict_iter_next(iter) != NULL);
+    assert(dict_iter_next(iter) != NULL);
+    assert(dict_iter_next(iter) != NULL);
+    assert(dict_iter_next(iter) != NULL);
+    assert(dict_iter_next(iter) == NULL);
     dict_iter_free(iter);
     dict_free(dict);
 }
