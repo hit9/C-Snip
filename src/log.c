@@ -9,6 +9,7 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <pthread.h>
 
 #include "log.h"
 #include "utils.h"
@@ -38,6 +39,7 @@ log_open(char *name, char *filename)
         }
     }
 
+    pthread_mutex_init(&(l->lock), NULL);
     return LOG_OK;
 }
 
@@ -65,7 +67,9 @@ log_reopen(void)
 
     assert(l->filename != NULL);
 
+    pthread_mutex_lock(&(l->lock));
     l->fd = open(l->filename, LOG_FILE_PERM, LOG_FILE_MODE);
+    pthread_mutex_unlock(&(l->lock));
 
     if (l->fd < 0) {
         return LOG_EOPEN;
@@ -95,6 +99,8 @@ log_log(int level, char * levelname, const char *fmt, ...)
     if (level < l->level)
         return LOG_OK;
 
+    pthread_mutex_lock(&(l->lock));
+
     int len = 0, size = LOG_LINE_LEN_MAX;
 
     char buf[size + 1];
@@ -107,8 +113,8 @@ log_log(int level, char * levelname, const char *fmt, ...)
     len += _scnprintf(buf + len, size - len, "%03ld", tv.tv_usec/1000);
     // level
     len += _scnprintf(buf + len, size - len, " %s", levelname);
-    // name and pid
-    len += _scnprintf(buf + len, size - len, " %s[%ld] ", l->name, getpid());
+    // name and pid and tid
+    len += _scnprintf(buf + len, size - len, " %s[%ld/%ld] ", l->name, getpid(), pthread_self());
 
     va_list args;
     va_start(args, fmt);
@@ -120,5 +126,7 @@ log_log(int level, char * levelname, const char *fmt, ...)
     if (write(l->fd, buf, len) < 0) {
         return LOG_EWRITE;
     }
+
+    pthread_mutex_unlock(&(l->lock));
     return LOG_OK;
 }

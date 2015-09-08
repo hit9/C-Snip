@@ -39,10 +39,11 @@ enum {
 };
 
 struct logger {
-    char *name;       /* logger name */
-    char *filename;   /* filename to log */
-    int level;        /* logging level */
-    int fd;           /* fd to write */
+    char *name;             /* logger name */
+    char *filename;         /* filename to log */
+    int level;              /* logging level */
+    int fd;                 /* fd to write */
+    pthread_mutex_t lock;   /* lock on logging */
 };
 
 #define log_debug(...)      log_log(LOG_DEBUG, LOG_DEBUG_S, __VA_ARGS__)
