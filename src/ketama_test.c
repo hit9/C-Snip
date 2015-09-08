@@ -51,10 +51,10 @@ case_ketama_get()
     char key[11];
     srand(time(NULL));
     random_str(key, 10);
-    struct ketama_node node = ketama_node_get(ring, key);
+    struct ketama_node node = ketama_node_sget(ring, key);
     int i;
     for (i = 0; i < 1000; i++)
-        assert(strcmp(node.key, ketama_node_get(ring, key).key) == 0);
+        assert(strcmp(node.key, ketama_node_sget(ring, key).key) == 0);
 
     ketama_ring_free(ring);
 }
