@@ -198,3 +198,18 @@ buf_sprintf(struct buf *buf, const char *fmt, ...)
     buf->len += num;
     return BUF_OK;
 }
+
+/* Romve part of buf on the left. */
+void
+buf_lrm(struct buf *buf, size_t len)
+{
+    assert(buf != NULL);
+
+    if (len > buf->len) {
+        buf->len = 0;
+        return;
+    }
+
+    buf->len -= len;
+    memmove(buf->data, buf->data + len, buf->len);
+}

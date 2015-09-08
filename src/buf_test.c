@@ -84,3 +84,14 @@ case_buf_isempty()
     buf_free(buf1);
     buf_free(buf2);
 }
+
+void
+case_buf_lrm()
+{
+    struct buf *buf = buf("testabcdef");
+    buf_lrm(buf, 4);
+    assert(strcmp(buf_str(buf), "abcdef") == 0);
+    buf_lrm(buf, 100);
+    assert(strcmp(buf_str(buf), "") == 0);
+    buf_free(buf);
+}

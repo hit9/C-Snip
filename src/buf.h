@@ -44,6 +44,7 @@ int buf_putc(struct buf *buf, char ch);
 char *buf_str(struct buf *buf);
 bool buf_isempty(struct buf *buf);
 int buf_sprintf(struct buf *buf, const char *fmt, ...);
+void buf_lrm(struct buf *buf, size_t len);
 
 #if defined(__cplusplus)
 }
