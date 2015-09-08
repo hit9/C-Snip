@@ -67,6 +67,7 @@ ketama_ring_new(struct ketama_node *nodes, size_t len)
             ring->nodes[k].key = node.key;
             ring->nodes[k].weight = node.weight;
             ring->nodes[k].data = node.data;
+            ring->nodes[k].idx = i;
             memset(key, 0, key_len_max);
             sprintf(key, "%s:%d", node.key, j);
             ring->nodes[k].hash = ketama_hash(key, strlen(key));
