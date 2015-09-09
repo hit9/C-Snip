@@ -1,4 +1,5 @@
 example/event/echo
+example/cfg/config
 *.log
 *.o
 *.out
