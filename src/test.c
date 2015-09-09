@@ -158,6 +158,15 @@ static struct test_case ketama_test_cases[] = {
     { NULL, NULL },
 };
 
+/**
+ * cfg_test
+ */
+void case_cfg_get();
+static struct test_case cfg_test_cases[] = {
+    { "cfg_get", &case_cfg_get },
+    { NULL, NULL },
+};
+
 
 int main(int argc, const char *argv[])
 {
@@ -175,6 +184,7 @@ int main(int argc, const char *argv[])
     run_cases("utils_test", utils_test_cases);
     run_cases("event_test", event_test_cases);
     run_cases("ketama_test", ketama_test_cases);
+    run_cases("cfg_get", cfg_test_cases);
     printf("=========== test end ========\n");
     return 0;
 }
