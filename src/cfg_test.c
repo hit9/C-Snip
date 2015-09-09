@@ -17,6 +17,7 @@ case_cfg_get()
     struct cfg cfg;
     cfg.data = s;
     cfg.len = strlen(s);
+    cfg.lineno = 1;
 
     assert(cfg_get(&cfg) == CFG_OK);
     assert(strncmp("port", cfg.key, cfg.key_len) == 0);

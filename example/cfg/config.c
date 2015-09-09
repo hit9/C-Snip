@@ -34,6 +34,7 @@ main(int argc, const char *argv[])
 
     cfg.data = buf->data;
     cfg.len = buf->len;
+    cfg.lineno = 1;
 
     int cfg_err;
 

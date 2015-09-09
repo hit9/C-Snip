@@ -11,6 +11,7 @@ int
 cfg_get(struct cfg *cfg)
 {
     assert(cfg != NULL);
+    assert(cfg->lineno > 0);
 
     if (cfg->data == NULL || cfg->len == 0)
         return CFG_EOF;
@@ -36,8 +37,6 @@ cfg_get(struct cfg *cfg)
                     cfg->val_len = data + idx - cfg->val;
                 break;
             case '\n':
-                cfg->lineno++;
-
                 if (cfg->val != NULL && cfg->val_len == 0)
                     /* val end */
                     cfg->val_len = data + idx - cfg->val;
@@ -47,6 +46,7 @@ cfg_get(struct cfg *cfg)
                 if (cfg->key != NULL && cfg->val == NULL)
                     /* line contains only one word */
                     return CFG_EBADFMT;
+                cfg->lineno++;
                 break;
             case '#':
                 if (cfg->val != NULL && cfg->val_len == 0)
