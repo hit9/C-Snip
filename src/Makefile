@@ -8,6 +8,7 @@ CFLAGS  =
 LDFLAGS = -pthread
 SRC     = test.c\
 		  log.c\
+		  md5.c\
 		  bool_test.c\
 		  buf.c buf_test.c\
 		  stack.c stack_test.c\
