@@ -24,6 +24,7 @@ struct ketama_node {
     char *key;            /* node key */
     unsigned int weight;  /* node weight */
     void *data;           /* user data */
+    long idata;           /* user long typed data */
     size_t idx;           /* node idx in origin array */
     uint32_t hash;        /* hash value in the ring */
 };

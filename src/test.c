@@ -150,11 +150,11 @@ static struct test_case event_test_cases[] = {
 /**
  * ketama_test
  */
-void case_ketama_new();
-void case_ketama_get();
+void case_ketama_balance();
+void case_ketama_consistence();
 static struct test_case ketama_test_cases[] = {
-    { "ketama_new", &case_ketama_new },
-    { "ketama_get", &case_ketama_get },
+    { "ketama_balance", &case_ketama_balance },
+    { "ketama_consistence", &case_ketama_consistence },
     { NULL, NULL },
 };
 

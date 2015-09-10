@@ -10,7 +10,7 @@
 #include "utils.h"
 
 void
-case_ketama_new()
+case_ketama_balance()
 {
     struct ketama_node nodes[13] = {
         {"127.0.0.1:8000", 1},
@@ -25,17 +25,30 @@ case_ketama_new()
         {"127.0.0.1:8009", 1},
         {"127.0.0.1:8010", 1},
         {"127.0.0.1:8011", 1},
-        {"127.0.0.1:8022", 5},
+        {"127.0.0.1:8012", 1},
     };
     struct ketama_ring *ring = ketama_ring_new(nodes, 13);
     assert(ring->nodes != NULL);
-    assert(ring->len == 12 + 5);
+    assert(ring->len == 13 * 160);
+
+    int i;
+    for (i = 0; i < 2600; i++) {
+        char key[11];
+        random_str(key, 10);
+        struct ketama_node node = ketama_node_sget(ring, key);
+        nodes[node.idx].idata += 1;
+    }
+
+    for (i = 0; i < 13; i++)
+        assert(nodes[i].idata > 150 && nodes[i].idata < 260);
+
     ketama_ring_free(ring);
 }
 
 void
-case_ketama_get()
+case_ketama_consistence()
 {
+    /* consistence testing */
     struct ketama_node nodes[5] = {
         {"192.168.0.1:9527", 1},
         {"192.168.0.2:9527", 1},
@@ -44,17 +57,17 @@ case_ketama_get()
         {"192.168.0.5:9527", 4},
     };
     struct ketama_ring *ring = ketama_ring_new(nodes, 5);
-    assert(ring->len == 1+1+2+2+4);
+    assert(ring->len == (1+1+2+2+4) * 160);
     assert(ring->nodes != NULL);
 
-    /* consistence testing */
     char key[11];
     srand(time(NULL));
     random_str(key, 10);
     struct ketama_node node = ketama_node_sget(ring, key);
     int i;
-    for (i = 0; i < 1000; i++)
+    for (i = 0; i < 1000; i++) {
         assert(strcmp(node.key, ketama_node_sget(ring, key).key) == 0);
+    }
 
     ketama_ring_free(ring);
 }
