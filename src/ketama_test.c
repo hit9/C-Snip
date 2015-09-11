@@ -32,7 +32,7 @@ case_ketama_balance()
     assert(ring->len == 13 * 160);
 
     int i;
-    for (i = 0; i < 2600; i++) {
+    for (i = 0; i < 26000; i++) {
         char key[11];
         random_str(key, 10);
         struct ketama_node node = ketama_node_sget(ring, key);
@@ -40,7 +40,7 @@ case_ketama_balance()
     }
 
     for (i = 0; i < 13; i++)
-        assert(nodes[i].idata > 150 && nodes[i].idata < 260);
+        assert(nodes[i].idata > 1500 && nodes[i].idata < 2600);
 
     ketama_ring_free(ring);
 }
