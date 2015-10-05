@@ -39,7 +39,8 @@ log_open(char *name, char *filename)
         }
     }
 
-    pthread_mutex_init(&(l->lock), NULL);
+    if (LOG_THREAD_SAFE)
+        pthread_mutex_init(&(l->lock), NULL);
     return LOG_OK;
 }
 
@@ -48,6 +49,9 @@ void
 log_close(void)
 {
     struct logger *l = &logger;
+
+    if (LOG_THREAD_SAFE)
+        pthread_mutex_destroy(&(l->lock));
 
     if (l->fd < 0 || l->fd == STDERR_FILENO)
         return;
@@ -59,7 +63,7 @@ int
 log_reopen(void)
 {
     struct logger *l = &logger;
-
+;
     if (l->fd < 0 || l->fd == STDERR_FILENO)
         return LOG_OK;
 
@@ -67,14 +71,10 @@ log_reopen(void)
 
     assert(l->filename != NULL);
 
-    pthread_mutex_lock(&(l->lock));
     l->fd = open(l->filename, LOG_FILE_PERM, LOG_FILE_MODE);
-    pthread_mutex_unlock(&(l->lock));
 
-    if (l->fd < 0) {
+    if (l->fd < 0)
         return LOG_EOPEN;
-    }
-
     return LOG_OK;
 }
 
@@ -99,8 +99,6 @@ log_log(int level, char * levelname, const char *fmt, ...)
     if (level < l->level)
         return LOG_OK;
 
-    pthread_mutex_lock(&(l->lock));
-
     int len = 0, size = LOG_LINE_LEN_MAX;
 
     char buf[size + 1];
@@ -123,10 +121,14 @@ log_log(int level, char * levelname, const char *fmt, ...)
 
     buf[len++] = '\n';
 
+    if (LOG_THREAD_SAFE)
+        pthread_mutex_lock(&(l->lock));
+
     if (write(l->fd, buf, len) < 0) {
         return LOG_EWRITE;
     }
 
-    pthread_mutex_unlock(&(l->lock));
+    if (LOG_THREAD_SAFE)
+        pthread_mutex_unlock(&(l->lock));
     return LOG_OK;
 }

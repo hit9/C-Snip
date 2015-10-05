@@ -16,7 +16,7 @@ extern "C" {
 #define LOG_LINE_LEN_MAX    256
 #define LOG_FILE_MODE       0644
 #define LOG_FILE_PERM       O_WRONLY | O_APPEND | O_CREAT
-
+#define LOG_THREAD_SAFE     1
 
 #define LOG_DEBUG_S         "debug"
 #define LOG_INFO_S          "info"
