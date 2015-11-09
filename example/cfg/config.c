@@ -11,7 +11,6 @@
 int
 main(int argc, const char *argv[])
 {
-
     struct buf *buf = buf_new(NULL);
     int nread;
     FILE *fp = fopen("config.cfg", "r");
@@ -46,7 +45,7 @@ main(int argc, const char *argv[])
     buf_free(buf);
 
     if (cfg_err == CFG_EBADFMT) {
-        printf("bad format on line %d\n", cfg.lineno);
+        printf("bad format on line %ld\n", cfg.lineno);
         return -1;
     }
 
