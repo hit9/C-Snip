@@ -109,27 +109,6 @@ static struct test_case dict_test_cases[] = {
 };
 
 /**
- * array_test
- */
-void case_array_empty();
-void case_array_insert();
-void case_array_push();
-void case_array_mpush();
-void case_array_pop();
-void case_array_index_has();
-void case_array_extend();
-static struct test_case array_test_cases[] = {
-    { "array_empty", &case_array_empty },
-    { "array_insert", &case_array_insert },
-    { "array_push", &case_array_push },
-    { "array_mpush", &case_array_mpush },
-    { "array_pop", &case_array_pop },
-    { "array_index", &case_array_index_has },
-    { "array_extend", &case_array_extend },
-    { NULL, NULL },
-};
-
-/**
  * utils_test
  */
 void case_utils_bm_search();
@@ -193,7 +172,6 @@ int main(int argc, const char *argv[])
     run_cases("queue_test", queue_test_cases);
     run_cases("list_test", list_test_cases);
     run_cases("dict_test", dict_test_cases);
-    run_cases("array_test", array_test_cases);
     run_cases("utils_test", utils_test_cases);
     run_cases("event_test", event_test_cases);
     run_cases("ketama_test", ketama_test_cases);
