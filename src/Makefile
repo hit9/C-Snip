@@ -7,13 +7,13 @@ CC      = cc
 CFLAGS  =
 LDFLAGS = -pthread
 SRC     = test.c\
-		  log.c\
 		  md5.c\
 		  bool_test.c\
 		  buf.c buf_test.c\
 		  stack.c stack_test.c\
 		  queue.c queue_test.c\
 		  list.c list_test.c\
+		  log.c log_test.c\
 		  dict.c dict_test.c\
 		  array.c array_test.c\
 		  utils.c utils_test.c\
@@ -30,12 +30,12 @@ $(BIN): $(OBJ)
 runtest: $(BIN)
 ifeq ($(UNAME), Linux)
 	@touch $(NAME).log
-	@env MALLOC_TRACE=$(NAME).log ./$(BIN)
+	@env MALLOC_TRACE=leaks-$(NAME).log ./$(BIN)
 	@echo "[leaks detection]" && printf "  "
-	@mtrace $(BIN) $(NAME).log
+	@mtrace $(BIN) leaks-$(NAME).log
 else
 	./$(BIN)
 endif
 
 clean:
-	rm -rf $(BIN) $(NAME).log $(OBJ)
+	rm -rf $(BIN) leask-$(NAME).log $(OBJ) test.log*
