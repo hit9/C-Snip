@@ -115,7 +115,7 @@ log_rotate(void) {
     gettimeofday(&tv, NULL);
     sec = tv.tv_sec;
     tm = localtime(&sec);
-    sprintf(buf, "%s.%04d%02d%02d-%02d%02d%02d",
+    sprintf(buf, "%s.%04d%02d%02d-%02d%02d%03d",
             l->filename,
             tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday,
             tm->tm_hour, tm->tm_min, tm->tm_sec);
@@ -168,8 +168,10 @@ log_log(int level, char * levelname, const char *fmt, ...)
         return LOG_EWRITE;
     } else if (l->filename != NULL) {
         l->fsize += len;
-        if (l->fsize > l->rotate_size)
-            log_rotate();
+        if (l->rotate_size != 0) {
+            if (l->fsize > l->rotate_size)
+                log_rotate();
+        }
     }
 
     if (LOG_THREAD_SAFE)
