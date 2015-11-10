@@ -5,9 +5,11 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #include <sys/time.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <unistd.h>
 #include <pthread.h>
 
@@ -16,9 +18,11 @@
 
 static struct logger logger;
 
-/* Open global logger, if `filename` is NULL, use stderr. */
+/* Open global logger, if `filename` is NULL, use stderr.
+ * The `rotate_size` only works when logging to a file,
+ * and `rotate_size==0` means no rotation. */
 int
-log_open(char *name, char *filename)
+log_open(char *name, char *filename, size_t rotate_size)
 {
     assert(name != NULL);
 
@@ -30,13 +34,22 @@ log_open(char *name, char *filename)
 
     if (filename == NULL) {
         l->fd = STDERR_FILENO;
+        l->rotate_size = 0;
+        l->fsize = 0;
     } else {
+        assert(strlen(filename) <= LOG_FILENAME_LEN_MAX);
         l->filename = filename;
+        l->rotate_size = rotate_size;
         l->fd = open(filename, LOG_FILE_PERM, LOG_FILE_MODE);
 
         if (l->fd < 0) {
             return LOG_EOPEN;
         }
+
+        struct stat st;
+        if (fstat(l->fd, &st) != 0)
+            return LOG_ESTAT;
+        l->fsize = st.st_size;
     }
 
     if (LOG_THREAD_SAFE)
@@ -63,7 +76,7 @@ int
 log_reopen(void)
 {
     struct logger *l = &logger;
-;
+
     if (l->fd < 0 || l->fd == STDERR_FILENO)
         return LOG_OK;
 
@@ -84,6 +97,33 @@ log_setlevel(int level)
 {
     struct logger *l = &logger;
     l->level = MAX(MIN(LOG_CRITICAL, level), LOG_DEBUG);
+}
+
+/* Rotate log file. */
+int
+log_rotate(void) {
+    struct logger *l = &logger;
+
+    assert(l->name != NULL);
+    assert(l->fd > 0 && l->fd != STDERR_FILENO);
+    assert(l->filename != NULL);
+
+    char buf[LOG_FILENAME_LEN_MAX];
+    time_t sec;
+    struct timeval tv;
+    struct tm *tm;
+    gettimeofday(&tv, NULL);
+    sec = tv.tv_sec;
+    tm = localtime(&sec);
+    sprintf(buf, "%s.%04d%02d%02d-%02d%02d%03d",
+            l->filename,
+            tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday,
+            tm->tm_hour, tm->tm_min, tm->tm_sec);
+
+    if (rename(l->filename, buf))
+        return LOG_ERENAME;
+    l->fsize = 0;
+    return log_reopen();
 }
 
 /* Format logging message to file/stderr. */
@@ -107,7 +147,7 @@ log_log(int level, char * levelname, const char *fmt, ...)
     struct timeval tv;
     gettimeofday(&tv, NULL);
 
-    len += strftime(buf + len, size - len, "%Y-%m-%d %H:%M:%S.", localtime(&tv.tv_sec));
+    len += strftime(buf + len, size - len, "%y-%m-%d %h:%m:%s.", localtime(&tv.tv_sec));
     len += _scnprintf(buf + len, size - len, "%03ld", tv.tv_usec/1000);
     // level
     len += _scnprintf(buf + len, size - len, " %s", levelname);
@@ -126,6 +166,12 @@ log_log(int level, char * levelname, const char *fmt, ...)
 
     if (write(l->fd, buf, len) < 0) {
         return LOG_EWRITE;
+    } else if (l->filename != NULL) {
+        l->fsize += len;
+        if (l->rotate_size != 0) {
+            if (l->fsize > l->rotate_size)
+                log_rotate();
+        }
     }
 
     if (LOG_THREAD_SAFE)
