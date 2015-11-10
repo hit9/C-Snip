@@ -38,4 +38,4 @@ else
 endif
 
 clean:
-	rm -rf $(BIN) leask-$(NAME).log $(OBJ) test.log*
+	rm -rf $(BIN) leaks-$(NAME).log $(OBJ) test.log*
