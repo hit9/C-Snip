@@ -7,6 +7,7 @@
 #ifndef _CW_LOG_H
 #define _CW_LOG_H 1
 
+#include <pthread.h>
 #include <fcntl.h>
 
 #if defined(__cplusplus)
