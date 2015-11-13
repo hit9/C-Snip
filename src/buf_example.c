@@ -13,7 +13,7 @@ int main(int argc, const char *argv[])
     assert(buf_puts(buf, "abc") == BUF_OK);
     /* put char to buffer */
     assert(buf_putc(buf, 'd') == BUF_OK);
-    /* form data into buffer */
+    /* format data into buffer */
     assert(buf_sprintf(buf, "%s%d", "efg", 123) == BUF_OK);
     /* print buffer, should be "exampleabcdefg123" */
     printf("%s\n", str(buf));
