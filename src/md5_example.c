@@ -15,6 +15,6 @@ int main(int argc, const char *argv[])
     md5_signature((unsigned char *)key, len, results);
     int i;
     for (i = 0; i < 16; i++)
-        printf("%d", results[i]);
+        printf("%x", results[i]);
     return 0;
 }
