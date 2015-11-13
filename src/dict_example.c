@@ -1,4 +1,4 @@
-// cc dict_example.c dict.c
+// cc dict_example.c dict.c md5.c
 
 #include <assert.h>
 #include <stdio.h>
@@ -26,7 +26,7 @@ int main(int argc, const char *argv[])
     struct dict_iter *iter = dict_iter(dict);
     struct dict_node *node = NULL;
     while ((node = dict_iter_next(iter)) != NULL) {
-        printf("%.*s => %s\n", (int)node->len, node->key, node->val);
+        printf("%.*s => %s\n", (int)node->len, node->key, (char *)node->val);
     }
     /* free dict iterator */
     dict_iter_free(iter);
