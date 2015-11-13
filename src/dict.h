@@ -67,6 +67,10 @@ struct dict_iter *dict_iter_new(struct dict *dict);
 void dict_iter_free(struct dict_iter *iter);
 struct dict_node *dict_iter_next(struct dict_iter *iter);
 void dict_iter_rewind(struct dict_iter *iter);
+int dict_sset(struct dict *dict, char *key, void *val);
+void *dict_sget(struct dict *dict, char *key);
+void *dict_spop(struct dict *dict, char *key);
+bool dict_shas(struct dict *dict, char *key);
 
 #if defined(__cplusplus)
 }
