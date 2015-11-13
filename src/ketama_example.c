@@ -21,5 +21,7 @@ int main(int argc, const char *argv[])
     /* get again, consistence hashing */
     node = ketama_node_sget(ring, "key");
     printf("get again by 'key': %s %s\n", node.key, node.data);
+    /* free the ring */
+    ketama_ring_free(ring);
     return 0;
 }
