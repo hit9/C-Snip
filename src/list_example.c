@@ -21,7 +21,7 @@ int main(int argc, const char *argv[])
     struct list_iter *iter = list_iter(list);
     void *data;
     while ((data = list_iter_next(iter)) != NULL)
-        printf("%s ", data);
+        printf("%s ", (char *)data);
     /* free the list iterator */
     list_iter_free(iter);
     /* free the list */
