@@ -7,29 +7,10 @@
 #include <string.h>
 #include "dict.h"
 
-/* Jenkins Hash function
- * https://en.wikipedia.org/wiki/Jenkins_hash_function */
-uint32_t
-jenkins_hash(char *key, size_t len)
-{
-    uint32_t hash, i;
-
-    for(hash = i = 0; i < len; ++i) {
-        hash += key[i];
-        hash += (hash << 10);
-        hash ^= (hash >> 6);
-    }
-
-    hash += (hash << 3);
-    hash ^= (hash >> 11);
-    hash += (hash << 15);
-    return hash;
-}
-
 static uint32_t
 dict_hash(char *key, size_t len)
 {
-    return jenkins_hash(key, len);
+    return hash_md5(key, len);
 }
 
 /* Get table size idx. */
