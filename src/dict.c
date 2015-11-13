@@ -6,12 +6,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include "dict.h"
-#include "utils.h"
 
 static uint32_t
 dict_hash(char *key, size_t len)
 {
-    return jenkins_hash(key, len);
+    return hash_md5(key, len);
 }
 
 /* Get table size idx. */
@@ -299,7 +298,7 @@ dict_pop(struct dict *dict, char *key, size_t len)
  *   struct dict_iter *iter = dict_iter_new(dict);
  *   struct dict_node *node = NULL;
  *
- *   while ((node = dict_iter_new(iter)) != NULL) {
+ *   while ((node = dict_iter_next(iter)) != NULL) {
  *      node->key..
  *      node->len..
  *      node->val..
@@ -367,4 +366,32 @@ dict_iter_rewind(struct dict_iter *iter)
     assert(iter != NULL);
     iter->node = NULL;
     iter->index = 0;
+}
+
+/* Set value by null-terminated key. */
+int
+dict_sset(struct dict *dict, char *key, void *val)
+{
+    return dict_set(dict, key, strlen(key), val);
+}
+
+/* Get value by null-terminated key. */
+void *
+dict_sget(struct dict *dict, char *key)
+{
+    return dict_get(dict, key, strlen(key));
+}
+
+/* Pop value by null-terminated key. */
+void *
+dict_spop(struct dict *dict, char *key)
+{
+    return dict_pop(dict, key, strlen(key));
+}
+
+/* Test if a null-terminated key is in dict. */
+bool
+dict_shas(struct dict *dict, char *key)
+{
+    return dict_has(dict, key, strlen(key));
 }

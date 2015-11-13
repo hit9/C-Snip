@@ -37,4 +37,4 @@ else
 endif
 
 clean:
-	rm -rf $(BIN) leaks-$(NAME).log $(OBJ) test.log*
+	rm -rf $(BIN) leaks-$(NAME).log $(OBJ) test.log* *.out

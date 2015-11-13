@@ -8,6 +8,7 @@
 #define _CW_BUF_H       1
 
 #include <stdint.h>
+#include <stdlib.h>
 #include "bool.h"
 
 #if defined(__cplusplus)

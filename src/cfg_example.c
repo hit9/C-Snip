@@ -1,19 +1,18 @@
-/**
- * Copyright (c) 2015, Chao Wang <hit9@icloud.com>
- */
+// cc cfg_example.c cfg.c buf.c
 
+#include <assert.h>
 #include <stdio.h>
 #include "buf.h"
 #include "cfg.h"
 
 #define READ_UNIT   1024
 
-int
-main(int argc, const char *argv[])
+int main(int argc, const char *argv[])
 {
+    /* Read file into buffer */
     struct buf *buf = buf_new(NULL);
     int nread;
-    FILE *fp = fopen("config.cfg", "r");
+    FILE *fp = fopen("cfg_example.cfg", "r");
 
     if (fp == NULL)
         return -1;
@@ -29,11 +28,12 @@ main(int argc, const char *argv[])
         buf->len += nread;
     }
 
+    /* Parse config */
     struct cfg cfg;
 
-    cfg.data = buf->data;
-    cfg.len = buf->len;
-    cfg.lineno = 1;
+    cfg.data = buf->data;   /* data to parse */
+    cfg.len = buf->len;     /* data length to parse */
+    cfg.lineno = 1;         /* initialize line number */
 
     int cfg_err;
 

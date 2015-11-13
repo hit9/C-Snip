@@ -37,6 +37,7 @@ extern "C" {
 #endif
 #endif
 
+#define event_loop(size)                    event_loop_new(size)
 #define event_add_in(loop, fd, cb, data)    event_add(loop, fd, EVENT_READABLE, cb, data);
 #define event_add_out(loop, fd, cb, data)   event_add(loop, fd, EVENT_WRITABLE, cb, data);
 #define event_del_in(loop, fd)              event_del(loop, fd, EVENT_READABLE);

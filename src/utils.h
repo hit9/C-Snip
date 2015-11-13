@@ -27,12 +27,6 @@ size_t bm_search(char *s, char *sub, size_t start);
 char *random_str(char *s, size_t len);
 
 /**
- * **************** Hash Functions **********************
- */
-uint32_t jenkins_hash(char *key, size_t len);
-
-
-/**
  * **************** Date Time Utils **********************
  */
 double time_now(void);
