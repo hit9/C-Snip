@@ -147,7 +147,7 @@ log_log(int level, char * levelname, const char *fmt, ...)
     struct timeval tv;
     gettimeofday(&tv, NULL);
 
-    len += strftime(buf + len, size - len, "%y-%m-%d %h:%m:%s.", localtime(&tv.tv_sec));
+    len += strftime(buf + len, size - len, "%Y-%m-%d %H:%M:%S.", localtime(&tv.tv_sec));
     len += _scnprintf(buf + len, size - len, "%03ld", tv.tv_usec/1000);
     // level
     len += _scnprintf(buf + len, size - len, " %s", levelname);
