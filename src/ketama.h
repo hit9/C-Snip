@@ -13,6 +13,8 @@
 extern "C" {
 #endif
 
+#define ketama_ring(nodes, size)    ketama_ring_new(nodes, size)
+
 /* Note ketama ring's `nodes` and its `length` is not the orignal parameter
  * passed in. */
 struct ketama_ring {
