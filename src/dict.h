@@ -7,6 +7,7 @@
 #ifndef _CW_DICT_H
 #define _CW_DICT_H 1
 
+#include <stdlib.h>
 #include <stdint.h>
 #include "bool.h"
 
