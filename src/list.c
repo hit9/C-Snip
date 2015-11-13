@@ -219,7 +219,7 @@ list_tail(struct list *list)
 
 /* Create list iter, example:
  *
- *    struct list_iter iter = list_iter_new(list)
+ *    struct list_iter *iter = list_iter_new(list)
  *    void *data;
  *
  *    while ((data = list_iter_next(iter)) != NULL) {
