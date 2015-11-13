@@ -16,6 +16,8 @@
 #ifndef _CW_MD5_H
 #define _CW_MD5_H 1
 
+#include <stdint.h>
+
 #if defined(__cplusplus)
 extern "C" {
 #endif
