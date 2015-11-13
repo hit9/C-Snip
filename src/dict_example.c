@@ -1,7 +1,9 @@
 // cc dict_example.c dict.c
 
 #include <assert.h>
+#include <stdio.h>
 #include <string.h>
+#include "bool.h"
 #include "dict.h"
 
 int main(int argc, const char *argv[])
@@ -17,6 +19,17 @@ int main(int argc, const char *argv[])
     assert(dict_set(dict, key2, strlen(key2), val2) == DICT_OK);
     /* get dict length */
     assert(dict_len(dict) == 2);
+    /* get data by key */
+    assert(dict_get(dict, key1, strlen(key1)) == val1);
+    assert(dict_get(dict, key2, strlen(key2)) == val2);
+    /* iterate dict */
+    struct dict_iter *iter = dict_iter(dict);
+    struct dict_node *node = NULL;
+    while ((node = dict_iter_next(iter)) != NULL) {
+        printf("%.*s => %s\n", (int)node->len, node->key, node->val);
+    }
+    /* free dict iterator */
+    dict_iter_free(iter);
     /* free the dict */
     dict_free(dict);
     return 0;
