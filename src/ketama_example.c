@@ -17,10 +17,10 @@ int main(int argc, const char *argv[])
     struct ketama_ring *ring = ketama_ring(nodes, 4);
     /* get node by null-terminated key */
     struct ketama_node node = ketama_node_sget(ring, "key");
-    printf("get a node by 'key': %s %s\n", node.key, node.data);
+    printf("get a node by 'key': %s %s\n", node.key, (char *)node.data);
     /* get again, consistence hashing */
     node = ketama_node_sget(ring, "key");
-    printf("get again by 'key': %s %s\n", node.key, node.data);
+    printf("get again by 'key': %s %s\n", node.key, (char *)node.data);
     /* free the ring */
     ketama_ring_free(ring);
     return 0;
