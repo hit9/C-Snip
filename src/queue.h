@@ -2,6 +2,7 @@
  * Copyright (c) 2015, Chao Wang <hit9@icloud.com>
  *
  * List based queue implementation.
+ * deps: None.
  */
 
 #ifndef _CW_QUEUE_H

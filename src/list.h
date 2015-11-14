@@ -2,6 +2,7 @@
  * Copyright (c) 2015, Chao Wang <hit9@icloud.com>
  *
  * Double-linked list implementation.
+ * deps: None.
  */
 
 #ifndef _CW_LIST_H

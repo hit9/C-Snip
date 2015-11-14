@@ -2,6 +2,7 @@
  * Copyright (c) 2015, Chao Wang <hit9@icloud.com>
  *
  * Array based stack implementation.
+ * deps: None.
  */
 
 #ifndef _CW_STACK_H

@@ -2,6 +2,7 @@
  * Copyright (c) 2015, Chao Wang <hit9@icloud.com>
  *
  * md5 hash function.
+ * deps: None.
  */
 
 /*

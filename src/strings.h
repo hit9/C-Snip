@@ -2,6 +2,7 @@
  * Copyright (c) 2015, Chao Wang <hit9@icloud.com>
  *
  * Util functions for C native strings.
+ * deps: None.
  */
 
 #ifndef _CW_STRINGS_H

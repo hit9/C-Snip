@@ -2,6 +2,7 @@
  * Copyright (c) 2015, Chao Wang <hit9@icloud.com>
  *
  * Dynamic buffer implementation.
+ * deps: bool.h.
  */
 
 #ifndef _CW_BUF_H

@@ -2,6 +2,7 @@
  * Copyright (c) 2015, Chao Wang <hit9@icloud.com>
  *
  * Ketama consistent hashing implementation.
+ * deps: None.
  */
 
 #ifndef _CW_KETAMA_H
