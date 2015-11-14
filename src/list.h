@@ -45,13 +45,13 @@ void list_node_free(struct list_node *node);
 struct list *list_new(void);
 void list_free(struct list *list);
 void list_clear(struct list *list);
-size_t list_len(struct list *list);
-int list_lpush(struct list *list, void *data);
-int list_rpush(struct list *list, void *data);
-void *list_lpop(struct list *list);
-void *list_rpop(struct list *list);
-void *list_head(struct list *list);
-void *list_tail(struct list *list);
+size_t list_len(struct list *list); /* O(1) */
+int list_lpush(struct list *list, void *data); /* O(1) */
+int list_rpush(struct list *list, void *data); /* O(1) */
+void *list_lpop(struct list *list); /* O(1) */
+void *list_rpop(struct list *list); /* O(1) */
+void *list_head(struct list *list); /* O(1) */
+void *list_tail(struct list *list); /* O(1) */
 struct list_iter *list_iter_new(struct list *list);
 void list_iter_free(struct list_iter *iter);
 void *list_iter_next(struct list_iter *iter);
