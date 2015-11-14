@@ -56,7 +56,9 @@ void
 queue_clear(struct queue *queue)
 {
     assert(queue != NULL);
-    while(queue_pop(queue) != NULL);
+
+    while (queue_len(queue) != 0)
+        queue_pop(queue);
 }
 
 /* Get queue length. */
