@@ -22,9 +22,11 @@ int main(int argc, const char *argv[])
     assert(heap_push(heap, &b) == HEAP_OK);
     assert(heap_push(heap, &c) == HEAP_OK);
     assert(heap_push(heap, &d) == HEAP_OK);
+    /* get current smallest data */
+    printf("smallest: %d\n", *(int *)heap_top(heap));
     /* pop and print all data (should be in order) */
     while (heap_len(heap) != 0)
-        printf("%d ", *(int *)heap_pop(heap));
+        printf("%d\n", *(int *)heap_pop(heap));
     /* free heap */
     heap_free(heap);
     return 0;

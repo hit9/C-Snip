@@ -118,6 +118,19 @@ heap_pop(struct heap *heap)
     return head;
 }
 
+/* Get the smallest data from heap, NULL on empty. */
+void *
+heap_top(struct heap *heap)
+{
+    assert(heap != NULL);
+
+    if (heap->len == 0)
+        return NULL;
+
+    assert(heap->data != NULL && heap->len >= 1);
+    return heap->data[0];
+}
+
 /* Sift down the heap. */
 void
 heap_siftdown(struct heap *heap, size_t start_idx, size_t idx)

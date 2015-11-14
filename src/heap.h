@@ -42,6 +42,7 @@ size_t heap_cap(struct heap *heap);  /* O(1) */
 int heap_grow(struct heap *heap, size_t cap);
 void *heap_pop(struct heap *heap);   /* O(logN) */
 int heap_push(struct heap *heap, void *data);  /* O(logN) */
+void *heap_top(struct heap *heap);  /* O(1) */
 void heap_siftdown(struct heap *heap, size_t start_idx, size_t idx);  /* O(logN) */
 void heap_siftup(struct heap *heap, size_t idx);  /* O(logN) */
 
