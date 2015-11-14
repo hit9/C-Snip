@@ -5,6 +5,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+#include "md5.h"
 #include "dict.h"
 
 static uint32_t
