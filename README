@@ -4,6 +4,7 @@ cfg         alpha
 datetime    alpha
 dict        alpha
 event       alpha
+heap        alpha
 ketama      alpha
 list        alpha
 log         alpha
