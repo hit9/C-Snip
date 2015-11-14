@@ -19,6 +19,7 @@ SRC     = test.c\
 		  event.c event_test.c\
 		  ketama.c ketama_test.c\
 		  cfg.c cfg_test.c\
+		  strings.c strings_test.c\
 
 OBJ    = $(SRC:c=o)
 BIN    = $(NAME)

@@ -163,6 +163,15 @@ static struct test_case log_test_cases[] = {
     { NULL, NULL },
 };
 
+/**
+ * strings_test
+ */
+void case_strings_bmsearch();
+static struct test_case strings_test_cases[] = {
+    { "strings_bmsearch", &case_strings_bmsearch },
+    { NULL, NULL },
+};
+
 
 int main(int argc, const char *argv[])
 {
@@ -181,6 +190,7 @@ int main(int argc, const char *argv[])
     run_cases("ketama_test", ketama_test_cases);
     run_cases("cfg_get", cfg_test_cases);
     run_cases("log_test", log_test_cases);
+    run_cases("strings_test", strings_test_cases);
     printf("=========== test end ========\n");
     return 0;
 }
