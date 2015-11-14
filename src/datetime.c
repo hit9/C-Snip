@@ -5,7 +5,7 @@
 #include <time.h>
 #include <sys/time.h>
 
-/* Get timestamp for now. */
+/* Get timestamp (in milliseconds) for now. */
 long
 datetime_stamp_now(void)
 {

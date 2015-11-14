@@ -166,6 +166,15 @@ static struct test_case strings_test_cases[] = {
 };
 
 /**
+ * datetime_test
+ */
+void case_datetime_stamp_now();
+static struct test_case datetime_test_cases[] = {
+    { "datetime_stamp_now", &case_datetime_stamp_now },
+    { NULL, NULL },
+};
+
+/**
  * utils_test
  */
 void case_utils_min();
@@ -194,6 +203,7 @@ int main(int argc, const char *argv[])
     run_cases("log_test", log_test_cases);
     run_cases("strings_test", strings_test_cases);
     run_cases("utils_test", utils_test_cases);
+    run_cases("datetime_test", datetime_test_cases);
     printf("=========== test end ========\n");
     return 0;
 }
