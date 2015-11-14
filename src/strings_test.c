@@ -30,7 +30,7 @@ case_strings_rand()
 {
     /* we are going to assert n times random strings (with length 16)
      * are not the same with each other */
-    int n = 10;
+    int n = 100;
     char strings[n][17]; /* because 2d array are continuously on
                             memory, so we use 16+1 */
     char *s;
