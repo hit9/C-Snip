@@ -56,21 +56,21 @@ static size_t dict_idx_max = sizeof(dict_table_sizes)/\
                              sizeof(dict_table_sizes[0])-1;  /* 28 */
 
 struct dict *dict_new(void);
-void dict_clear(struct dict *dict);
+void dict_clear(struct dict *dict); /* O(N) */
 void dict_free(struct dict *dict);
 size_t dict_len(struct dict *dict);
-int dict_set(struct dict *dict, char *key, size_t len, void *val);
-void *dict_get(struct dict *dict, char *key, size_t len);
-void *dict_pop(struct dict *dict, char *key, size_t len);
-bool dict_has(struct dict *dict, char *key, size_t len);
+int dict_set(struct dict *dict, char *key, size_t len, void *val); /* O(1) */
+void *dict_get(struct dict *dict, char *key, size_t len); /* O(1) */
+void *dict_pop(struct dict *dict, char *key, size_t len); /* O(1) */
+bool dict_has(struct dict *dict, char *key, size_t len); /* O(1) */
 struct dict_iter *dict_iter_new(struct dict *dict);
 void dict_iter_free(struct dict_iter *iter);
 struct dict_node *dict_iter_next(struct dict_iter *iter);
 void dict_iter_rewind(struct dict_iter *iter);
-int dict_sset(struct dict *dict, char *key, void *val);
-void *dict_sget(struct dict *dict, char *key);
-void *dict_spop(struct dict *dict, char *key);
-bool dict_shas(struct dict *dict, char *key);
+int dict_sset(struct dict *dict, char *key, void *val); /* O(1) */
+void *dict_sget(struct dict *dict, char *key); /* O(1) */
+void *dict_spop(struct dict *dict, char *key); /* O(1) */
+bool dict_shas(struct dict *dict, char *key); /* O(1) */
 
 #if defined(__cplusplus)
 }
