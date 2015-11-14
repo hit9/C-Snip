@@ -14,6 +14,7 @@ extern "C" {
 #endif
 
 size_t strings_search(char *s, char *sub, size_t start); /* best O(N/M), worst O(M*N) */
+char *strings_rand(char *s, size_t len); /* O(N) */
 
 #if defined(__cplusplus)
 }

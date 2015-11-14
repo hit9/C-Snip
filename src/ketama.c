@@ -8,7 +8,6 @@
 #include <string.h>
 #include "ketama.h"
 #include "md5.h"
-#include "utils.h"
 
 static uint32_t
 ketama_hash(char *key, size_t len, size_t align)

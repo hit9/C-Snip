@@ -7,7 +7,7 @@
 #include <string.h>
 #include <time.h>
 #include "ketama.h"
-#include "utils.h"
+#include "strings.h"
 
 void
 case_ketama_balance()
@@ -34,7 +34,7 @@ case_ketama_balance()
     int i;
     for (i = 0; i < 2600; i++) {
         char key[11];
-        random_str(key, 10);
+        strings_rand(key, 10);
         struct ketama_node node = ketama_node_sget(ring, key);
         nodes[node.idx].idata += 1;
     }
@@ -62,7 +62,7 @@ case_ketama_consistence()
 
     char key[11];
     srand(time(NULL));
-    random_str(key, 10);
+    strings_rand(key, 10);
     struct ketama_node node = ketama_node_sget(ring, key);
     int i;
     for (i = 0; i < 1000; i++) {
