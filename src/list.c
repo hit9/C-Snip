@@ -57,7 +57,9 @@ list_free(struct list *list)
 void
 list_clear(struct list *list) {
     assert(list != NULL);
-    while(list_lpop(list) != NULL);
+
+    while (list_len(list) != 0)
+        list_lpop(list);
 }
 
 /* Get list length. */
