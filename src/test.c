@@ -113,15 +113,6 @@ static struct test_case dict_test_cases[] = {
 };
 
 /**
- * utils_test
- */
-void case_utils_bm_search();
-static struct test_case utils_test_cases[] = {
-    { "bm_search", &case_utils_bm_search},
-    { NULL, NULL },
-};
-
-/**
  * event_test
  */
 void case_event_simple();
@@ -174,6 +165,16 @@ static struct test_case strings_test_cases[] = {
     { NULL, NULL },
 };
 
+/**
+ * utils_test
+ */
+void case_utils_min();
+void case_utils_max();
+static struct test_case utils_test_cases[] = {
+    { "utils_min", &case_utils_min },
+    { "utils_max", &case_utils_max },
+    { NULL, NULL },
+};
 
 int main(int argc, const char *argv[])
 {
@@ -187,12 +188,12 @@ int main(int argc, const char *argv[])
     run_cases("queue_test", queue_test_cases);
     run_cases("list_test", list_test_cases);
     run_cases("dict_test", dict_test_cases);
-    run_cases("utils_test", utils_test_cases);
     run_cases("event_test", event_test_cases);
     run_cases("ketama_test", ketama_test_cases);
     run_cases("cfg_get", cfg_test_cases);
     run_cases("log_test", log_test_cases);
     run_cases("strings_test", strings_test_cases);
+    run_cases("utils_test", utils_test_cases);
     printf("=========== test end ========\n");
     return 0;
 }

@@ -2,6 +2,7 @@
  * Copyright (c) 2015, Chao Wang <hit9@icloud.com>
  *
  * Dynamic sized list-based hashtable implementation.
+ * deps: bool.h.
  */
 
 #ifndef _CW_DICT_H

@@ -1,5 +1,8 @@
 /**
  * Copyright (c) 2015, Chao Wang <hit9@icloud.com>
+ *
+ * Boolean values definition for ANSI-C.
+ * deps: None.
  */
 
 #ifndef _CW_BOOL_H

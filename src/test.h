@@ -5,7 +5,7 @@
 #include <assert.h>
 #include <stdio.h>
 
-#include "utils.h"
+#include "datetime.h"
 
 struct test_case {
     const char  *name;    /* test case name */
@@ -23,9 +23,9 @@ run_cases(const char *name, struct test_case cases[])
         if (c.name == NULL || c.fn == NULL)
             break;
 
-        double start_at = time_now();
+        double start_at = datetime_stamp_now();
         (c.fn)();
-        double end_at = time_now();
+        double end_at = datetime_stamp_now();
         idx += 1;
         printf("ok\t%s\t%s\t%.3fms\n", name, c.name,
                 end_at - start_at);

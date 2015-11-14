@@ -2,6 +2,7 @@
  * Copyright (c) 2015, Chao Wang <hit9@icloud.com>
  *
  * Event loop wrapper.
+ * deps: event_epoll.c event_kqueue.c.
  */
 
 #ifndef _CW_EVENT_H

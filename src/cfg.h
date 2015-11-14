@@ -2,6 +2,7 @@
  * Copyright (c) 2015, Chao Wang <hit9@icloud.com>
  *
  * Simple configuration reader.
+ * deps: None.
  *
  * example cfg string:
  *
@@ -31,6 +32,8 @@
 
 #ifndef _CW_CFG_H
 #define _CW_CFG_H 1
+
+#include <stddef.h>
 
 #if defined(__cplusplus)
 extern "C" {
