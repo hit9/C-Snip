@@ -32,6 +32,8 @@
 #ifndef _CW_CFG_H
 #define _CW_CFG_H 1
 
+#include <stddef.h>
+
 #if defined(__cplusplus)
 extern "C" {
 #endif
