@@ -27,7 +27,7 @@ run_cases(const char *name, struct test_case cases[])
         (c.fn)();
         double end_at = datetime_stamp_now();
         idx += 1;
-        printf("ok\t%s\t%s\t%.3fms\n", name, c.name,
+        fprintf(stderr, "ok\t%s\t%s\t%.3fms\n", name, c.name,
                 end_at - start_at);
     }
 }
