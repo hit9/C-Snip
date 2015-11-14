@@ -166,9 +166,9 @@ static struct test_case log_test_cases[] = {
 /**
  * strings_test
  */
-void case_strings_bmsearch();
+void case_strings_search();
 static struct test_case strings_test_cases[] = {
-    { "strings_bmsearch", &case_strings_bmsearch },
+    { "strings_search", &case_strings_search },
     { NULL, NULL },
 };
 

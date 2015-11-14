@@ -13,7 +13,7 @@
 extern "C" {
 #endif
 
-size_t strings_bmsearch(char *s, char *sub, size_t start); /* best O(N/M), worst O(M*N) */
+size_t strings_search(char *s, char *sub, size_t start); /* best O(N/M), worst O(M*N) */
 
 #if defined(__cplusplus)
 }

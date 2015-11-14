@@ -10,7 +10,7 @@
  * Boyer Moore string search algorithm. Return the first position of the
  * `sub` in the `s`, return the `s`'s length on failure. */
 size_t
-strings_bmsearch(char *s, char *sub, size_t start)
+strings_search(char *s, char *sub, size_t start)
 {
     assert(s != NULL && sub != NULL);
 
