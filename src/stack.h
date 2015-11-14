@@ -16,6 +16,8 @@ extern "C" {
 
 /* note that real allocated size is cap * sizeof(void *). */
 #define STACK_CAP_MAX  16*1024*1024   /* max stack capacity: 16mb */
+#define STACK_UNIT_MIN 1              /* min stack realloc unit: 1 */
+#define STACK_UNIT_MAX 1024           /* max stack realloc unit: 1k */
 
 #define stack(cap)              stack_new(cap)
 

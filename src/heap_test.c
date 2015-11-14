@@ -50,7 +50,7 @@ case_heap_cap()
     assert(heap_push(heap, (void *)&b) == HEAP_OK);
     assert(heap_cap(heap) == 2);
     assert(heap_push(heap, (void *)&c) == HEAP_OK);
-    assert(heap_cap(heap) == 3);
+    assert(heap_cap(heap) == 4);
     heap_free(heap);
 }
 

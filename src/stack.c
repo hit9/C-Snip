@@ -79,15 +79,27 @@ stack_grow(struct stack *stack, size_t cap)
     if (cap <= stack->cap)
         return STACK_OK;
 
-    void **data = realloc(stack->data, cap * sizeof(void *));
+    size_t unit = stack->cap;
+
+    if (unit > STACK_UNIT_MAX)
+        unit = STACK_UNIT_MAX;
+
+    if (unit < STACK_UNIT_MIN)
+        unit = STACK_UNIT_MIN;
+
+    size_t new_cap = stack->cap + unit;
+    while (new_cap < cap)
+        new_cap += unit;
+
+    void **data = realloc(stack->data, new_cap * sizeof(void *));
     if (data == NULL)
         return STACK_ENOMEM;
 
     stack->data = data;
-    stack->cap = cap;
+    stack->cap = new_cap;
 
-    if (stack->len > cap)
-        stack->len = cap;
+    if (stack->len > new_cap)
+        stack->len = new_cap;
     return STACK_OK;
 }
 

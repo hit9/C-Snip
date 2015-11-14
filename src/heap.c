@@ -68,16 +68,27 @@ heap_grow(struct heap *heap, size_t cap)
     if (cap <= heap->cap)
         return HEAP_OK;
 
-    void **data = realloc(heap->data, cap * sizeof(void *));
+    size_t unit = heap->cap;
 
+    if (unit > HEAP_UNIT_MAX)
+        unit = HEAP_UNIT_MAX;
+
+    if (unit < HEAP_UNIT_MIN)
+        unit = HEAP_UNIT_MIN;
+
+    size_t new_cap = heap->cap + unit;
+    while (new_cap < cap)
+        new_cap += unit;
+
+    void **data = realloc(heap->data, new_cap * sizeof(void *));
     if (data == NULL)
         return HEAP_ENOMEM;
 
     heap->data = data;
-    heap->cap = cap;
+    heap->cap = new_cap;
 
-    if (heap->len > cap)
-        heap->len = cap;
+    if (heap->len > new_cap)
+        heap->len = new_cap;
     return HEAP_OK;
 }
 
