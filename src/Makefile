@@ -17,6 +17,8 @@ SRC     = bool_test.c\
 		  dict_test.c\
 		  event.c\
 		  event_test.c\
+		  heap.c\
+		  heap_test.c\
 		  ketama.c\
 		  ketama_test.c\
 		  list.c\

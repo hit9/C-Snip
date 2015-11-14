@@ -95,6 +95,27 @@ static struct test_case event_test_cases[] = {
 };
 
 /**
+ * heap_test
+ */
+void case_heap_clear();
+void case_heap_len();
+void case_heap_cap();
+void case_heap_push();
+void case_heap_pop();
+void case_heap_top();
+void case_heap_pushpop();
+static struct test_case heap_test_cases[] = {
+    { "heap_clear", &case_heap_clear },
+    { "heap_len", &case_heap_len },
+    { "heap_cap", &case_heap_cap },
+    { "heap_push", &case_heap_push },
+    { "heap_pop", &case_heap_pop },
+    { "heap_top", &case_heap_top },
+    { "heap_pushpop", &case_heap_pushpop },
+    { NULL, NULL },
+};
+
+/**
  * ketama_test
  */
 void case_ketama_balance();
@@ -197,6 +218,7 @@ int main(int argc, const char *argv[])
     run_cases("datetime_test", datetime_test_cases);
     run_cases("dict_test", dict_test_cases);
     run_cases("event_test", event_test_cases);
+    run_cases("heap_test", heap_test_cases);
     run_cases("ketama_test", ketama_test_cases);
     run_cases("list_test", list_test_cases);
     run_cases("log_test", log_test_cases);

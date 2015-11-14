@@ -99,7 +99,7 @@ stack_push(struct stack *stack, void *data)
 
     if (stack->len <= stack->cap &&
             stack_grow(stack, stack->len + 1) != STACK_OK)
-        return STACK_OK;
+        return STACK_ENOMEM;
 
     stack->data[stack->len++] = data;
     return STACK_OK;
