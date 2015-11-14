@@ -1,10 +1,12 @@
 bool        alpha
+buf         alpha
+cfg         alpha
+datetime    alpha
 dict        alpha
+event       alpha
+ketama      alpha
 list        alpha
+log         alpha
 queue       alpha
 stack       alpha
-buf         alpha
-log         alpha
-ketama      alpha
-event       alpha
 strings     alpha
