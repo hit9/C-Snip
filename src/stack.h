@@ -33,6 +33,7 @@ struct stack *stack_new(size_t cap);
 void stack_free(struct stack *stack);
 void stack_clear(struct stack *stack);
 size_t stack_len(struct stack *stack); /* O(1) */
+size_t stack_cap(struct stack *stack); /* O(1) */
 void *stack_pop(struct stack *stack); /* O(1) */
 void *stack_top(struct stack *stack); /* O(1) */
 int stack_push(struct stack *stack, void *data); /* O(1) */

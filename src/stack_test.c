@@ -14,7 +14,7 @@ case_stack_clear()
     stack_clear(stack);
     assert(stack->data == NULL);
     assert(stack_len(stack) == 0);
-    assert(stack->cap == 0);
+    assert(stack_cap(stack) == 0);
     stack_free(stack);
 }
 
@@ -26,10 +26,10 @@ case_stack_push()
     assert(stack_push(stack, s1) == STACK_OK);
     assert(stack_push(stack, s2) == STACK_OK);
     assert(stack_len(stack) == 2);
-    assert(stack->cap == 2);
+    assert(stack_cap(stack) == 2);
     assert(stack_pop(stack) == s2);
     assert(stack_len(stack) == 1);
-    assert(stack->cap == 2);
+    assert(stack_cap(stack) == 2);
     assert(stack_pop(stack) == s1);
     stack_free(stack);
 }
@@ -42,11 +42,11 @@ case_stack_pop()
     assert(stack_push(stack, s1) == STACK_OK);
     assert(stack_push(stack, s2) == STACK_OK);
     assert(stack_len(stack) == 2);
-    assert(stack->cap == 3);
+    assert(stack_cap(stack) == 3);
     assert(stack_pop(stack) == s2);
     assert(stack_pop(stack) == s1);
     assert(stack_len(stack) == 0);
-    assert(stack->cap == 3);
+    assert(stack_cap(stack) == 3);
     stack_free(stack);
 }
 
@@ -62,6 +62,6 @@ case_stack_top()
     assert(stack_push(stack, s3) == STACK_OK);
     assert(stack_top(stack) == s3);
     assert(stack_len(stack) == 3);
-    assert(stack->cap == 3);
+    assert(stack_cap(stack) == 3);
     stack_free(stack);
 }
