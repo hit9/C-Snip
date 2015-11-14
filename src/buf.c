@@ -213,3 +213,19 @@ buf_lrm(struct buf *buf, size_t len)
     buf->len -= len;
     memmove(buf->data, buf->data + len, buf->len);
 }
+
+/* Get buf length. */
+size_t
+buf_len(struct buf *buf)
+{
+    assert(buf != NULL);
+    return buf->len;
+}
+
+/* Get buf capacity. */
+size_t
+buf_cap(struct buf *buf)
+{
+    assert(buf != NULL);
+    return buf->cap;
+}

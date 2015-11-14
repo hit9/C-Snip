@@ -30,6 +30,8 @@ void case_buf_str();
 void case_buf_isempty();
 void case_buf_sprintf();
 void case_buf_lrm();
+void case_buf_len();
+void case_buf_cap();
 static struct test_case buf_test_cases[] = {
     { "buf_clear", &case_buf_clear },
     { "buf_put", &case_buf_put },
@@ -39,6 +41,8 @@ static struct test_case buf_test_cases[] = {
     { "buf_isempty", &case_buf_isempty },
     { "buf_sprintf", &case_buf_sprintf },
     { "buf_lrm", &case_buf_lrm },
+    { "buf_len", &case_buf_len },
+    { "buf_cap", &case_buf_cap },
     { NULL, NULL },
 };
 

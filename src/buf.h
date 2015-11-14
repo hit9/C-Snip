@@ -46,6 +46,8 @@ char *buf_str(struct buf *buf);
 bool buf_isempty(struct buf *buf);
 int buf_sprintf(struct buf *buf, const char *fmt, ...);
 void buf_lrm(struct buf *buf, size_t len);
+size_t buf_len(struct buf *buf);
+size_t buf_cap(struct buf *buf);
 
 #if defined(__cplusplus)
 }
