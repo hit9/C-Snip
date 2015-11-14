@@ -86,11 +86,11 @@ case_dict_resize()
     assert(dict_set(dict, "key3", 4, "val3") == DICT_OK);
     assert(dict_set(dict, "key4", 4, "val4") == DICT_OK);
     assert(dict_len(dict) == 4);
-    assert(dict->idx == 0);
+    assert(dict->idx == 0 && dict_cap(dict) == 7);
     assert(dict_set(dict, "key5", 4, "val5") == DICT_OK);
     assert(dict_set(dict, "key6", 4, "val6") == DICT_OK);
     assert(dict_len(dict) == 6);
-    assert(dict->idx == 1);
+    assert(dict->idx == 1 && dict_cap(dict) == 17);
     dict_free(dict);
 }
 
