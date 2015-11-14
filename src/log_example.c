@@ -4,6 +4,7 @@
 
 int main(int argc, const char *argv[])
 {
+    /* open global logger to stderr (by setting filename to NULL) */
     log_open("example", NULL, 0);
     /* set log level to info, also the default level */
     log_setlevel(LOG_INFO);
