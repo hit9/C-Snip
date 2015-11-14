@@ -5,6 +5,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+#include "strings.h"
 
 /* Search null-terminated string `sub` in string `s`, simple version via
  * Boyer Moore string search algorithm. Return the first position of the
