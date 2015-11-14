@@ -17,6 +17,8 @@ int main(int argc, const char *argv[])
     assert(buf_sprintf(buf, "%s%d", "efg", 123) == BUF_OK);
     /* print buffer, should be "exampleabcdefg123" */
     printf("%s\n", str(buf));
+    /* get buffer length */
+    printf("current buffer length is %zu, capacity is %zu\n", buf_len(buf), buf_cap(buf));
     /* free buffer */
     buf_free(buf);
     return 0;

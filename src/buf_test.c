@@ -95,3 +95,21 @@ case_buf_lrm()
     assert(strcmp(buf_str(buf), "") == 0);
     buf_free(buf);
 }
+
+void
+case_buf_len()
+{
+    struct buf *buf = buf("abcdef");
+    assert(buf_len(buf) == 6);
+    buf_free(buf);
+}
+
+void
+case_buf_cap()
+{
+    struct buf *buf = buf("abcdef");
+    assert(buf_cap(buf) == 6);
+    buf_puts(buf, "abc");
+    assert(buf_cap(buf) == 12);
+    buf_free(buf);
+}

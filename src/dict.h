@@ -58,7 +58,8 @@ static size_t dict_idx_max = sizeof(dict_table_sizes)/\
 struct dict *dict_new(void);
 void dict_clear(struct dict *dict); /* O(N) */
 void dict_free(struct dict *dict);
-size_t dict_len(struct dict *dict);
+size_t dict_len(struct dict *dict); /* O(1) */
+size_t dict_cap(struct dict *dict); /* O(1) */
 int dict_set(struct dict *dict, char *key, size_t len, void *val); /* O(1) */
 void *dict_get(struct dict *dict, char *key, size_t len); /* O(1) */
 void *dict_pop(struct dict *dict, char *key, size_t len); /* O(1) */

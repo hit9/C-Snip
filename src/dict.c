@@ -181,6 +181,14 @@ dict_len(struct dict *dict)
     return dict->len;
 }
 
+/* Get dict capacity. */
+size_t
+dict_cap(struct dict *dict)
+{
+    assert(dict != NULL);
+    return dict_table_sizes[dict->idx];
+}
+
 /* Set a key into dict. */
 int
 dict_set(struct dict *dict, char *key, size_t len, void *val)
