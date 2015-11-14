@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2015, Chao Wang <hit9@icloud.com>
+ * deps: None.
  */
 
 #ifndef _CW_UTILS_H
@@ -13,27 +14,29 @@ extern "C" {
 #endif
 
 /**
- * **************** Common Utils **********************
+ * MIN and MAX
  */
-
 #define MIN(a, b)   ((a) < (b) ? (a) : (b))
 #define MAX(a, b)   ((a) > (b) ? (a) : (b))
 
-int _scnprintf(char *buf, size_t size, const char *fmt, ...);
-int _vscnprintf(char *buf, size_t size, const char *fmt, va_list args);
-
-size_t bm_search(char *s, char *sub, size_t start);
-
-char *random_str(char *s, size_t len);
-
 /**
- * **************** Date Time Utils **********************
+ * OS Platforms
  */
-double time_now(void);
+#ifdef __linux__
+#define OSPLAT_LINUX  1
+#endif
 
-/**
- * **************** IO Utils **********************
- */
+#if defined(__APPLE__)
+#define OSPLAT_OSX    1
+#endif
+
+#if defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__)
+#define OSPLAT_BSD    1
+#endif
+
+#ifdef __sun
+#define OSPLAT_SUN    1
+#endif
 
 #if defined(__cplusplus)
 }

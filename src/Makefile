@@ -15,11 +15,12 @@ SRC     = test.c\
 		  list.c list_test.c\
 		  log.c log_test.c\
 		  dict.c dict_test.c\
-		  utils.c utils_test.c\
 		  event.c event_test.c\
 		  ketama.c ketama_test.c\
 		  cfg.c cfg_test.c\
 		  strings.c strings_test.c\
+		  datetime.c datetime_test.c\
+		  utils_test.c\
 
 OBJ    = $(SRC:c=o)
 BIN    = $(NAME)
