@@ -16,6 +16,8 @@ extern "C" {
 #endif
 
 #define HEAP_CAP_MAX    16*1024*1024 /* max memory capacity: 16mb */
+#define HEAP_UNIT_MIN   1            /* min heap realloc unit: 1 */
+#define HEAP_UNIT_MAX   1024         /* max heap realloc unit: 1kb */
 
 #define heap(cmp)       heap_new(cmp)
 
