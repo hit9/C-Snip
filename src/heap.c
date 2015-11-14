@@ -118,6 +118,28 @@ heap_pop(struct heap *heap)
     return head;
 }
 
+/* Push data to heap and pop the top, this runs more efficiently
+ * than `heap_push` followed by a separate call to `heap_pop`. */
+void *
+heap_pushpop(struct heap *heap, void *data)
+{
+    assert(heap != NULL);
+
+    if (heap->len == 0)
+        return data;
+
+    assert(heap->data != NULL);
+
+    void *head = heap->data[0];
+
+    if ((heap->cmp)(head, data)) {
+        heap->data[0] = data;
+        data = head;
+        heap_siftup(heap, 0);
+    }
+    return data;
+}
+
 /* Get the smallest data from heap, NULL on empty. */
 void *
 heap_top(struct heap *heap)
