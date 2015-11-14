@@ -7,7 +7,7 @@
 
 /* heap data comparator: return true if a < b */
 bool
-cmp (void *a, void *b)
+cmp(void *a, void *b)
 {
     return *(int *)a < *(int *)b;
 }
