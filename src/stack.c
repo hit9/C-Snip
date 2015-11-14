@@ -59,6 +59,14 @@ stack_len(struct stack *stack)
     return stack->len;
 }
 
+/* Get stack capacity */
+size_t
+stack_cap(struct stack *stack)
+{
+    assert(stack != NULL);
+    return stack->cap;
+}
+
 /* Grow a stack's memory capacity to given cap. */
 int
 stack_grow(struct stack *stack, size_t cap)
