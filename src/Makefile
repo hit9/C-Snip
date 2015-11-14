@@ -6,20 +6,31 @@ NAME    = test
 CC      = cc
 CFLAGS  =
 LDFLAGS = -pthread
-SRC     = test.c\
+SRC     = bool_test.c\
+		  buf.c\
+		  buf_test.c\
+		  cfg.c\
+		  cfg_test.c\
+		  datetime.c\
+		  datetime_test.c\
+		  dict.c\
+		  dict_test.c\
+		  event.c\
+		  event_test.c\
+		  ketama.c\
+		  ketama_test.c\
+		  list.c\
+		  list_test.c\
+		  log.c\
+		  log_test.c\
 		  md5.c\
-		  bool_test.c\
-		  buf.c buf_test.c\
-		  stack.c stack_test.c\
-		  queue.c queue_test.c\
-		  list.c list_test.c\
-		  log.c log_test.c\
-		  dict.c dict_test.c\
-		  event.c event_test.c\
-		  ketama.c ketama_test.c\
-		  cfg.c cfg_test.c\
-		  strings.c strings_test.c\
-		  datetime.c datetime_test.c\
+		  queue.c\
+		  queue_test.c\
+		  stack.c\
+		  stack_test.c\
+		  strings.c\
+		  strings_test.c\
+		  test.c\
 		  utils_test.c\
 
 OBJ    = $(SRC:c=o)

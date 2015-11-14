@@ -47,47 +47,20 @@ static struct test_case buf_test_cases[] = {
 };
 
 /**
- * stack_test
+ * cfg_test
  */
-void case_stack_clear();
-void case_stack_push();
-void case_stack_pop();
-void case_stack_top();
-static struct test_case stack_test_cases[] = {
-    { "stack_clear", &case_stack_clear },
-    { "stack_push", &case_stack_push },
-    { "stack_pop", &case_stack_pop },
-    { "stack_top", &case_stack_top },
+void case_cfg_get();
+static struct test_case cfg_test_cases[] = {
+    { "cfg_get", &case_cfg_get },
     { NULL, NULL },
 };
 
 /**
- * queue_test
+ * datetime_test
  */
-void case_queue_clear();
-void case_queue_push_pop_top();
-static struct test_case queue_test_cases[] = {
-    { "queue_clear", &case_queue_clear },
-    { "queue_push_pop_top", &case_queue_push_pop_top },
-    { NULL, NULL },
-};
-
-/**
- * list_test
- */
-void case_list_clear();
-void case_list_lpush();
-void case_list_rpush();
-void case_list_lpop();
-void case_list_rpop();
-void case_list_iter();
-static struct test_case list_test_cases[] = {
-    { "list_clear", &case_list_clear },
-    { "list_lpush", &case_list_lpush },
-    { "list_rpush", &case_list_rpush },
-    { "list_lpop", &case_list_lpop },
-    { "list_rpop", &case_list_rpop },
-    { "list_iter", &case_list_iter },
+void case_datetime_stamp_now();
+static struct test_case datetime_test_cases[] = {
+    { "datetime_stamp_now", &case_datetime_stamp_now },
     { NULL, NULL },
 };
 
@@ -133,11 +106,21 @@ static struct test_case ketama_test_cases[] = {
 };
 
 /**
- * cfg_test
+ * list_test
  */
-void case_cfg_get();
-static struct test_case cfg_test_cases[] = {
-    { "cfg_get", &case_cfg_get },
+void case_list_clear();
+void case_list_lpush();
+void case_list_rpush();
+void case_list_lpop();
+void case_list_rpop();
+void case_list_iter();
+static struct test_case list_test_cases[] = {
+    { "list_clear", &case_list_clear },
+    { "list_lpush", &case_list_lpush },
+    { "list_rpush", &case_list_rpush },
+    { "list_lpop", &case_list_lpop },
+    { "list_rpop", &case_list_rpop },
+    { "list_iter", &case_list_iter },
     { NULL, NULL },
 };
 
@@ -155,6 +138,32 @@ static struct test_case log_test_cases[] = {
 };
 
 /**
+ * queue_test
+ */
+void case_queue_clear();
+void case_queue_push_pop_top();
+static struct test_case queue_test_cases[] = {
+    { "queue_clear", &case_queue_clear },
+    { "queue_push_pop_top", &case_queue_push_pop_top },
+    { NULL, NULL },
+};
+
+/**
+ * stack_test
+ */
+void case_stack_clear();
+void case_stack_push();
+void case_stack_pop();
+void case_stack_top();
+static struct test_case stack_test_cases[] = {
+    { "stack_clear", &case_stack_clear },
+    { "stack_push", &case_stack_push },
+    { "stack_pop", &case_stack_pop },
+    { "stack_top", &case_stack_top },
+    { NULL, NULL },
+};
+
+/**
  * strings_test
  */
 void case_strings_search();
@@ -162,15 +171,6 @@ void case_strings_rand();
 static struct test_case strings_test_cases[] = {
     { "strings_search", &case_strings_search },
     { "strings_rand", &case_strings_rand },
-    { NULL, NULL },
-};
-
-/**
- * datetime_test
- */
-void case_datetime_stamp_now();
-static struct test_case datetime_test_cases[] = {
-    { "datetime_stamp_now", &case_datetime_stamp_now },
     { NULL, NULL },
 };
 
@@ -193,17 +193,17 @@ int main(int argc, const char *argv[])
     printf("=========== test start ========\n");
     run_cases("bool_test", bool_test_cases);
     run_cases("buf_test", buf_test_cases);
-    run_cases("stack_test", stack_test_cases);
-    run_cases("queue_test", queue_test_cases);
-    run_cases("list_test", list_test_cases);
+    run_cases("cfg_get", cfg_test_cases);
+    run_cases("datetime_test", datetime_test_cases);
     run_cases("dict_test", dict_test_cases);
     run_cases("event_test", event_test_cases);
     run_cases("ketama_test", ketama_test_cases);
-    run_cases("cfg_get", cfg_test_cases);
+    run_cases("list_test", list_test_cases);
     run_cases("log_test", log_test_cases);
+    run_cases("queue_test", queue_test_cases);
+    run_cases("stack_test", stack_test_cases);
     run_cases("strings_test", strings_test_cases);
     run_cases("utils_test", utils_test_cases);
-    run_cases("datetime_test", datetime_test_cases);
     printf("=========== test end ========\n");
     return 0;
 }
