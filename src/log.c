@@ -3,6 +3,7 @@
  */
 
 #include <assert.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,11 +11,11 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/syscall.h>
 #include <unistd.h>
 #include <pthread.h>
 
 #include "log.h"
-#include "utils.h"
 
 static struct logger logger;
 
@@ -96,7 +97,14 @@ void
 log_setlevel(int level)
 {
     struct logger *l = &logger;
-    l->level = MAX(MIN(LOG_CRITICAL, level), LOG_DEBUG);
+
+    if (level > LOG_CRITICAL) {
+        l->level = LOG_CRITICAL;
+    } else if (level < LOG_DEBUG) {
+        l->level = LOG_DEBUG;
+    } else {
+        l->level = level;
+    }
 }
 
 /* Rotate log file. */
@@ -148,15 +156,22 @@ log_log(int level, char * levelname, const char *fmt, ...)
     gettimeofday(&tv, NULL);
 
     len += strftime(buf + len, size - len, "%Y-%m-%d %H:%M:%S.", localtime(&tv.tv_sec));
-    len += _scnprintf(buf + len, size - len, "%03ld", tv.tv_usec/1000);
+    len += snprintf(buf + len, size - len, "%03ld", (long)tv.tv_usec/1000);
     // level
-    len += _scnprintf(buf + len, size - len, " %s", levelname);
+    len += snprintf(buf + len, size - len, " %s", levelname);
     // name and pid and tid
-    len += _scnprintf(buf + len, size - len, " %s[%ld/%ld] ", l->name, getpid(), pthread_self());
+#ifdef __linux__
+    /* using syacall to get tid, or `pid` on system view */
+    long pid = (long)syscall(SYS_gettid);
+#else
+    /* I can't find a way to get tid from system view, only print the pid */
+    long pid = getpid();
+#endif
+    len += snprintf(buf + len, size - len, " %s[%ld] ", l->name, pid);
 
     va_list args;
     va_start(args, fmt);
-    len += _vscnprintf(buf + len, size - len, fmt, args);
+    len += vsnprintf(buf + len, size - len, fmt, args);
     va_end(args);
 
     buf[len++] = '\n';
