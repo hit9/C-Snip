@@ -167,8 +167,10 @@ static struct test_case log_test_cases[] = {
  * strings_test
  */
 void case_strings_search();
+void case_strings_rand();
 static struct test_case strings_test_cases[] = {
     { "strings_search", &case_strings_search },
+    { "strings_rand", &case_strings_rand },
     { NULL, NULL },
 };
 

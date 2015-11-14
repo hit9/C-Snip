@@ -24,3 +24,21 @@ case_strings_search()
     assert(strings_search(s2, "是", 0) == 3);
     assert(strings_search(s2, "是", 6) == 12);
 }
+
+void
+case_strings_rand()
+{
+    /* we are going to assert n times random strings (with length 16)
+     * are not the same with each other */
+    int n = 10;
+    char strings[n][17]; /* because 2d array are continuously on
+                            memory, so we use 16+1 */
+    char *s;
+    int i, j;
+
+    for (i = 0; i < n; i++) {
+        strings_rand(strings[i], 16);
+        for (j = 0; j < i; j++)
+            assert(strcmp(strings[i], strings[j]) != 0);
+    }
+}
