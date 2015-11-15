@@ -67,3 +67,28 @@ strings_rand(char *s, size_t len)
     s[len] = 0;
     return s;
 }
+
+/* Replace all `sub` in string `src` with `rep` and concat the
+ * result into `dst`. All the arguments are NULL-terminated c
+ * string, return  */
+char *
+strings_replace(char *dst, char *src, char *sub, char *rep)
+{
+    size_t src_len = strlen(src);
+    size_t sub_len = strlen(sub);
+    size_t rep_len = strlen(rep);
+    size_t dst_len = 0;
+    size_t idx, start = 0;
+
+    while ((idx = strings_search(src, sub, start)) < src_len) {
+        strncat(dst + dst_len, src + start, idx - start);
+        dst_len += idx - start;
+        strcat(dst + dst_len, rep);
+        dst_len += rep_len;
+        start = idx + sub_len;
+    }
+    strcat(dst + dst_len, src + start);
+    dst_len += src_len - start;
+    dst[dst_len] = '\0';
+    return dst;
+}

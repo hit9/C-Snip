@@ -42,3 +42,14 @@ case_strings_rand()
             assert(strcmp(strings[i], strings[j]) != 0);
     }
 }
+
+void
+case_strings_replace()
+{
+    char *src = "abcdbcefghbcio";
+    char *sub = "bc";
+    char *rep = "xyz";
+    char dst[30] = {0};
+    assert(strings_replace(dst, src, sub, rep) == dst);
+    assert(strcmp(dst, "axyzdxyzefghxyzio") == 0);
+}

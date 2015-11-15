@@ -189,9 +189,11 @@ static struct test_case stack_test_cases[] = {
  */
 void case_strings_search();
 void case_strings_rand();
+void case_strings_replace();
 static struct test_case strings_test_cases[] = {
     { "strings_search", &case_strings_search },
     { "strings_rand", &case_strings_rand },
+    { "strings_replace", &case_strings_replace },
     { NULL, NULL },
 };
 
