@@ -7,10 +7,10 @@
 #include "heap.h"
 
 
-bool
+int
 heap_cmp(void *a, void *b)
 {
-    return *(int *)a < *(int *)b;
+    return *(int *)a - *(int *)b;
 }
 
 void

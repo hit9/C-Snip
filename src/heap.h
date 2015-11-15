@@ -2,14 +2,13 @@
  * Copyright (c) 2015, Chao Wang <hit9@icloud.com>
  *
  * Array based binary heap (or priority queue) implementation.
- * deps: bool.h.
+ * deps: None.
  */
 
 #ifndef _CW_HEAP_H
 #define _CW_HEAP_H 1
 
 #include <stddef.h>
-#include "bool.h"
 
 #if defined(__cplusplus)
 extern "C" {
@@ -21,8 +20,8 @@ extern "C" {
 
 #define heap(cmp)       heap_new(cmp)
 
-/* heap node comparator type, return true if arg#0 < arg#1 */
-typedef bool (*heap_cmp_t)(void *, void *);
+/* heap node comparator type, return negative if arg#0 < arg#1 */
+typedef int (*heap_cmp_t)(void *, void *);
 
 enum {
     HEAP_OK = 0,             /* operation is ok */

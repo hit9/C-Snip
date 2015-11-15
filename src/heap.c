@@ -143,7 +143,7 @@ heap_pushpop(struct heap *heap, void *data)
 
     void *head = heap->data[0];
 
-    if ((heap->cmp)(head, data)) {
+    if ((heap->cmp)(head, data) < 0) {
         heap->data[0] = data;
         data = head;
         heap_siftup(heap, 0);
@@ -178,7 +178,7 @@ heap_siftdown(struct heap *heap, size_t start_idx, size_t idx)
         parent_idx = (idx - 1) >> 1;
         parent_data = heap->data[parent_idx];
 
-        if ((heap->cmp)(data, parent_data)) {
+        if ((heap->cmp)(data, parent_data) < 0) {
             heap->data[idx] = parent_data;
             idx = parent_idx;
             continue;
@@ -208,7 +208,7 @@ heap_siftup(struct heap *heap, size_t idx)
         right_idx = child_idx + 1;
 
         if (right_idx < len &&
-                !(heap->cmp)(heap->data[child_idx], heap->data[right_idx]))
+                (heap->cmp)(heap->data[child_idx], heap->data[right_idx]) >= 0)
             child_idx = right_idx;
         heap->data[idx] = heap->data[child_idx];
         idx = child_idx;
