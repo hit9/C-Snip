@@ -2,14 +2,13 @@
 
 #include <assert.h>
 #include <stdio.h>
-#include "bool.h"
 #include "heap.h"
 
 /* heap data comparator: return true if a < b */
-bool
+int
 cmp(void *a, void *b)
 {
-    return *(int *)a < *(int *)b;
+    return *(int *)a - *(int *)b;
 }
 
 int main(int argc, const char *argv[])
