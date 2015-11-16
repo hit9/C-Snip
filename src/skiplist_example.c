@@ -25,11 +25,11 @@ int main(int argc, const char *argv[])
     /* get the first and last node */
     struct skiplist_node *first = skiplist_first(skiplist);
     struct skiplist_node *last = skiplist_last(skiplist);
-    printf("first node: {score: %ld, data: '%s'}\n", first->score, first->data);
-    printf("last node: {score: %ld, data: '%s'}\n", last->score, last->data);
+    printf("first node: {score: %ld, data: '%s'}\n", first->score, (char *)first->data);
+    printf("last node: {score: %ld, data: '%s'}\n", last->score, (char *)last->data);
     /* pop the first and last node */
-    printf("pop first node, data: '%s'\n", skiplist_popfirst(skiplist));
-    printf("pop last node, data: '%s'\n", skiplist_poplast(skiplist));
+    printf("pop first node, data: '%s'\n", (char *)skiplist_popfirst(skiplist));
+    printf("pop last node, data: '%s'\n", (char *)skiplist_poplast(skiplist));
     skiplist_print(skiplist);
     /* print current skiplist length and height */
     printf("skiplist height: %d\n", skiplist_height(skiplist));

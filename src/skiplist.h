@@ -14,7 +14,7 @@ extern "C" {
 #endif
 
 #define SKIPLIST_LEVEL_MAX    12   /* max skiplist level (0~11) */
-#define SKIPLIST_FACTOR_P     0.25
+#define SKIPLIST_FACTOR_P     0.5
 
 #define skiplist()            skiplist_new()
 #define skiplist_height(sl)   skiplist_level(sl)
