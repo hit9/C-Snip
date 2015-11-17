@@ -8,6 +8,7 @@
 #ifndef _CW_SKIPLIST_H
 #define _CW_SKIPLIST_H 1
 
+#include <stddef.h>
 
 #if defined(__cplusplus)
 extern "C" {
