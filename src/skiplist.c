@@ -95,6 +95,8 @@ skiplist_free(struct skiplist *skiplist)
 {
     if (skiplist != NULL) {
         skiplist_clear(skiplist);
+        if (skiplist->head != NULL)
+            skiplist_node_free(skiplist->head);
         free(skiplist);
     }
 }
