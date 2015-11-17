@@ -57,7 +57,7 @@ void skiplist_clear(struct skiplist *skiplist);
 size_t skiplist_len(struct skiplist *skiplist); /* O(1) */
 int skiplist_level(struct skiplist *skiplist); /* O(1) */
 int skiplist_push(struct skiplist *skiplist, unsigned long score, void *data); /* O(logN) */
-void *skiplist_search(struct skiplist *skiplist, unsigned long score); /* O(logN) */
+struct skiplist_node *skiplist_search(struct skiplist *skiplist, unsigned long score); /* O(logN) */
 void *skiplist_pop(struct skiplist *skiplist, unsigned long score); /* O(logN) */
 void *skiplist_popfirst(struct skiplist *skiplist); /* O(1) */
 void *skiplist_poplast(struct skiplist *skiplist); /* O(logN) */
@@ -65,9 +65,9 @@ struct skiplist_node *skiplist_first(struct skiplist *skiplist); /* O(1) */
 struct skiplist_node *skiplist_last(struct skiplist *skiplist); /* O(1) */
 struct skiplist_iter *skiplist_iter_new(struct skiplist *skiplist);
 void skiplist_iter_free(struct skiplist_iter *iter);
-struct skiplist_node *skiplist_iter_next(struct skiplist_iter *iter);
-struct skiplist_node *skiplist_iter_prev(struct skiplist_iter *iter);
-void skiplist_iter_rewind(struct skiplist_iter *iter);
+struct skiplist_node *skiplist_iter_next(struct skiplist_iter *iter); /* O(1) */
+struct skiplist_node *skiplist_iter_prev(struct skiplist_iter *iter); /* O(1) */
+void skiplist_iter_rewind(struct skiplist_iter *iter); /* O(1) */
 void skiplist_print(struct skiplist *skiplist);
 
 #if defined(__cplusplus)

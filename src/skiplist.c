@@ -174,8 +174,8 @@ skiplist_push(struct skiplist *skiplist, unsigned long score, void *data)
     return SKIPLIST_OK;
 }
 
-/* Search node by score and return the first target's data, NULL on not found. */
-void *
+/* Search node by score, NULL on not found. */
+struct skiplist_node *
 skiplist_search(struct skiplist *skiplist, unsigned long score)
 {
     assert(skiplist != NULL);
@@ -191,7 +191,7 @@ skiplist_search(struct skiplist *skiplist, unsigned long score)
             if (result < 0) {
                 node = node->forwards[i];
             } else if (result == 0) {
-                return node->data;
+                return node;
             } else {
                 break;
             }
