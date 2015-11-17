@@ -220,9 +220,9 @@ void *skiplist_pop(struct skiplist *skiplist, unsigned long score)
         update[i] = node;
     }
 
-    node = node->forwards[i];
+    node = node->forwards[0];
 
-    if (node == NULL)
+    if (node == NULL || (skiplist->cmp)(node->score, score) != 0)
         /* not found */
         return NULL;
 
