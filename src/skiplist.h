@@ -16,8 +16,11 @@ extern "C" {
 #define SKIPLIST_LEVEL_MAX    12   /* max skiplist level (0~11) */
 #define SKIPLIST_FACTOR_P     0.5
 
-#define skiplist()            skiplist_new()
+#define skiplist(cmp)         skiplist_new(cmp)
 #define skiplist_height(sl)   skiplist_level(sl)
+
+/* socre comparator type, return < 0 if arg#0 < arg#1 */
+typedef int (*skiplist_cmp_t)(unsigned long score1, unsigned long score2);
 
 enum {
     SKIPLIST_OK = 0,        /* operation is ok */
@@ -36,11 +39,17 @@ struct skiplist {
     int level;                  /* skiplist level */
     struct skiplist_node *head; /* skiplist head */
     struct skiplist_node *tail; /* skiplist tail */
+    skiplist_cmp_t cmp;         /* score comparator */
+};
+
+struct skiplist_iter {
+    struct skiplist *skiplist;  /* skiplist to iterate */
+    struct skiplist_node *node; /* current skiplist node */
 };
 
 struct skiplist_node *skiplist_node_new(int level, unsigned long score, void *data);
 void skiplist_node_free(struct skiplist_node *node);
-struct skiplist *skiplist_new(void);
+struct skiplist *skiplist_new(skiplist_cmp_t cmp);
 void skiplist_free(struct skiplist *skiplist);
 void skiplist_clear(struct skiplist *skiplist);
 size_t skiplist_len(struct skiplist *skiplist); /* O(1) */
@@ -52,6 +61,10 @@ void *skiplist_popfirst(struct skiplist *skiplist); /* O(1) */
 void *skiplist_poplast(struct skiplist *skiplist); /* O(logN) */
 struct skiplist_node *skiplist_first(struct skiplist *skiplist); /* O(1) */
 struct skiplist_node *skiplist_last(struct skiplist *skiplist); /* O(1) */
+struct skiplist_iter *skiplist_iter_new(struct skiplist *skiplist);
+void skiplist_iter_free(struct skiplist_iter *iter);
+struct skiplist_node *skiplist_iter_next(struct skiplist_iter *iter);
+struct skiplist_node *skiplist_iter_prev(struct skiplist_iter *iter);
 void skiplist_print(struct skiplist *skiplist);
 
 #if defined(__cplusplus)
