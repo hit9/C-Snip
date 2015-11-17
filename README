@@ -9,6 +9,6 @@ ketama      alpha
 list        alpha
 log         alpha
 queue       alpha
-skiplist    unstable
+skiplist    alpha
 stack       alpha
 strings     alpha
