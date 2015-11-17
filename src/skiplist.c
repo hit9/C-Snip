@@ -8,8 +8,16 @@
 
 #include "skiplist.h"
 
-/* Get random level between 0 and level_max. */
-static int skiplist_rand_level(void)
+/* Default score comparator. */
+static int
+skiplist_default_cmp(unsigned long score1, unsigned long score2)
+{
+    return score1 - score2;
+}
+
+/* Get random level between 1 and level_max. */
+static int
+skiplist_rand_level(void)
 {
     int level = 1;
 
@@ -20,7 +28,6 @@ static int skiplist_rand_level(void)
         return level;
     return SKIPLIST_LEVEL_MAX;
 }
-
 
 /* Create skiplist node. */
 struct skiplist_node *
@@ -61,13 +68,17 @@ skiplist_node_free(struct skiplist_node *node)
 
 /* Create skiplist. */
 struct skiplist *
-skiplist_new(void)
+skiplist_new(skiplist_cmp_t cmp)
 {
+    if (cmp == NULL)
+        cmp = &skiplist_default_cmp;
+
     struct skiplist *skiplist = malloc(sizeof(struct skiplist));
 
     if (skiplist != NULL) {
         skiplist->len = 0;
         skiplist->level = 1;
+        skiplist->cmp = cmp;
         skiplist->head = skiplist_node_new(SKIPLIST_LEVEL_MAX, 0, NULL);
         if (skiplist->head == NULL) {
             free(skiplist);
@@ -84,6 +95,8 @@ skiplist_free(struct skiplist *skiplist)
 {
     if (skiplist != NULL) {
         skiplist_clear(skiplist);
+        if (skiplist->head != NULL)
+            skiplist_node_free(skiplist->head);
         free(skiplist);
     }
 }
@@ -117,14 +130,17 @@ int skiplist_level(struct skiplist *skiplist)
 int
 skiplist_push(struct skiplist *skiplist, unsigned long score, void *data)
 {
-    assert(skiplist != NULL && skiplist->head != NULL);
+    assert(skiplist != NULL);
+    assert(skiplist->head != NULL);
+    assert(skiplist->cmp != NULL);
 
     struct skiplist_node *update[SKIPLIST_LEVEL_MAX];
     struct skiplist_node *node = skiplist->head;
     int i;
 
     for (i = skiplist->level - 1; i >= 0; i--) {
-        while (node->forwards[i] != NULL && node->forwards[i]->score < score)
+        while (node->forwards[i] != NULL &&
+                (skiplist->cmp)(node->forwards[i]->score, score) < 0)
             node = node->forwards[i];
         update[i] = node;
     }
@@ -149,32 +165,36 @@ skiplist_push(struct skiplist *skiplist, unsigned long score, void *data)
 
     node->backward = update[0];
 
-    if (node->forwards[0] == NULL)
+    if (node->forwards[0] == NULL) {
         skiplist->tail = node;
+    } else {
+        node->forwards[0]->backward = node;
+    }
     skiplist->len += 1;
     return SKIPLIST_OK;
 }
 
-/* Search node by score and return the first target's data, NULL on not found. */
+/* Get data by score, NULL on not found. */
 void *
-skiplist_search(struct skiplist *skiplist, unsigned long score)
+skiplist_get(struct skiplist *skiplist, unsigned long score)
 {
-    assert(skiplist != NULL && skiplist->head != NULL);
+    assert(skiplist != NULL);
+    assert(skiplist->head != NULL);
+    assert(skiplist->cmp != NULL);
 
     struct skiplist_node *node = skiplist->head;
     int i;
 
     for (i = skiplist->level - 1; i >= 0; i--) {
-        while (node->forwards[i] != NULL) {
-            if (node->forwards[i]->score < score) {
-                node = node->forwards[i];
-            } else if (node->forwards[i]->score == score) {
-                return node->data;
-            } else {
-                break;
-            }
-        }
+        while (node->forwards[i] != NULL &&
+                (skiplist->cmp)(node->forwards[i]->score, score) < 0)
+            node = node->forwards[i];
     }
+
+    node = node->forwards[0];
+
+    if (node != NULL && (skiplist->cmp)(node->score, score) == 0)
+        return node->data;
     /* not found */
     return NULL;
 }
@@ -182,7 +202,9 @@ skiplist_search(struct skiplist *skiplist, unsigned long score)
 /* Pop node by score (the first target), NULL on not found. */
 void *skiplist_pop(struct skiplist *skiplist, unsigned long score)
 {
-    assert(skiplist != NULL && skiplist->head != NULL);
+    assert(skiplist != NULL);
+    assert(skiplist->head != NULL);
+    assert(skiplist->cmp != NULL);
 
     struct skiplist_node *update[SKIPLIST_LEVEL_MAX];
     struct skiplist_node *head = skiplist->head;
@@ -190,14 +212,15 @@ void *skiplist_pop(struct skiplist *skiplist, unsigned long score)
     int i;
 
     for (i = skiplist->level - 1; i >= 0; i--) {
-        while (node->forwards[i] != NULL && node->forwards[i]->score < score)
+        while (node->forwards[i] != NULL &&
+                (skiplist->cmp)(node->forwards[i]->score, score) < 0)
             node = node->forwards[i];
         update[i] = node;
     }
 
-    node = node->forwards[i];
+    node = node->forwards[0];
 
-    if (node == NULL)
+    if (node == NULL || (skiplist->cmp)(node->score, score) != 0)
         /* not found */
         return NULL;
 
@@ -227,7 +250,8 @@ void *skiplist_pop(struct skiplist *skiplist, unsigned long score)
 void *
 skiplist_popfirst(struct skiplist *skiplist)
 {
-    assert(skiplist != NULL && skiplist->head != NULL);
+    assert(skiplist != NULL);
+    assert(skiplist->head != NULL);
 
     if (skiplist->len == 0)
         return NULL;
@@ -265,7 +289,8 @@ skiplist_popfirst(struct skiplist *skiplist)
 void *
 skiplist_poplast(struct skiplist *skiplist)
 {
-    assert(skiplist != NULL && skiplist->head != NULL);
+    assert(skiplist != NULL);
+    assert(skiplist->head != NULL);
 
     struct skiplist_node *update[SKIPLIST_LEVEL_MAX];
     struct skiplist_node *head = skiplist->head;
@@ -299,7 +324,8 @@ skiplist_poplast(struct skiplist *skiplist)
 struct skiplist_node *
 skiplist_first(struct skiplist *skiplist)
 {
-    assert(skiplist != NULL && skiplist->head != NULL);
+    assert(skiplist != NULL);
+    assert(skiplist->head != NULL);
 
     if (skiplist->len == 0)
         return NULL;
@@ -310,7 +336,8 @@ skiplist_first(struct skiplist *skiplist)
 struct skiplist_node *
 skiplist_last(struct skiplist *skiplist)
 {
-    assert(skiplist != NULL && skiplist->head != NULL);
+    assert(skiplist != NULL);
+    assert(skiplist->head != NULL);
 
     if (skiplist->len == 0)
         return NULL;
@@ -318,11 +345,68 @@ skiplist_last(struct skiplist *skiplist)
     return skiplist->tail;
 }
 
+/* Create a skiplist iterator. */
+struct skiplist_iter *
+skiplist_iter_new(struct skiplist *skiplist)
+{
+    assert(skiplist != NULL);
+    assert(skiplist->head != NULL);
+    struct skiplist_iter *iter = malloc(sizeof(struct skiplist_iter));
+
+    if (iter != NULL) {
+        iter->skiplist = skiplist;
+        iter->node = skiplist->head;
+    }
+    return iter;
+}
+
+/* Free skiplist iter. */
+void
+skiplist_iter_free(struct skiplist_iter *iter)
+{
+    if (iter != NULL)
+        free(iter);
+}
+
+/* Seek skiplist next, NULL on end. */
+struct skiplist_node *
+skiplist_iter_next(struct skiplist_iter *iter)
+{
+    assert(iter != NULL);
+    assert(iter->node != NULL);
+    iter->node = iter->node->forwards[0];
+    return iter->node;
+}
+
+/* Seek skiplist prev, NULL on end. */
+struct skiplist_node *
+skiplist_iter_prev(struct skiplist_iter *iter)
+{
+    assert(iter != NULL);
+    assert(iter->node != NULL);
+    assert(iter->skiplist != NULL);
+    iter->node = iter->node->backward;
+    if (iter->node == iter->skiplist->head)
+        return NULL;
+    return iter->node;
+}
+
+/* Rewind skiplist iterator. */
+void
+skiplist_iter_rewind(struct skiplist_iter *iter)
+{
+    assert(iter != NULL);
+    assert(iter->skiplist != NULL);
+    assert(iter->skiplist->head != NULL);
+    iter->node = iter->skiplist->head;
+}
+
 /* Print the skiplist schema. */
 void
 skiplist_print(struct skiplist *skiplist)
 {
-    assert(skiplist != NULL && skiplist->head != NULL);
+    assert(skiplist != NULL);
+    assert(skiplist->head != NULL);
 
     int i;
     struct skiplist_node *node;

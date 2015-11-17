@@ -170,6 +170,25 @@ static struct test_case queue_test_cases[] = {
 };
 
 /**
+ * skiplist_test
+ */
+void case_skiplist_base();
+void case_skiplist_push();
+void case_skiplist_pop();
+void case_skiplist_popfirst();
+void case_skiplist_poplast();
+void case_skiplist_get();
+static struct test_case skiplist_test_cases[] = {
+    { "skiplist_base", &case_skiplist_base },
+    { "skiplist_push", &case_skiplist_push },
+    { "skiplist_pop", &case_skiplist_pop },
+    { "skiplist_popfirst", &case_skiplist_popfirst },
+    { "skiplist_poplast", &case_skiplist_poplast },
+    { "skiplist_get", &case_skiplist_get },
+    { NULL, NULL },
+};
+
+/**
  * stack_test
  */
 void case_stack_clear();
@@ -225,6 +244,7 @@ int main(int argc, const char *argv[])
     run_cases("list_test", list_test_cases);
     run_cases("log_test", log_test_cases);
     run_cases("queue_test", queue_test_cases);
+    run_cases("skiplist_test", skiplist_test_cases);
     run_cases("stack_test", stack_test_cases);
     run_cases("strings_test", strings_test_cases);
     run_cases("utils_test", utils_test_cases);
