@@ -57,7 +57,7 @@ void skiplist_clear(struct skiplist *skiplist);
 size_t skiplist_len(struct skiplist *skiplist); /* O(1) */
 int skiplist_level(struct skiplist *skiplist); /* O(1) */
 int skiplist_push(struct skiplist *skiplist, unsigned long score, void *data); /* O(logN) */
-struct skiplist_node *skiplist_search(struct skiplist *skiplist, unsigned long score); /* O(logN) */
+void *skiplist_get(struct skiplist *skiplist, unsigned long score); /* O(logN) */
 void *skiplist_pop(struct skiplist *skiplist, unsigned long score); /* O(logN) */
 void *skiplist_popfirst(struct skiplist *skiplist); /* O(1) */
 void *skiplist_poplast(struct skiplist *skiplist); /* O(logN) */
