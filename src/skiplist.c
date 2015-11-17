@@ -8,8 +8,16 @@
 
 #include "skiplist.h"
 
+/* Default score comparator. */
+static int
+skiplist_default_cmp(unsigned long score1, unsigned long score2)
+{
+    return score1 - score2;
+}
+
 /* Get random level between 1 and level_max. */
-static int skiplist_rand_level(void)
+static int
+skiplist_rand_level(void)
 {
     int level = 1;
 
@@ -62,7 +70,8 @@ skiplist_node_free(struct skiplist_node *node)
 struct skiplist *
 skiplist_new(skiplist_cmp_t cmp)
 {
-    assert(cmp != NULL);
+    if (cmp == NULL)
+        cmp = &skiplist_default_cmp;
 
     struct skiplist *skiplist = malloc(sizeof(struct skiplist));
 

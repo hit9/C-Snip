@@ -4,16 +4,10 @@
 #include <stdio.h>
 #include "skiplist.h"
 
-int
-cmp(unsigned long score1, unsigned long score2)
-{
-    return score1 - score2;
-}
-
 int main(int argc, const char *argv[])
 {
-    /* allocate a new empty skiplist */
-    struct skiplist *skiplist = skiplist(&cmp);
+    /* allocate a new empty skiplist (using default score comparator) */
+    struct skiplist *skiplist = skiplist(NULL);
     /* push data into skiplist */
     unsigned long a = 4, b = 2, c = 3, d = 7, e = 5, f = 6,
                   g = 9, h = 8, i = 1;
