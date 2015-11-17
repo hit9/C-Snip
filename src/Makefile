@@ -28,6 +28,8 @@ SRC     = bool_test.c\
 		  md5.c\
 		  queue.c\
 		  queue_test.c\
+		  skiplist.c\
+		  skiplist_test.c\
 		  stack.c\
 		  stack_test.c\
 		  strings.c\
