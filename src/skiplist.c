@@ -119,7 +119,9 @@ int skiplist_level(struct skiplist *skiplist)
 int
 skiplist_push(struct skiplist *skiplist, unsigned long score, void *data)
 {
-    assert(skiplist != NULL && skiplist->head != NULL);
+    assert(skiplist != NULL);
+    assert(skiplist->head != NULL);
+    assert(skiplist->cmp != NULL);
 
     struct skiplist_node *update[SKIPLIST_LEVEL_MAX];
     struct skiplist_node *node = skiplist->head;
@@ -162,7 +164,9 @@ skiplist_push(struct skiplist *skiplist, unsigned long score, void *data)
 void *
 skiplist_search(struct skiplist *skiplist, unsigned long score)
 {
-    assert(skiplist != NULL && skiplist->head != NULL);
+    assert(skiplist != NULL);
+    assert(skiplist->head != NULL);
+    assert(skiplist->cmp != NULL);
 
     struct skiplist_node *node = skiplist->head;
     int i, result;
@@ -186,7 +190,9 @@ skiplist_search(struct skiplist *skiplist, unsigned long score)
 /* Pop node by score (the first target), NULL on not found. */
 void *skiplist_pop(struct skiplist *skiplist, unsigned long score)
 {
-    assert(skiplist != NULL && skiplist->head != NULL);
+    assert(skiplist != NULL);
+    assert(skiplist->head != NULL);
+    assert(skiplist->cmp != NULL);
 
     struct skiplist_node *update[SKIPLIST_LEVEL_MAX];
     struct skiplist_node *head = skiplist->head;
@@ -232,7 +238,8 @@ void *skiplist_pop(struct skiplist *skiplist, unsigned long score)
 void *
 skiplist_popfirst(struct skiplist *skiplist)
 {
-    assert(skiplist != NULL && skiplist->head != NULL);
+    assert(skiplist != NULL);
+    assert(skiplist->head != NULL);
 
     if (skiplist->len == 0)
         return NULL;
@@ -270,7 +277,8 @@ skiplist_popfirst(struct skiplist *skiplist)
 void *
 skiplist_poplast(struct skiplist *skiplist)
 {
-    assert(skiplist != NULL && skiplist->head != NULL);
+    assert(skiplist != NULL);
+    assert(skiplist->head != NULL);
 
     struct skiplist_node *update[SKIPLIST_LEVEL_MAX];
     struct skiplist_node *head = skiplist->head;
@@ -304,7 +312,8 @@ skiplist_poplast(struct skiplist *skiplist)
 struct skiplist_node *
 skiplist_first(struct skiplist *skiplist)
 {
-    assert(skiplist != NULL && skiplist->head != NULL);
+    assert(skiplist != NULL);
+    assert(skiplist->head != NULL);
 
     if (skiplist->len == 0)
         return NULL;
@@ -315,7 +324,8 @@ skiplist_first(struct skiplist *skiplist)
 struct skiplist_node *
 skiplist_last(struct skiplist *skiplist)
 {
-    assert(skiplist != NULL && skiplist->head != NULL);
+    assert(skiplist != NULL);
+    assert(skiplist->head != NULL);
 
     if (skiplist->len == 0)
         return NULL;
@@ -327,7 +337,8 @@ skiplist_last(struct skiplist *skiplist)
 struct skiplist_iter *
 skiplist_iter_new(struct skiplist *skiplist)
 {
-    assert(skiplist != NULL && skiplist->head != NULL);
+    assert(skiplist != NULL);
+    assert(skiplist->head != NULL);
     struct skiplist_iter *iter = malloc(sizeof(struct skiplist_iter));
 
     if (iter != NULL) {
@@ -349,7 +360,8 @@ skiplist_iter_free(struct skiplist_iter *iter)
 struct skiplist_node *
 skiplist_iter_next(struct skiplist_iter *iter)
 {
-    assert(iter != NULL && iter->node != NULL);
+    assert(iter != NULL);
+    assert(iter->node != NULL);
     iter->node = iter->node->forwards[0];
     return iter->node;
 }
@@ -358,7 +370,9 @@ skiplist_iter_next(struct skiplist_iter *iter)
 struct skiplist_node *
 skiplist_iter_prev(struct skiplist_iter *iter)
 {
-    assert(iter != NULL && iter->node != NULL && iter->skiplist != NULL);
+    assert(iter != NULL);
+    assert(iter->node != NULL);
+    assert(iter->skiplist != NULL);
     iter->node = iter->node->backward;
     if (iter->node == iter->skiplist->head)
         return NULL;
@@ -369,7 +383,8 @@ skiplist_iter_prev(struct skiplist_iter *iter)
 void
 skiplist_print(struct skiplist *skiplist)
 {
-    assert(skiplist != NULL && skiplist->head != NULL);
+    assert(skiplist != NULL);
+    assert(skiplist->head != NULL);
 
     int i;
     struct skiplist_node *node;
