@@ -165,8 +165,11 @@ skiplist_push(struct skiplist *skiplist, unsigned long score, void *data)
 
     node->backward = update[0];
 
-    if (node->forwards[0] == NULL)
+    if (node->forwards[0] == NULL) {
         skiplist->tail = node;
+    } else {
+        node->forwards[0]->backward = node;
+    }
     skiplist->len += 1;
     return SKIPLIST_OK;
 }
