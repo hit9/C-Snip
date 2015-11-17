@@ -19,6 +19,7 @@ extern "C" {
 
 #define skiplist(cmp)         skiplist_new(cmp)
 #define skiplist_height(sl)   skiplist_level(sl)
+#define skiplist_iter(sl)     skiplist_iter_new(sl)
 
 /* socre comparator type, return < 0 if arg#0 < arg#1 */
 typedef int (*skiplist_cmp_t)(unsigned long score1, unsigned long score2);
@@ -66,6 +67,7 @@ struct skiplist_iter *skiplist_iter_new(struct skiplist *skiplist);
 void skiplist_iter_free(struct skiplist_iter *iter);
 struct skiplist_node *skiplist_iter_next(struct skiplist_iter *iter);
 struct skiplist_node *skiplist_iter_prev(struct skiplist_iter *iter);
+void skiplist_iter_rewind(struct skiplist_iter *iter);
 void skiplist_print(struct skiplist *skiplist);
 
 #if defined(__cplusplus)

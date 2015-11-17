@@ -390,6 +390,16 @@ skiplist_iter_prev(struct skiplist_iter *iter)
     return iter->node;
 }
 
+/* Rewind skiplist iterator. */
+void
+skiplist_iter_rewind(struct skiplist_iter *iter)
+{
+    assert(iter != NULL);
+    assert(iter->skiplist != NULL);
+    assert(iter->skiplist->head != NULL);
+    iter->node = iter->skiplist->head;
+}
+
 /* Print the skiplist schema. */
 void
 skiplist_print(struct skiplist *skiplist)
