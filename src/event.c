@@ -4,6 +4,8 @@
 
 #include <assert.h>
 #include <stdlib.h>
+#include <time.h>
+#include <sys/time.h>
 #include "event.h"
 
 #ifdef HAVE_KQUEUE
@@ -16,6 +18,14 @@
     #endif
 #endif
 
+/* Get time now in milliseconds. */
+static long
+event_time_now(void)
+{
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return (1000000 * tv.tv_sec + tv.tv_usec) / 1000;
+}
 
 /* Create an event loop. */
 struct event_loop *
@@ -34,6 +44,11 @@ event_loop_new(int size)
     loop->size = size;
     loop->events = NULL;
     loop->api = NULL;
+    loop->num_timers = 0;
+
+    int i;
+    for (i = 0; i < EVENT_TIMER_ID_MAX; i++)
+        loop->timers[i].id = -1;
 
     loop->events = malloc(sizeof(struct event) * size);
 
@@ -47,8 +62,6 @@ event_loop_new(int size)
         free(loop);
         return NULL;
     }
-
-    int i;
 
     for (i = 0; i < size; i++)
         loop->events[i].mask = EVENT_NONE;
@@ -118,16 +131,31 @@ event_del(struct event_loop *loop, int fd, int mask)
     return EVENT_OK;
 }
 
-/* Wait for events. (param timeout: ms, -1 for blocking util) */
+/* Wait for events. */
 int
-event_wait(struct event_loop *loop, int timeout)
+event_wait(struct event_loop *loop)
 {
-    return event_api_wait(loop, timeout);
+    assert(loop != NULL);
+
+    long time_now = event_time_now();
+    long timeout = -1;  /* block forever */
+    struct event_timer *nearest_timer = event_nearest_timer(loop);
+
+    if (nearest_timer != NULL)
+        timeout = nearest_timer-> next_fire_at - time_now;
+
+    int result = event_api_wait(loop, timeout);
+    long elapsed = event_time_now() - time_now;
+    long alignment = 0;
+    if (timeout >= 0 && elapsed > timeout)
+        alignment = elapsed - timeout;
+    event_process_timers(loop, alignment);
+    return result;
 }
 
 /* Start event loop */
 int
-event_loop_start(struct event_loop *loop, int timeout)
+event_loop_start(struct event_loop *loop)
 {
     assert(loop != NULL);
 
@@ -136,7 +164,7 @@ event_loop_start(struct event_loop *loop, int timeout)
     int err;
 
     while(loop->state != EVENT_LOOP_STOPPED)
-        if ((err = event_wait(loop, timeout)) != EVENT_OK)
+        if ((err = event_wait(loop)) != EVENT_OK)
             return err;
 
     return EVENT_OK;
@@ -148,4 +176,98 @@ event_loop_stop(struct event_loop *loop)
 {
     assert(loop != NULL);
     loop->state = EVENT_LOOP_STOPPED;
+}
+
+/* Add timer to event loop. (interval#ms) */
+int
+event_add_timer(struct event_loop *loop, long interval,
+        event_timer_cb_t cb, void *data)
+{
+    assert(loop != NULL && loop->timers != NULL);
+    assert(interval > 0);
+
+    int id;
+    struct event_timer *timer;
+
+    for (id = 0; id < EVENT_TIMER_ID_MAX; id++) {
+         timer = &loop->timers[id];
+         if (timer->id < 0)
+             break;
+    }
+
+    if (id >= EVENT_TIMER_ID_MAX)
+        return EVENT_ERANGE;
+    timer->id = id;
+    timer->cb = cb;
+    timer->interval = interval;
+    timer->next_fire_at = event_time_now() + interval;
+    timer->data = data;
+    loop->num_timers += 1;
+    return EVENT_OK;
+}
+
+/* Delete timer from event loop. */
+int
+event_del_timer(struct event_loop *loop, int id)
+{
+    assert(loop != NULL && loop->timers != NULL);
+
+    if (id < 0 || id >= EVENT_TIMER_ID_MAX)
+        return EVENT_ERANGE;
+    struct event_timer *timer = &loop->timers[id];
+    if (timer->id < 0)
+        return EVENT_ENOTFOUND;
+    timer->id = -1;
+    loop->num_timers -= 1;
+    return EVENT_OK;
+}
+
+/* Get nearest timer, this will do an O(EVENT_TIMER_ID_MAX) loop to
+ * search timer with the smallest `next_fire_at`, `NULL` on not found
+ * (that means `event_wait` will block forever for a file event to fire). */
+struct event_timer *
+event_nearest_timer(struct event_loop *loop)
+{
+    assert(loop != NULL && loop->timers != NULL);
+
+    int i, j;
+    struct event_timer *timer, *nearest = NULL;
+
+    for (i = 0, j = 0; i < EVENT_TIMER_ID_MAX && j < loop->num_timers; i++) {
+        timer = &loop->timers[i];
+
+        if (timer->id >= 0) {
+            if (nearest == NULL ||
+                    nearest->next_fire_at > timer->next_fire_at)
+                nearest = timer;
+            j++;
+        }
+    }
+    return nearest;
+}
+
+/* Fire timed out timers and update each of them `next_fire_at` with
+ * `interval`. */
+void
+event_process_timers(struct event_loop *loop, long alignment)
+{
+    assert(loop != NULL && loop->timers != NULL);
+    assert(alignment >= 0);
+
+    int i, j;
+    struct event_timer *timer;
+    long time_now = event_time_now();
+
+    for (i = 0, j = 0; i < EVENT_TIMER_ID_MAX && j < loop->num_timers; i++) {
+        timer = &loop->timers[i];
+        if (timer->id >= 0) {
+            timer->next_fire_at += alignment;
+            while (timer->next_fire_at <= time_now) {
+                timer->next_fire_at += timer->interval;
+                if (timer->cb != NULL)
+                    (timer->cb)(loop, timer->id, timer->data);
+            }
+            j += 1;
+        }
+    }
 }
