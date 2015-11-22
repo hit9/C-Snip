@@ -128,6 +128,7 @@ case_heap_del()
     assert(heap_push(heap, (void *)&f) == HEAP_OK);
     assert(heap_push(heap, (void *)&g) == HEAP_OK);
     assert(4 == *(int *)heap_del(heap, 4)); /* this assert means nothing */
+    assert(heap_len(heap) == 6);
     assert(1 == *(int *)heap_pop(heap));
     assert(2 == *(int *)heap_pop(heap));
     assert(3 == *(int *)heap_pop(heap));
