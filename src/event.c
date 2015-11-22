@@ -31,7 +31,7 @@ event_time_now(void)
 struct event_loop *
 event_loop_new(int size)
 {
-    assert(size > 0);
+    assert(size >= 0);
 
     /* event numbers must be greater than RESERVED_FDS + FDSET_INCR */
     size += EVENT_FDSET_INCR + EVENT_MIN_RESERVED_FDS;
