@@ -164,6 +164,31 @@ heap_top(struct heap *heap)
     return heap->data[0];
 }
 
+/* Delete node by index and return the data., NULL on not found. */
+void *
+heap_del(struct heap *heap, size_t idx)
+{
+    assert(heap != NULL);
+
+    if (heap->len == 0)
+        return NULL;
+
+    if (idx >= heap->len)
+        return NULL;
+
+    assert(heap->data != NULL && heap->len >= 1);
+
+    void *tail = heap->data[--heap->len];
+
+    if (heap->len == 0)
+        return tail;
+
+    void *data = heap->data[idx];
+    heap->data[idx] = tail;
+    heap_siftup(heap, idx);
+    return data;
+}
+
 /* Sift down the heap. */
 void
 heap_siftdown(struct heap *heap, size_t start_idx, size_t idx)

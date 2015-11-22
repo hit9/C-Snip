@@ -104,6 +104,7 @@ void case_heap_push();
 void case_heap_pop();
 void case_heap_top();
 void case_heap_pushpop();
+void case_heap_del();
 static struct test_case heap_test_cases[] = {
     { "heap_clear", &case_heap_clear },
     { "heap_len", &case_heap_len },
@@ -112,6 +113,7 @@ static struct test_case heap_test_cases[] = {
     { "heap_pop", &case_heap_pop },
     { "heap_top", &case_heap_top },
     { "heap_pushpop", &case_heap_pushpop },
+    { "heap_del", &case_heap_del },
     { NULL, NULL },
 };
 

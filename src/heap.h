@@ -45,6 +45,7 @@ void *heap_pop(struct heap *heap);   /* O(logN) */
 int heap_push(struct heap *heap, void *data);  /* O(logN) */
 void *heap_pushpop(struct heap *heap, void *data);  /* O(logN) */
 void *heap_top(struct heap *heap);  /* O(1) */
+void *heap_del(struct heap *heap, size_t idx); /* O(N) */
 void heap_siftdown(struct heap *heap, size_t start_idx, size_t idx);  /* O(logN) */
 void heap_siftup(struct heap *heap, size_t idx);  /* O(logN) */
 
