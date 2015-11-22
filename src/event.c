@@ -197,6 +197,7 @@ event_add_timer(struct event_loop *loop, long interval,
 
     if (id >= EVENT_TIMER_ID_MAX)
         return EVENT_ERANGE;
+
     timer->id = id;
     timer->cb = cb;
     timer->interval = interval;
@@ -214,9 +215,12 @@ event_del_timer(struct event_loop *loop, int id)
 
     if (id < 0 || id >= EVENT_TIMER_ID_MAX)
         return EVENT_ERANGE;
+
     struct event_timer *timer = &loop->timers[id];
+
     if (timer->id < 0)
         return EVENT_ENOTFOUND;
+
     timer->id = -1;
     loop->num_timers -= 1;
     return EVENT_OK;
