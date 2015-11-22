@@ -14,6 +14,7 @@ extern "C" {
 
 #define EVENT_MIN_RESERVED_FDS  32
 #define EVENT_FDSET_INCR        96
+#define EVENT_TIMER_ID_MAX      1024
 
 #define EVENT_NONE              0b000
 #define EVENT_READABLE          0b001
@@ -45,16 +46,18 @@ extern "C" {
 #define event_del_out(loop, fd)             event_del(loop, fd, EVENT_WRITABLE);
 
 enum {
-    EVENT_OK = 0,       /* operation is ok */
-    EVENT_ENOMEM = 1,   /* no memory error */
-    EVENT_EFAILED = 2,  /* operation is failed */
-    EVENT_ERANGE = 3,   /* range is invalid */
+    EVENT_OK = 0,        /* operation is ok */
+    EVENT_ENOMEM = 1,    /* no memory error */
+    EVENT_EFAILED = 2,   /* operation is failed */
+    EVENT_ERANGE = 3,    /* range is invalid */
+    EVENT_ENOTFOUND = 4, /* not found error */
 };
 
 struct event_loop;
 struct event_api;
 
 typedef void (*event_cb_t)(struct event_loop *loop, int fd, int mask, void *data);
+typedef void (*event_timer_cb_t)(struct event_loop *loop, int id, void *data);
 
 struct event {
     int mask;        /* EVENT_(NONE|READABLE|WRITABLE..) */
@@ -64,21 +67,36 @@ struct event {
     void *data;      /* user defined data */
 };
 
+struct event_timer {
+    int id;              /* timer identifier [0, EVENT_TIMER_ID_MAX) */
+    event_timer_cb_t cb; /* callback function on timer fired */
+    long interval;       /* periodicity interval to fire (ms) */
+    long next_fire_at;   /* the time for the next fire (ms) */
+    void *data;          /* user defined data */
+};
+
 struct event_loop {
-    int size;                /* the max number of fds to track */
-    int state;               /* one of EVENT_LOOP_(STOPPED|RUNNING) */
-    struct event *events;    /* struct event[] */
-    struct event_api *api;   /* to be implemented */
+    int size;             /* the max number of fds to track */
+    int state;            /* one of EVENT_LOOP_(STOPPED|RUNNING) */
+    int num_timers;       /* the number of timers */
+    struct event *events; /* struct event[] */
+    struct event_api *api;/* to be implemented */
+    struct event_timer timers[EVENT_TIMER_ID_MAX]; /* struct event_timers[MAX] */
 };
 
 struct event_loop *event_loop_new(int size);
 void event_loop_free(struct event_loop *loop);
-int event_loop_start(struct event_loop *loop, int timeout);
+int event_loop_start(struct event_loop *loop);
 void event_loop_stop(struct event_loop *loop);
 int event_add(struct event_loop *loop, int fd, int mask,
-        event_cb_t cb, void *data);
+        event_cb_t cb, void *data); /* O(1) */
 int event_del(struct event_loop *loop, int fd, int mask);
-int event_wait(struct event_loop *loop, int timeout);
+int event_wait(struct event_loop *loop);
+int event_add_timer(struct event_loop *loop, long interval,
+        event_timer_cb_t cb, void *data); /* O(EVENT_TIMER_ID_MAX) */
+int event_del_timer(struct event_loop *loop, int id); /* O(1) */
+struct event_timer *event_nearest_timer(struct event_loop *loop); /* O(EVENT_TIMER_ID_MAX) */
+void event_process_timers(struct event_loop *loop, long alignment); /* O(EVENT_TIMER_ID_MAX) */
 
 #if defined(__cplusplus)
 }

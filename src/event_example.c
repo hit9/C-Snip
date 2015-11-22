@@ -24,6 +24,12 @@ echo(struct event_loop *loop, int fd, int mask, void *data)
     }
 }
 
+void
+heartbeat(struct event_loop *loop, int id, void *data)
+{
+    printf("heartbeat every 1000ms\n");
+}
+
 int
 main(int argc, const char *argv[])
 {
@@ -31,9 +37,11 @@ main(int argc, const char *argv[])
     struct event_loop *loop = event_loop(1024);
     /* call `echo()` when stdin is readable (on data coming in) */
     event_add_in(loop, STDIN_FILENO, &echo, NULL);
+    /* call `heartbeat` every 1 second */
+    event_add_timer(loop, 1000, &heartbeat, NULL);
     /* start event loop */
     printf("start event loop, type 'exit' to exit.. \n");
-    event_loop_start(loop, -1);
+    event_loop_start(loop);
     /* free event loop */
     event_loop_free(loop);
     return 0;

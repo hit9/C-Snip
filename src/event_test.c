@@ -46,7 +46,7 @@ case_event_simple()
     pthread_t t;
     pthread_create(&t, NULL, &write_data, NULL);
 
-    event_loop_start(loop, -1);
+    event_loop_start(loop);
     event_loop_free(loop);
 
     pthread_join(t, NULL);
