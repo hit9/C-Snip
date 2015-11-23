@@ -145,11 +145,7 @@ event_wait(struct event_loop *loop)
         timeout = nearest_timer-> next_fire_at - time_now;
 
     int result = event_api_wait(loop, timeout);
-    long elapsed = event_time_now() - time_now;
-    long alignment = 0;
-    if (timeout >= 0 && elapsed > timeout)
-        alignment = elapsed - timeout;
-    event_process_timers(loop, alignment);
+    event_process_timers(loop);
     return result;
 }
 
@@ -253,10 +249,9 @@ event_nearest_timer(struct event_loop *loop)
 /* Fire timed out timers and update each of them `next_fire_at` with
  * `interval`. */
 void
-event_process_timers(struct event_loop *loop, long alignment)
+event_process_timers(struct event_loop *loop)
 {
     assert(loop != NULL && loop->timers != NULL);
-    assert(alignment >= 0);
 
     int i, j;
     struct event_timer *timer;
@@ -265,7 +260,6 @@ event_process_timers(struct event_loop *loop, long alignment)
     for (i = 0, j = 0; i < EVENT_TIMER_ID_MAX && j < loop->num_timers; i++) {
         timer = &loop->timers[i];
         if (timer->id >= 0) {
-            timer->next_fire_at += alignment;
             while (timer->next_fire_at <= time_now) {
                 timer->next_fire_at += timer->interval;
                 if (timer->cb != NULL)
