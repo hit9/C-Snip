@@ -33,13 +33,13 @@ dict_key_equals(char *key1, size_t len1, char *key2, size_t len2)
 
 /* Create dict node. */
 struct dict_node *
-dict_node_new(char *key, size_t len, void *val)
+dict_node_new(char *key, void *val)
 {
     struct dict_node *node = malloc(sizeof(struct dict_node));
 
     if (node != NULL) {
         node->key = key;
-        node->len = len;
+        node->len = strlen(key);
         node->val = val;
         node->next = NULL;
     }
@@ -81,7 +81,7 @@ dict_resize(struct dict *dict)
 
         while (node != NULL) {
             struct dict_node *new_node = dict_node_new(
-                    node->key, node->len, node->val);
+                    node->key, node->val);
 
             if (new_node == NULL)
                 return DICT_ENOMEM;
@@ -191,7 +191,7 @@ dict_cap(struct dict *dict)
 
 /* Set a key into dict. */
 int
-dict_set(struct dict *dict, char *key, size_t len, void *val)
+dict_set(struct dict *dict, char *key, void *val)
 {
     assert(dict != NULL);
 
@@ -199,6 +199,7 @@ dict_set(struct dict *dict, char *key, size_t len, void *val)
             dict_resize(dict) != DICT_OK)
         return DICT_ENOMEM;
 
+    size_t len = strlen(key);
     size_t index = dict_table_idx(dict->idx, key, len);
     struct dict_node *node = (dict->table)[index];
 
@@ -214,7 +215,7 @@ dict_set(struct dict *dict, char *key, size_t len, void *val)
     }
 
     /* create node if not found */
-    struct dict_node *new_node = dict_node_new(key, len, val);
+    struct dict_node *new_node = dict_node_new(key, val);
 
     if (new_node == NULL)
         return DICT_ENOMEM;
@@ -238,10 +239,11 @@ dict_set(struct dict *dict, char *key, size_t len, void *val)
 
 /* Get val by key from dict, NULL on not found. */
 void *
-dict_get(struct dict *dict, char *key, size_t len)
+dict_get(struct dict *dict, char *key)
 {
     assert(dict != NULL);
 
+    size_t len = strlen(key);
     size_t index = dict_table_idx(dict->idx, key, len);
     struct dict_node *node = (dict->table)[index];
 
@@ -256,10 +258,11 @@ dict_get(struct dict *dict, char *key, size_t len)
 
 /* Test if a key is in dict. */
 int
-dict_has(struct dict *dict, char *key, size_t len)
+dict_has(struct dict *dict, char *key)
 {
     assert(dict != NULL);
 
+    size_t len = strlen(key);
     size_t index = dict_table_idx(dict->idx, key, len);
     struct dict_node *node = (dict->table)[index];
 
@@ -274,10 +277,11 @@ dict_has(struct dict *dict, char *key, size_t len)
 
 /* Pop a key from dict, NULL on not found. */
 void *
-dict_pop(struct dict *dict, char *key, size_t len)
+dict_pop(struct dict *dict, char *key)
 {
     assert(dict != NULL);
 
+    size_t len = strlen(key);
     size_t index = dict_table_idx(dict->idx, key, len);
     struct dict_node *node = (dict->table)[index];
     struct dict_node *prev = NULL;
@@ -375,32 +379,4 @@ dict_iter_rewind(struct dict_iter *iter)
     assert(iter != NULL);
     iter->node = NULL;
     iter->index = 0;
-}
-
-/* Set value by null-terminated key. */
-int
-dict_sset(struct dict *dict, char *key, void *val)
-{
-    return dict_set(dict, key, strlen(key), val);
-}
-
-/* Get value by null-terminated key. */
-void *
-dict_sget(struct dict *dict, char *key)
-{
-    return dict_get(dict, key, strlen(key));
-}
-
-/* Pop value by null-terminated key. */
-void *
-dict_spop(struct dict *dict, char *key)
-{
-    return dict_pop(dict, key, strlen(key));
-}
-
-/* Test if a null-terminated key is in dict. */
-int
-dict_shas(struct dict *dict, char *key)
-{
-    return dict_has(dict, key, strlen(key));
 }
