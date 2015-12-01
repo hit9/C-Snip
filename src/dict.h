@@ -44,17 +44,6 @@ struct dict_iter {
     struct dict_node *node;    /* current dict node */
 };
 
-static size_t dict_table_sizes[] = {
-    7, 17, 37, 79, 163, 331, 673, 1361, 2729,
-    5471, 10949, 21911, 43853, 87719, 175447,
-    350899, 701819, 1403641, 2807303, 5614657,
-    11229331, 44917381, 89834777, 179669557,
-    359339171, 718678369, 1437356741, 2147483647,
-};
-
-static size_t dict_idx_max = sizeof(dict_table_sizes)/\
-                             sizeof(dict_table_sizes[0])-1;  /* 28 */
-
 struct dict *dict_new(void);
 void dict_clear(struct dict *dict); /* O(N) */
 void dict_free(struct dict *dict);
