@@ -151,14 +151,14 @@ buf_str(struct buf *buf)
     return NULL;
 }
 
-/* Return true if a buffer is empty */
-bool
+/* Return 1 if a buffer is empty, else 0 */
+int
 buf_isempty(struct buf *buf)
 {
     assert(buf != NULL);
     if (buf->len == 0)
-        return true;
-    return false;
+        return 1;
+    return 0;
 }
 
 /* Formatted printing to a buffer. */

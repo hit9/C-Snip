@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include "heap.h"
 
-/* heap data comparator: return true if a < b */
+/* heap node comparator type, return negative if arg#0 < arg#1 */
 int
 cmp(void *a, void *b)
 {

@@ -2,7 +2,7 @@
  * Copyright (c) 2015, Chao Wang <hit9@icloud.com>
  *
  * Dynamic sized list-based hashtable implementation.
- * deps: bool.h.
+ * deps: None
  */
 
 #ifndef _CW_DICT_H
@@ -10,7 +10,6 @@
 
 #include <stdlib.h>
 #include <stdint.h>
-#include "bool.h"
 
 #if defined(__cplusplus)
 extern "C" {
@@ -64,7 +63,7 @@ size_t dict_cap(struct dict *dict); /* O(1) */
 int dict_set(struct dict *dict, char *key, size_t len, void *val); /* O(1) */
 void *dict_get(struct dict *dict, char *key, size_t len); /* O(1) */
 void *dict_pop(struct dict *dict, char *key, size_t len); /* O(1) */
-bool dict_has(struct dict *dict, char *key, size_t len); /* O(1) */
+int dict_has(struct dict *dict, char *key, size_t len); /* O(1) */
 struct dict_iter *dict_iter_new(struct dict *dict);
 void dict_iter_free(struct dict_iter *iter);
 struct dict_node *dict_iter_next(struct dict_iter *iter);
@@ -72,7 +71,7 @@ void dict_iter_rewind(struct dict_iter *iter);
 int dict_sset(struct dict *dict, char *key, void *val); /* O(1) */
 void *dict_sget(struct dict *dict, char *key); /* O(1) */
 void *dict_spop(struct dict *dict, char *key); /* O(1) */
-bool dict_shas(struct dict *dict, char *key); /* O(1) */
+int dict_shas(struct dict *dict, char *key); /* O(1) */
 
 #if defined(__cplusplus)
 }

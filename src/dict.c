@@ -23,12 +23,12 @@ dict_table_idx(size_t idx, char *key, size_t len)
 }
 
 /* If two key equals. */
-bool
+int
 dict_key_equals(char *key1, size_t len1, char *key2, size_t len2)
 {
     if (len1 == len2 && (memcmp(key1, key2, len1) == 0))
-        return true;
-    return false;
+        return 1;
+    return 0;
 }
 
 /* Create dict node. */
@@ -255,7 +255,7 @@ dict_get(struct dict *dict, char *key, size_t len)
 }
 
 /* Test if a key is in dict. */
-bool
+int
 dict_has(struct dict *dict, char *key, size_t len)
 {
     assert(dict != NULL);
@@ -265,11 +265,11 @@ dict_has(struct dict *dict, char *key, size_t len)
 
     while (node != NULL) {
         if (dict_key_equals(node->key, node->len, key, len))
-            return true;
+            return 1;
         node = node->next;
     }
 
-    return false;
+    return 0;
 }
 
 /* Pop a key from dict, NULL on not found. */
@@ -399,7 +399,7 @@ dict_spop(struct dict *dict, char *key)
 }
 
 /* Test if a null-terminated key is in dict. */
-bool
+int
 dict_shas(struct dict *dict, char *key)
 {
     return dict_has(dict, key, strlen(key));

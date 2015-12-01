@@ -3,7 +3,6 @@
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
-#include "bool.h"
 #include "dict.h"
 
 int main(int argc, const char *argv[])
