@@ -9,17 +9,6 @@
 #include "test.h"
 
 /**
- * bool_test
- */
-void case_bool_true();
-void case_bool_false();
-static struct test_case bool_test_cases[] = {
-    { "bool_true", &case_bool_true },
-    { "bool_false", &case_bool_false },
-    { NULL, NULL },
-};
-
-/**
  * buf_test
  */
 void case_buf_clear();
@@ -235,7 +224,6 @@ int main(int argc, const char *argv[])
     mtrace();
 #endif
     printf("=========== test start ========\n");
-    run_cases("bool_test", bool_test_cases);
     run_cases("buf_test", buf_test_cases);
     run_cases("cfg_get", cfg_test_cases);
     run_cases("datetime_test", datetime_test_cases);

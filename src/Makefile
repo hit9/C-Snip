@@ -6,8 +6,7 @@ NAME    = test
 CC      = cc
 CFLAGS  =
 LDFLAGS = -pthread
-SRC     = bool_test.c\
-		  buf.c\
+SRC     = buf.c\
 		  buf_test.c\
 		  cfg.c\
 		  cfg_test.c\
