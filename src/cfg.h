@@ -28,6 +28,16 @@
  *
  *     if (err == CFG_EBADFMT)
  *         printf("bad format at line %ld", cfg.lineno);
+ *
+ * or use the handy macro:
+ *
+ *     cfg_parse(buf->data, buf->len, {
+ *         cfg.data ..
+ *         cfg.len ..
+ *     }, {
+ *         if (cfg_err == CFG_EBADFMT)
+ *             fprintf(stderr, "bad format on line %ld\n", cfg.lineno);
+ *     })
  */
 
 #ifndef _CW_CFG_H
@@ -39,6 +49,14 @@
 extern "C" {
 #endif
 
+#define cfg_parse(buf, len, block, on_error) { \
+    struct cfg cfg = {buf, len, 1};            \
+    int err = 0;                               \
+    while ((err = cfg_get(&cfg)) == CFG_OK)    \
+        block;                                 \
+    on_error;                                  \
+}
+
 enum {
     CFG_OK = 0,      /* operation is ok */
     CFG_EOF = 1,     /* EOF reached */
@@ -48,11 +66,11 @@ enum {
 struct cfg {
     char *data;      /* currnt cfg data */
     size_t len;      /* currnt cfg data length */
+    size_t lineno;   /* cfg lineno */
     char *key;       /* current key */
     size_t key_len;  /* current key length */
     char *val;       /* current val */
     size_t val_len;  /* current val length */
-    size_t lineno;   /* cfg lineno */
 };
 
 int cfg_get(struct cfg *cfg);

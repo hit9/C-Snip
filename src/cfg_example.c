@@ -7,12 +7,35 @@
 
 #define READ_UNIT   1024
 
+int read_file_into_buffer(const char *filename, struct buf *buf);
+
 int main(int argc, const char *argv[])
 {
     /* Read file into buffer */
     struct buf *buf = buf_new(NULL);
+    if (read_file_into_buffer("cfg_example.cfg", buf) != BUF_OK)
+        return -1;
+
+    /* Parse config */
+    cfg_parse(buf->data, buf->len, {
+        printf("%.*s => %.*s\n", (int)(cfg.key_len), cfg.key,
+                (int)(cfg.val_len), cfg.val);
+    }, {
+        if (err == CFG_EBADFMT) {
+            printf("bad format on line %ld\n", cfg.lineno);
+            return -2;
+        }
+    });
+
+    buf_free(buf);
+    return 0;
+}
+
+int
+read_file_into_buffer(const char *filename, struct buf *buf)
+{
     int nread;
-    FILE *fp = fopen("cfg_example.cfg", "r");
+    FILE *fp = fopen(filename, "r");
 
     if (fp == NULL)
         return -1;
@@ -27,27 +50,5 @@ int main(int argc, const char *argv[])
 
         buf->len += nread;
     }
-
-    /* Parse config */
-    struct cfg cfg;
-
-    cfg.data = buf->data;   /* data to parse */
-    cfg.len = buf->len;     /* data length to parse */
-    cfg.lineno = 1;         /* initialize line number */
-
-    int cfg_err;
-
-    while ((cfg_err = cfg_get(&cfg)) == CFG_OK) {
-        printf("%.*s => %.*s\n", (int)(cfg.key_len), cfg.key,
-                (int)(cfg.val_len), cfg.val);
-    }
-
-    buf_free(buf);
-
-    if (cfg_err == CFG_EBADFMT) {
-        printf("bad format on line %ld\n", cfg.lineno);
-        return -1;
-    }
-
-    return 0;
+    return BUF_OK;
 }
