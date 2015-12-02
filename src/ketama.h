@@ -34,6 +34,7 @@ struct ketama_node {
 
 struct ketama_ring *ketama_ring_new(struct ketama_node *nodes, size_t len);
 void ketama_ring_free(struct ketama_ring *ring);
+struct ketama_node *ketama_node_iget(struct ketama_ring *ring, char *key, size_t key_len); /* O(logN) */
 struct ketama_node *ketama_node_get(struct ketama_ring *ring, char *key); /* O(logN) */
 
 #if defined(__cplusplus)
