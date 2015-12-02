@@ -35,8 +35,8 @@ case_ketama_balance()
     for (i = 0; i < 2600; i++) {
         char key[11];
         strings_rand(key, 10);
-        struct ketama_node node = ketama_node_sget(ring, key);
-        nodes[node.idx].idata += 1;
+        struct ketama_node *node = ketama_node_get(ring, key);
+        nodes[node->idx].idata += 1;
     }
 
     for (i = 0; i < 13; i++)
@@ -63,10 +63,10 @@ case_ketama_consistence()
     char key[11];
     srand(time(NULL));
     strings_rand(key, 10);
-    struct ketama_node node = ketama_node_sget(ring, key);
+    struct ketama_node *node = ketama_node_get(ring, key);
     int i;
     for (i = 0; i < 1000; i++) {
-        assert(strcmp(node.key, ketama_node_sget(ring, key).key) == 0);
+        assert(strcmp(node->key, ketama_node_get(ring, key)->key) == 0);
     }
 
     ketama_ring_free(ring);

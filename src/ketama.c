@@ -9,8 +9,6 @@
 #include "ketama.h"
 #include "md5.h"
 
-static struct ketama_node ketama_node_null = {NULL, 0, NULL, 0};
-
 static uint32_t
 ketama_hash(char *key, size_t len, size_t align)
 {
@@ -59,30 +57,30 @@ ketama_ring_new(struct ketama_node *nodes, size_t len)
     }
 
     int j, k, n, digits;
-    struct ketama_node node;
+    struct ketama_node *node;
+    /* memset(&node, 0, sizeof(node)); */
     unsigned int num;
     size_t key_len_max;
-
     for (i = 0, k = 0; i < len; i++) {
-        node = nodes[i];
+        node = &nodes[i];
 
-        for (digits = 0, num = node.weight;
+        for (digits = 0, num = node->weight;
                 num > 0; num /= 10, ++digits);
 
-        assert(node.key != NULL);
-        assert(node.hash == 0);
+        assert(node->key != NULL);
+        assert(node->hash == 0);
 
-        key_len_max = strlen(node.key) + digits + 1;
+        key_len_max = strlen(node->key) + digits + 1;
         char key[key_len_max];
 
-        for (j = 0; j < node.weight * 40; j++) {
+        for (j = 0; j < node->weight * 40; j++) {
             memset(key, 0, key_len_max);
-            sprintf(key, "%s-%d", node.key, j);
+            sprintf(key, "%s-%d", node->key, j);
             for (n = 0; n < 4; n++, k++) {
-                ring->nodes[k].key = node.key;
-                ring->nodes[k].weight = node.weight;
-                ring->nodes[k].data = node.data;
-                ring->nodes[k].idata = node.idata;
+                ring->nodes[k].key = node->key;
+                ring->nodes[k].weight = node->weight;
+                ring->nodes[k].data = node->data;
+                ring->nodes[k].idata = node->idata;
                 ring->nodes[k].idx = i;
                 ring->nodes[k].hash = ketama_hash(key, strlen(key), n);
             }
@@ -105,8 +103,8 @@ ketama_ring_free(struct ketama_ring *ring)
 }
 
 /* Get node by key from ring. */
-struct ketama_node
-ketama_node_get(struct ketama_ring *ring, char *key, size_t key_len)
+struct ketama_node *
+ketama_node_get(struct ketama_ring *ring, char *key)
 {
     assert(ring != NULL);
     assert(key != NULL);
@@ -116,12 +114,13 @@ ketama_node_get(struct ketama_ring *ring, char *key, size_t key_len)
     size_t len = ring->len;
 
     if (len == 0)
-        return ketama_node_null;
+        return NULL;
 
     if (len == 1)
-        return nodes[0];
+        return &nodes[0];
 
     int left = 0, right = len, mid;
+    size_t key_len = strlen(key);
     uint32_t hash = ketama_hash(key, key_len, 0);
     uint32_t mval, pval;
 
@@ -129,13 +128,13 @@ ketama_node_get(struct ketama_ring *ring, char *key, size_t key_len)
         mid = (left + right) / 2;
 
         if (mid == len)
-            return nodes[0];
+            return &nodes[0];
 
         mval = nodes[mid].hash;
         pval = mid == 0 ? 0 : nodes[mid - 1].hash;
 
         if (hash <= mval && hash > pval)
-            return nodes[mid];
+            return &nodes[mid];
 
         if (mval < hash) {
             left = mid + 1;
@@ -144,13 +143,6 @@ ketama_node_get(struct ketama_ring *ring, char *key, size_t key_len)
         }
 
         if (left > right)
-            return nodes[0];
+            return &nodes[0];
     }
-}
-
-/* Get node by key from ring. */
-struct ketama_node
-ketama_node_sget(struct ketama_ring *ring, char *key)
-{
-    return ketama_node_get(ring, key, strlen(key));
 }
