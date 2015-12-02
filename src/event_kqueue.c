@@ -166,7 +166,7 @@ event_api_wait(struct event_loop *loop, int timeout)
     }
 
     if (nfds == 0) {
-        if (timeout > 0)
+        if (timeout >= 0)
             return EVENT_OK;
     }
 
