@@ -57,6 +57,10 @@ struct dict_iter *dict_iter_new(struct dict *dict);
 void dict_iter_free(struct dict_iter *iter);
 struct dict_node *dict_iter_next(struct dict_iter *iter);
 void dict_iter_rewind(struct dict_iter *iter);
+int dict_iset(struct dict *dict, char *key, size_t len, void *val); /* O(1) */
+void *dict_iget(struct dict *dict, char *key, size_t len); /* O(1) */
+void *dict_ipop(struct dict *dict, char *key, size_t len); /* O(1) */
+int dict_ihas(struct dict *dict, char *key, size_t len); /* O(1) */
 
 #if defined(__cplusplus)
 }
