@@ -104,7 +104,7 @@ ketama_ring_free(struct ketama_ring *ring)
 
 /* Get node by key from ring. */
 struct ketama_node *
-ketama_node_get(struct ketama_ring *ring, char *key)
+ketama_node_iget(struct ketama_ring *ring, char *key, size_t key_len)
 {
     assert(ring != NULL);
     assert(key != NULL);
@@ -120,7 +120,6 @@ ketama_node_get(struct ketama_ring *ring, char *key)
         return &nodes[0];
 
     int left = 0, right = len, mid;
-    size_t key_len = strlen(key);
     uint32_t hash = ketama_hash(key, key_len, 0);
     uint32_t mval, pval;
 
@@ -145,4 +144,10 @@ ketama_node_get(struct ketama_ring *ring, char *key)
         if (left > right)
             return &nodes[0];
     }
+}
+
+struct ketama_node *
+ketama_node_get(struct ketama_ring *ring, char *key)
+{
+    return ketama_node_iget(ring, key, strlen(key));
 }
