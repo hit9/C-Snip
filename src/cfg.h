@@ -15,19 +15,14 @@
  *
  * example usage:
  *
- *     struct cfg cfg;
- *     int err;
- *
- *     cfg.data = buf->data;
- *     cfg.len = buf->len;
- *     cfg.lineno = 0;
- *
- *     while ((err = cfg_get(&cfg)) == CFG_OK)
- *         printf("%.*s => %.*s\n", cfg.key_len, cfg.key
- *                     cfg.val_len, cfg.val);
- *
- *     if (err == CFG_EBADFMT)
- *         printf("bad format at line %ld", cfg.lineno);
+ *     struct cfg cfg = {buf, buf_len, 1};
+ *     int err = 0;
+ *     cfg_each(cfg, err) {
+ *         cfg.key..
+ *         cfg.key_len..
+ *         cfg.val..
+ *         cfg.val_len..
+ *     }
  */
 
 #ifndef _CW_CFG_H
@@ -39,6 +34,9 @@
 extern "C" {
 #endif
 
+#define cfg_each(cfg, err) \
+    while (((err) = cfg_get(&(cfg))) == CFG_OK)
+
 enum {
     CFG_OK = 0,      /* operation is ok */
     CFG_EOF = 1,     /* EOF reached */
@@ -48,11 +46,11 @@ enum {
 struct cfg {
     char *data;      /* currnt cfg data */
     size_t len;      /* currnt cfg data length */
+    size_t lineno;   /* cfg lineno */
     char *key;       /* current key */
     size_t key_len;  /* current key length */
     char *val;       /* current val */
     size_t val_len;  /* current val length */
-    size_t lineno;   /* cfg lineno */
 };
 
 int cfg_get(struct cfg *cfg);
