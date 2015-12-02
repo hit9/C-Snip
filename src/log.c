@@ -11,8 +11,8 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <sys/syscall.h>
 #include <unistd.h>
+#include <sys/syscall.h>
 #include <pthread.h>
 
 #include "log.h"

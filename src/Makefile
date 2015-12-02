@@ -3,9 +3,9 @@
 default: runtest
 
 NAME=test
-CC=cc
-OPTIMIZATION?=-O2
-CFLAGS=-Wall $(OPTIMIZATION)
+CC=cc -std=c99
+OPTIMIZATION?=-O3
+CFLAGS=-Wall $(OPTIMIZATION) -D_GNU_SOURCE
 LDFLAGS=-Wall -pthread
 BIN=$(NAME)
 SRC:=$(wildcard *.c)
