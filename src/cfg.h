@@ -15,29 +15,14 @@
  *
  * example usage:
  *
- *     struct cfg cfg;
- *     int err;
- *
- *     cfg.data = buf->data;
- *     cfg.len = buf->len;
- *     cfg.lineno = 0;
- *
- *     while ((err = cfg_get(&cfg)) == CFG_OK)
- *         printf("%.*s => %.*s\n", cfg.key_len, cfg.key
- *                     cfg.val_len, cfg.val);
- *
- *     if (err == CFG_EBADFMT)
- *         printf("bad format at line %ld", cfg.lineno);
- *
- * or use the handy macro:
- *
- *     cfg_parse(buf->data, buf->len, {
- *         cfg.data ..
- *         cfg.len ..
- *     }, {
- *         if (cfg_err == CFG_EBADFMT)
- *             fprintf(stderr, "bad format on line %ld\n", cfg.lineno);
- *     })
+ *     struct cfg cfg = {buf, buf_len, 1};
+ *     int err = 0;
+ *     cfg_each(cfg, err) {
+ *         cfg.key..
+ *         cfg.key_len..
+ *         cfg.val..
+ *         cfg.val_len..
+ *     }
  */
 
 #ifndef _CW_CFG_H
@@ -49,13 +34,8 @@
 extern "C" {
 #endif
 
-#define cfg_parse(buf, len, block, on_error) { \
-    struct cfg cfg = {buf, len, 1};            \
-    int err = 0;                               \
-    while ((err = cfg_get(&cfg)) == CFG_OK)    \
-        block;                                 \
-    on_error;                                  \
-}
+#define cfg_each(cfg, err) \
+    while (((err) = cfg_get(&(cfg))) == CFG_OK)
 
 enum {
     CFG_OK = 0,      /* operation is ok */

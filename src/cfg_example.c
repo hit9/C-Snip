@@ -17,15 +17,17 @@ int main(int argc, const char *argv[])
         return -1;
 
     /* Parse config */
-    cfg_parse(buf->data, buf->len, {
+    struct cfg cfg = {buf->data, buf->len, 1};
+    int err = 0;
+    cfg_each(cfg, err) {
         printf("%.*s => %.*s\n", (int)(cfg.key_len), cfg.key,
                 (int)(cfg.val_len), cfg.val);
-    }, {
-        if (err == CFG_EBADFMT) {
-            printf("bad format on line %ld\n", cfg.lineno);
-            return -2;
-        }
-    });
+    }
+
+    if (err == CFG_EBADFMT) {
+        printf("bad format on line %ld\n", cfg.lineno);
+        return -2;
+    }
 
     buf_free(buf);
     return 0;
