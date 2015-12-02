@@ -15,7 +15,7 @@
 extern "C" {
 #endif
 
-#define DICT_LOAD_LIMIT         0.75                 /* load factor */
+#define DICT_LOAD_LIMIT         0.72 /* load factor */
 
 #define dict()                  dict_new()
 #define dict_iter(dict)         dict_iter_new(dict)

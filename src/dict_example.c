@@ -1,4 +1,4 @@
-// cc dict_example.c dict.c md5.c
+// cc dict_example.c dict.c
 
 #include <assert.h>
 #include <stdio.h>
