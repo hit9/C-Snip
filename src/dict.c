@@ -5,7 +5,6 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
-#include "md5.h"
 #include "dict.h"
 
 static size_t dict_table_sizes[] = {
@@ -22,7 +21,29 @@ static size_t dict_idx_max = sizeof(dict_table_sizes)/\
 static uint32_t
 dict_hash(char *key, size_t len)
 {
-    return hash_md5(key, len);
+    /* DJBX33A hash function from PHP */
+    register int hash = 5381;
+    for (; len >= 8; len -= 8) {
+        hash = ((hash << 5) + hash) + *key++;
+        hash = ((hash << 5) + hash) + *key++;
+        hash = ((hash << 5) + hash) + *key++;
+        hash = ((hash << 5) + hash) + *key++;
+        hash = ((hash << 5) + hash) + *key++;
+        hash = ((hash << 5) + hash) + *key++;
+        hash = ((hash << 5) + hash) + *key++;
+        hash = ((hash << 5) + hash) + *key++;
+    }
+    switch (len) {
+        case 7: hash = ((hash << 5) + hash) + *key++;
+        case 6: hash = ((hash << 5) + hash) + *key++;
+        case 5: hash = ((hash << 5) + hash) + *key++;
+        case 4: hash = ((hash << 5) + hash) + *key++;
+        case 3: hash = ((hash << 5) + hash) + *key++;
+        case 2: hash = ((hash << 5) + hash) + *key++;
+        case 1: hash = ((hash << 5) + hash) + *key++; break;
+        case 0: break;
+    }
+    return hash;
 }
 
 /* Get table size idx. */
