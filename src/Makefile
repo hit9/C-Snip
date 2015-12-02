@@ -4,8 +4,8 @@ default: runtest
 
 NAME=test
 CC=cc -std=c99
-OPTIMIZATION?=-O3
-CFLAGS=-Wall $(OPTIMIZATION) -D_GNU_SOURCE
+OPTIMIZATION?=-O2
+CFLAGS=-Wall $(OPTIMIZATION) -D_GNU_SOURCE -g
 LDFLAGS=-Wall -pthread
 BIN=$(NAME)
 SRC:=$(wildcard *.c)
@@ -21,7 +21,6 @@ LOG:=$(NAME)-mtrace.log
 UNAME=$(shell uname)
 
 $(BIN): $(OBJ)
-$(OBJ): $(INC) $(SRC)
 
 runtest: $(BIN)
 ifeq ($(UNAME), Linux)
