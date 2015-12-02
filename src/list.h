@@ -18,6 +18,13 @@ extern "C" {
 #define list_iter(list)        list_iter_new(list)
 #define list_push(list, data)  list_rpush(list, data)
 #define list_pop(list)         list_lpop(list)
+#define list_each(list, block) {                     \
+    struct list_iter iter = {list, list->head};      \
+    void *data = NULL;                               \
+    while ((data = list_iter_next(&iter)) != NULL) { \
+        block;                                       \
+    }                                                \
+}
 
 enum {
     LIST_OK = 0,             /* operation is ok */

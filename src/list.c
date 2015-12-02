@@ -227,6 +227,22 @@ list_tail(struct list *list)
  *    while ((data = list_iter_next(iter)) != NULL) {
  *       ...
  *    }
+ *    list_iter_free(iter);
+ *
+ * Or use it like this:
+ *
+ *    struct list_iter iter = {list, NULL};
+ *    void *data;
+ *
+ *    while ((data = list_iter_next(&iter)) != NULL) {
+ *      ...
+ *    }
+ *
+ * Or use macro `list_each`:
+ *
+ *    list_each(list {
+ *      data..
+ *    });
  */
 struct list_iter *
 list_iter_new(struct list *list)

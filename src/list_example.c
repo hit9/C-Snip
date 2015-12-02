@@ -18,12 +18,9 @@ int main(int argc, const char *argv[])
     /* pop a node from list (on the left) */
     assert(list_pop(list) != NULL);
     /* iterate the list and print the nodes */
-    struct list_iter *iter = list_iter(list);
-    void *data;
-    while ((data = list_iter_next(iter)) != NULL)
+    list_each(list, {
         printf("%s ", (char *)data);
-    /* free the list iterator */
-    list_iter_free(iter);
+    });
     /* free the list */
     list_free(list);
     return 0;
