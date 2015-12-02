@@ -38,7 +38,7 @@ read_data(struct event_loop *loop, int fd, int mask, void *data)
 void
 case_event_simple()
 {
-    pipe(fds);
+    assert(pipe(fds) == 0);
 
     struct event_loop *loop = event_loop_new(100);
     event_add_in(loop, fds[0], &read_data, NULL);

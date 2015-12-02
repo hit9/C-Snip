@@ -8,7 +8,7 @@
 #ifndef _CW_QUEUE_H
 #define _CW_QUEUE_H 1
 
-#include <stdint.h>
+#include <stdlib.h>
 
 #if defined(__cplusplus)
 extern "C" {

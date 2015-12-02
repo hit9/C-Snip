@@ -226,8 +226,6 @@ heap_siftup(struct heap *heap, size_t idx)
     size_t start_idx = idx;
     size_t child_idx = idx * 2 + 1;
     size_t right_idx;
-    void *child_data;
-    void *right_data;
 
     while (child_idx < len) {
         right_idx = child_idx + 1;

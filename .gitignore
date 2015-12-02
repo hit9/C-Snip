@@ -1,8 +1,7 @@
-example/event/echo
-example/cfg/config
 *.log
 *.o
 *.out
 *.so
+*.h.gch
 .*.sw[opn]
 src/test

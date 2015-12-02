@@ -2,55 +2,34 @@
 
 default: runtest
 
-NAME    = test
-CC      = cc
-CFLAGS  =
-LDFLAGS = -pthread
-SRC     = buf.c\
-		  buf_test.c\
-		  cfg.c\
-		  cfg_test.c\
-		  datetime.c\
-		  datetime_test.c\
-		  dict.c\
-		  dict_test.c\
-		  event.c\
-		  event_test.c\
-		  heap.c\
-		  heap_test.c\
-		  ketama.c\
-		  ketama_test.c\
-		  list.c\
-		  list_test.c\
-		  log.c\
-		  log_test.c\
-		  md5.c\
-		  queue.c\
-		  queue_test.c\
-		  skiplist.c\
-		  skiplist_test.c\
-		  stack.c\
-		  stack_test.c\
-		  strings.c\
-		  strings_test.c\
-		  test.c\
-		  utils_test.c\
-
-OBJ    = $(SRC:c=o)
-BIN    = $(NAME)
-UNAME  = $(shell uname)
+NAME=test
+CC=cc
+OPTIMIZATION?=-O2
+CFLAGS=-Wall $(OPTIMIZATION)
+LDFLAGS=-Wall -pthread
+BIN=$(NAME)
+SRC:=$(wildcard *.c)
+EV_EPOLL:=$(wildcard event_epoll.c)
+EV_KQUEUE:=$(wildcard event_kqueue.c)
+EXAMPLE:=$(wildcard *_example.c)
+SRC:=$(filter-out $(EV_EPOLL), $(SRC))
+SRC:=$(filter-out $(EV_KQUEUE), $(SRC))
+SRC:=$(filter-out $(EXAMPLE), $(SRC))
+INC:=$(wildcard *.h)
+OBJ:=$(SRC:c=o)
+LOG:=$(NAME)-mtrace.log
+UNAME=$(shell uname)
 
 $(BIN): $(OBJ)
+$(OBJ): $(INC) $(SRC)
 
 runtest: $(BIN)
 ifeq ($(UNAME), Linux)
-	@touch $(NAME).log
-	@env MALLOC_TRACE=leaks-$(NAME).log ./$(BIN)
-	@echo "[leaks detection]" && printf "  "
-	@mtrace $(BIN) leaks-$(NAME).log
+	@env MALLOC_TRACE=$(LOG) ./$(BIN)
+	@mtrace $(BIN) $(LOG)
 else
 	./$(BIN)
 endif
 
 clean:
-	rm -rf $(BIN) leaks-$(NAME).log $(OBJ) test.log* *.out
+	rm -f $(BIN) $(LOG) $(OBJ) test.log* *.out

@@ -4,7 +4,6 @@
 
 #include <assert.h>
 #include <string.h>
-#include "test.h"
 #include "strings.h"
 
 void
@@ -33,7 +32,6 @@ case_strings_rand()
     int n = 100;
     char strings[n][17]; /* because 2d array are continuously on
                             memory, so we use 16+1 */
-    char *s;
     int i, j;
 
     for (i = 0; i < n; i++) {

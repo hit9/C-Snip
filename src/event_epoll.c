@@ -114,6 +114,7 @@ event_api_del(struct event_loop *loop, int fd, int delmask)
          * EPOLL_CTL_DEL. */
         epoll_ctl(loop->api->ep, EPOLL_CTL_DEL, fd, &ev);
     }
+    return EVENT_OK;
 }
 
 int
