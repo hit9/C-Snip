@@ -9,6 +9,8 @@
 #include "ketama.h"
 #include "md5.h"
 
+static struct ketama_node ketama_node_null = {NULL, 0, NULL, 0};
+
 static uint32_t
 ketama_hash(char *key, size_t len, size_t align)
 {
@@ -112,7 +114,6 @@ ketama_node_get(struct ketama_ring *ring, char *key, size_t key_len)
 
     struct ketama_node *nodes = ring->nodes;
     size_t len = ring->len;
-    uint32_t val;
 
     if (len == 0)
         return ketama_node_null;

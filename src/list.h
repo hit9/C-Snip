@@ -8,7 +8,7 @@
 #ifndef _CW_LIST_H
 #define _CW_LIST_H 1
 
-#include <stdint.h>
+#include <stdlib.h>
 
 #if defined(__cplusplus)
 extern "C" {

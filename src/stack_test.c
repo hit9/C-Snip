@@ -3,7 +3,6 @@
  */
 
 #include <assert.h>
-#include "test.h"
 #include "stack.h"
 
 void

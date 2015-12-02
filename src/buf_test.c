@@ -2,8 +2,8 @@
  * Copyright (c) 2015, Chao Wang <hit9@icloud.com>
  */
 
+#include <assert.h>
 #include <string.h>
-#include "test.h"
 #include "buf.h"
 
 void

@@ -27,7 +27,7 @@ strings_search(char *s, char *sub, size_t start)
         table[idx] = len;
 
     for (idx = 0; idx < len; idx++)
-        table[sub[idx]] = last - idx;
+        table[(int)sub[idx]] = last - idx;
 
     /* do search */
     size_t i, j, k, t, skip;
@@ -37,7 +37,7 @@ strings_search(char *s, char *sub, size_t start)
         for (j = 0; j < len; j++) {
             k = last - j;
             if (sub[k] != s[i + k]) {
-                t = table[s[i + k]];
+                t = table[(int)s[i + k]];
                 skip = t > j? t - j : 1;
                 break;
             }

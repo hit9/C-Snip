@@ -218,6 +218,26 @@ static struct test_case utils_test_cases[] = {
     { NULL, NULL },
 };
 
+static void
+run_cases(const char *name, struct test_case cases[])
+{
+    int idx = 0;
+
+    while (1) {
+        struct test_case c = cases[idx];
+
+        if (c.name == NULL || c.fn == NULL)
+            break;
+
+        double start_at = datetime_stamp_now();
+        (c.fn)();
+        double end_at = datetime_stamp_now();
+        idx += 1;
+        fprintf(stderr, "ok\t%s\t%s\t%.3fms\n", name, c.name,
+                end_at - start_at);
+    }
+}
+
 int main(int argc, const char *argv[])
 {
 #ifdef __linux

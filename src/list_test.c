@@ -3,7 +3,6 @@
  */
 
 #include <assert.h>
-#include "test.h"
 #include "list.h"
 
 void

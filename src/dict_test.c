@@ -4,7 +4,6 @@
 
 #include <assert.h>
 #include <string.h>
-#include "test.h"
 #include "dict.h"
 
 void
