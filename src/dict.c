@@ -8,11 +8,11 @@
 #include "dict.h"
 
 static size_t dict_table_sizes[] = {
-    7, 17, 37, 79, 163, 331, 673, 1361, 2729,
-    5471, 10949, 21911, 43853, 87719, 175447,
-    350899, 701819, 1403641, 2807303, 5614657,
-    11229331, 44917381, 89834777, 179669557,
-    359339171, 718678369, 1437356741, 2147483647,
+    7,          17,         37,         79,         163,        331,
+    673,        1361,       2729,       5471,       10949,      21911,
+    43853,      87719,      175447,     350899,     701819,     1403641,
+    2807303,    5614657,    11229331,   44917381,   89834777,   179669557,
+    359339171,  718678369,  1437356741, 2147483647,
 };
 
 static size_t dict_idx_max = sizeof(dict_table_sizes)/\
@@ -373,6 +373,21 @@ dict_pop(struct dict *dict, char *key)
  *      node->val..
  *   }
  *   dict_iter_free(iter);
+ *
+ * Or you can use like this:
+ *
+ *   struct dict_iter iter = {dict};
+ *   struct dict_node *node = NULL;
+ *   while ((node = dict_iter_next(&iter)) != NULL) {
+ *     ..
+ *   }
+ *
+ * Or using the macro `dict_each`:
+ *
+ *   dict_each(dict, {
+ *      node->key..
+ *      node->val..
+ *   });
  * */
 struct dict_iter *
 dict_iter_new(struct dict *dict)

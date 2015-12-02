@@ -115,5 +115,11 @@ case_dict_iter()
     assert(dict_iter_next(iter) != NULL);
     assert(dict_iter_next(iter) == NULL);
     dict_iter_free(iter);
+
+    dict_each(dict, {
+      assert(node != NULL);
+      assert(strlen((char *)node->val) == 4);
+    });
+
     dict_free(dict);
 }
