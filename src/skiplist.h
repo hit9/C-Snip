@@ -20,6 +20,9 @@ extern "C" {
 #define skiplist(cmp)         skiplist_new(cmp)
 #define skiplist_height(sl)   skiplist_level(sl)
 #define skiplist_iter(sl)     skiplist_iter_new(sl)
+#define skiplist_each(sl, node)                         \
+    for ((node) = (sl)->head->forwards[0];              \
+            (node) != NULL; (node) = (node)->forwards[0])
 
 /* socre comparator type, return < 0 if arg#0 < arg#1 */
 typedef int (*skiplist_cmp_t)(unsigned long score1, unsigned long score2);

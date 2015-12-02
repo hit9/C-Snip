@@ -5,3 +5,4 @@
 *.h.gch
 .*.sw[opn]
 src/test
+test.log.*

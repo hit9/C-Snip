@@ -32,6 +32,12 @@ int main(int argc, const char *argv[])
     printf("score: %lu => data: %s\n", i, (char *)skiplist_get(skiplist, i));
     /* print current skiplist */
     skiplist_print(skiplist);
+    /* iterate the skiplist */
+    struct skiplist_node *node;
+    skiplist_each(skiplist, node) {
+        printf("%lu ", node->score);
+    }
+    printf("\n");
     /* get the first and last node */
     struct skiplist_node *first = skiplist_first(skiplist);
     struct skiplist_node *last = skiplist_last(skiplist);
