@@ -125,11 +125,12 @@ case_list_iter()
     assert(list_iter_prev(iter) == s1);
     list_iter_free(iter);
     int i = 0;
-    list_each(list, {
-        char *s = data;
+    struct list_node *node;
+    list_each(list, node) {
+        char *s = node->data;
         assert(s[1] - 49 == i);
         i += 1;
-    });
+    }
     assert(list_len(list) == i);
     list_free(list);
 }

@@ -240,9 +240,10 @@ list_tail(struct list *list)
  *
  * Or use macro `list_each`:
  *
- *    list_each(list {
- *      data..
- *    });
+ *    struct list_node *node;
+ *    list_each(list, node) {
+ *        node.data..
+ *    }
  */
 struct list_iter *
 list_iter_new(struct list *list)
