@@ -22,9 +22,11 @@ int main(int argc, const char *argv[])
     assert(dict_get(dict, key1) == val1);
     assert(dict_get(dict, key2) == val2);
     /* iterate dict */
-    dict_each(dict, {
+    struct dict_iter iter = {dict};
+    struct dict_node *node = NULL;
+    dict_each(&iter, node) {
         printf("%s => %s\n", node->key, (char *)node->val);
-    });
+    }
     /* free the dict */
     dict_free(dict);
     return 0;

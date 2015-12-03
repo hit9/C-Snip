@@ -18,13 +18,8 @@ extern "C" {
 #define DICT_LOAD_LIMIT         0.72 /* load factor */
 #define dict()                  dict_new()
 #define dict_iter(dict)         dict_iter_new(dict)
-#define dict_each(dict, block)  {                    \
-    struct dict_node *node = NULL;                   \
-    struct dict_iter iter = {dict, 0, NULL};         \
-    while ((node = dict_iter_next(&iter)) != NULL) { \
-      block;                                         \
-    }                                                \
-}
+#define dict_each(iter, node)   \
+    while (((node) = dict_iter_next((iter))) != NULL)
 
 enum {
     DICT_OK = 0,               /* operation is ok */

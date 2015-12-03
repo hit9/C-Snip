@@ -385,10 +385,12 @@ dict_pop(struct dict *dict, char *key)
  *
  * Or using the macro `dict_each`:
  *
- *   dict_each(dict, {
+ *   struct dict_iter iter = {dict};
+ *   struct dict_node *node = NULL;
+ *   dict_each(&iter) {
  *      node->key..
  *      node->val..
- *   });
+ *   }
  * */
 struct dict_iter *
 dict_iter_new(struct dict *dict)
