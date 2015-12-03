@@ -116,10 +116,11 @@ case_dict_iter()
     assert(dict_iter_next(iter) == NULL);
     dict_iter_free(iter);
 
-    dict_each(dict, {
+    struct dict_iter iter2 = {dict};
+    struct dict_node *node = NULL;
+    dict_each(&iter2, node) {
       assert(node != NULL);
       assert(strlen((char *)node->val) == 4);
-    });
-
+    };
     dict_free(dict);
 }
