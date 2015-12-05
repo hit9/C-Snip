@@ -22,11 +22,11 @@ extern "C" {
 #define LOG_FILE_PERM         O_WRONLY | O_APPEND | O_CREAT
 #define LOG_THREAD_SAFE       1
 
-#define LOG_DEBUG_S           "debug"
-#define LOG_INFO_S            "info"
-#define LOG_WARN_S            "warn"
-#define LOG_ERROR_S           "error"
-#define LOG_CRITICAL_S        "critical"
+#define LOG_DEBUG_S           "DEBUG"
+#define LOG_INFO_S            "INFO"
+#define LOG_WARN_S            "WARN"
+#define LOG_ERROR_S           "ERROR"
+#define LOG_CRITICAL_S        "CRIT"
 
 enum {
     LOG_DEBUG = 10,
@@ -67,7 +67,8 @@ int log_reopen(void);
 void log_setlevel(int level);
 int log_rotate(void);
 int log_log(int level, char *levelname, const char *fmt, ...);
-void log_trace(void);
+int log_trace(void);
+int log_write(char *buf, size_t len);
 
 #if defined(__cplusplus)
 }

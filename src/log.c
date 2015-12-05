@@ -25,6 +25,7 @@ static void
 on_sigsegv(int signal)
 {
     if (signal == SIGSEGV) {
+        log_critical("Segmentfault received!");
         log_trace();
         exit(1);
     }
@@ -154,7 +155,7 @@ log_rotate(void) {
 
 /* Format logging message to file/stderr. */
 int
-log_log(int level, char * levelname, const char *fmt, ...)
+log_log(int level, char *levelname, const char *fmt, ...)
 {
     struct logger *l = &logger;
 
@@ -176,7 +177,7 @@ log_log(int level, char * levelname, const char *fmt, ...)
     len += strftime(buf + len, size - len, "%Y-%m-%d %H:%M:%S.", localtime(&tv.tv_sec));
     len += snprintf(buf + len, size - len, "%03ld", (long)tv.tv_usec/1000);
     // level
-    len += snprintf(buf + len, size - len, " %s", levelname);
+    len += snprintf(buf + len, size - len, " %-5s", levelname);
     // name and pid and tid
 #ifdef __linux__
     /* using syacall to get tid, or `pid` on system view */
@@ -198,6 +199,38 @@ log_log(int level, char * levelname, const char *fmt, ...)
     }
 
     buf[len++] = '\n';
+    return log_write(buf, len);
+}
+
+int
+log_trace(void)
+{
+    void *stack[32];
+    size_t size = backtrace(stack, 32);
+    char **symbols = backtrace_symbols(stack, size);
+
+    if (symbols == NULL || size <= 0)
+        return LOG_OK;
+
+    size_t len_max = 1024 * size;
+    char buf[len_max];
+    size_t len = 0, i;
+
+    for (i = 0; i < size; i++)
+        len += snprintf(buf + len, 1024, "  [%zu] %s\n", i, symbols[i]);
+
+    free(symbols);
+    return log_write(buf, len);
+}
+
+int
+log_write(char *buf, size_t len)
+{
+    assert(buf != NULL);
+    if (len == 0)
+        return LOG_OK;
+
+    struct logger *l = &logger;
 
     if (LOG_THREAD_SAFE)
         pthread_mutex_lock(&(l->lock));
@@ -215,27 +248,4 @@ log_log(int level, char * levelname, const char *fmt, ...)
     if (LOG_THREAD_SAFE)
         pthread_mutex_unlock(&(l->lock));
     return LOG_OK;
-}
-
-void
-log_trace(void)
-{
-    void *buf[32];
-    size_t size = backtrace(buf, 32);
-    char **symbols = backtrace_symbols(buf, size);
-
-    if (symbols == NULL || size <= 0)
-        return;
-
-    size_t len_max = 1024 * size;
-    char msg[len_max];
-    size_t len = 0, i;
-
-    for (i = 0; i < size; i++) {
-        len += snprintf(msg + len, 1024, "  [%zu] %s", i, symbols[i]);
-        if (i + 1 !=  size)
-            msg[len++] = '\n';
-    }
-    log_error("trace:\n%.*s", len, msg);
-    free(symbols);
 }

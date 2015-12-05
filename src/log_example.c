@@ -2,6 +2,13 @@
 
 #include "log.h"
 
+void
+make_segmentfault()
+{
+    char *s = NULL;
+    char ch = s[1]; // segment fault
+}
+
 int main(int argc, const char *argv[])
 {
     /* open global logger to stderr (by setting filename to NULL) */
@@ -10,10 +17,11 @@ int main(int argc, const char *argv[])
     log_setlevel(LOG_INFO);
     /* debug mesage won't be seen */
     log_debug("debug message");
-    /* but info and warn message can be seen */
+    /* but info and warn, error message can be seen */
     log_info("info message");
     log_warn("warn message");
-    /* dump current trace stack */
-    log_trace();
+    log_error("error message");
+    /* will log trace back on segmentfault automatically */
+    make_segmentfault();
     return 0;
 }
