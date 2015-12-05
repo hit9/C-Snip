@@ -1,4 +1,4 @@
-// cc log_example.c log.c
+// cc log_example.c log.c -rdynamic
 
 #include "log.h"
 
@@ -13,5 +13,7 @@ int main(int argc, const char *argv[])
     /* but info and warn message can be seen */
     log_info("info message");
     log_warn("warn message");
+    /* dump current trace stack */
+    log_trace();
     return 0;
 }

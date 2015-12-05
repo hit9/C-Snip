@@ -3,6 +3,7 @@
  */
 
 #include <assert.h>
+#include <execinfo.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,10 +15,20 @@
 #include <unistd.h>
 #include <sys/syscall.h>
 #include <pthread.h>
+#include <signal.h>
 
 #include "log.h"
 
 static struct logger logger;
+
+static void
+on_sigsegv(int signal)
+{
+    if (signal == SIGSEGV) {
+        log_trace();
+        exit(1);
+    }
+}
 
 /* Open global logger, if `filename` is NULL, use stderr.
  * The `rotate_size` only works when logging to a file,
@@ -52,6 +63,13 @@ log_open(char *name, char *filename, size_t rotate_size)
             return LOG_ESTAT;
         l->fsize = st.st_size;
     }
+
+    // register traceback handler on segmentation fault
+    struct sigaction signal_action;
+    sigemptyset(&signal_action.sa_mask);
+    signal_action.sa_flags = 0;
+    signal_action.sa_handler = &on_sigsegv;
+    sigaction(SIGSEGV, &signal_action, NULL);
 
     if (LOG_THREAD_SAFE)
         pthread_mutex_init(&(l->lock), NULL);
@@ -192,4 +210,27 @@ log_log(int level, char * levelname, const char *fmt, ...)
     if (LOG_THREAD_SAFE)
         pthread_mutex_unlock(&(l->lock));
     return LOG_OK;
+}
+
+void
+log_trace(void)
+{
+    void *buf[32];
+    size_t size = backtrace(buf, 32);
+    char **symbols = backtrace_symbols(buf, size);
+
+    if (symbols == NULL || size <= 2)
+        return;
+
+    size_t len_max = 1024 * size;
+    char msg[len_max];
+    size_t len = 0, i;
+
+    for (i = 0; i < size; i++) {
+        len += snprintf(msg + len, 1024, "  [%zu] %s", i, symbols[i]);
+        if (i + 1 !=  size)
+            msg[len++] = '\n';
+    }
+    log_error("traceback:\n%s", msg);
+    free(symbols);
 }
