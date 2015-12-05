@@ -16,8 +16,8 @@
 extern "C" {
 #endif
 
-#define LOG_LINE_LEN_MAX      256
-#define LOG_FILENAME_LEN_MAX  1024
+#define LOG_LINE_LEN_MAX      1024*1024 // 1mb
+#define LOG_FILENAME_LEN_MAX  1024      // 1kb
 #define LOG_FILE_MODE         0644
 #define LOG_FILE_PERM         O_WRONLY | O_APPEND | O_CREAT
 #define LOG_THREAD_SAFE       1
@@ -66,6 +66,7 @@ int log_reopen(void);
 void log_setlevel(int level);
 int log_rotate(void);
 int log_log(int level, char *levelname, const char *fmt, ...);
+void log_trace(void);
 
 #if defined(__cplusplus)
 }
