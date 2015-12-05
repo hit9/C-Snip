@@ -27,7 +27,7 @@ enum {
 };
 
 struct dict_node {
-    char *key;                 /* key string (NULL-terminated) */
+    char *key;                 /* key string */
     size_t len;                /* key length will be set on `node_new` */
     void *val;                 /* value data */
     struct dict_node *next;    /* next node */
