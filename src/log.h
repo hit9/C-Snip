@@ -37,11 +37,12 @@ enum {
 };
 
 enum {
-    LOG_OK = 0,      /* operation is ok */
-    LOG_EOPEN = 1,   /* failed to open file */
-    LOG_EWRITE = 2,  /* failed to write to file */
-    LOG_ESTAT = 3,   /* failed to stat file */
-    LOG_ERENAME = 4, /* failed to rename file */
+    LOG_OK = 0,         /* operation is ok */
+    LOG_EOPEN = 1,      /* failed to open file */
+    LOG_EWRITE = 2,     /* failed to write to file */
+    LOG_ESTAT = 3,      /* failed to stat file */
+    LOG_ERENAME = 4,    /* failed to rename file */
+    LOG_ELINESIZE = 5,  /* log line is too large */
 };
 
 struct logger {

@@ -192,6 +192,11 @@ log_log(int level, char * levelname, const char *fmt, ...)
     len += vsnprintf(buf + len, size - len, fmt, args);
     va_end(args);
 
+    if (len > LOG_LINE_LEN_MAX) {
+        log_error("the log is too large");
+        return LOG_ELINESIZE;
+    }
+
     buf[len++] = '\n';
 
     if (LOG_THREAD_SAFE)
@@ -219,7 +224,7 @@ log_trace(void)
     size_t size = backtrace(buf, 32);
     char **symbols = backtrace_symbols(buf, size);
 
-    if (symbols == NULL || size <= 2)
+    if (symbols == NULL || size <= 0)
         return;
 
     size_t len_max = 1024 * size;
@@ -231,6 +236,6 @@ log_trace(void)
         if (i + 1 !=  size)
             msg[len++] = '\n';
     }
-    log_error("traceback:\n%s", msg);
+    log_error("trace:\n%.*s", len, msg);
     free(symbols);
 }
