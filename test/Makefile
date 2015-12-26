@@ -1,28 +1,25 @@
 # vim:set noet:
 
-default: runtest
+default: runtests
 
 NAME=test
 CC=cc -std=c99
 OPTIMIZATION?=-O2
-CFLAGS=-Wall $(OPTIMIZATION) -D_GNU_SOURCE -g
+CFLAGS=-Wall $(OPTIMIZATION) -D_GNU_SOURCE -g -I../include
 LDFLAGS=-Wall -pthread
 BIN=$(NAME)
-SRC:=$(wildcard *.c)
-EV_EPOLL:=$(wildcard event_epoll.c)
-EV_KQUEUE:=$(wildcard event_kqueue.c)
-EXAMPLE:=$(wildcard *_example.c)
+SRC:=$(wildcard ../src/*.c) $(wildcard *.c)
+EV_EPOLL:=$(wildcard ../src/event_epoll.c)
+EV_KQUEUE:=$(wildcard ../src/event_kqueue.c)
 SRC:=$(filter-out $(EV_EPOLL), $(SRC))
 SRC:=$(filter-out $(EV_KQUEUE), $(SRC))
-SRC:=$(filter-out $(EXAMPLE), $(SRC))
-INC:=$(wildcard *.h)
 OBJ:=$(SRC:c=o)
 LOG:=$(NAME)-mtrace.log
 UNAME=$(shell uname)
 
 $(BIN): $(OBJ)
 
-runtest: $(BIN)
+runtests: $(BIN)
 ifeq ($(UNAME), Linux)
 	@env MALLOC_TRACE=$(LOG) ./$(BIN)
 	@mtrace $(BIN) $(LOG)
@@ -31,4 +28,4 @@ else
 endif
 
 clean:
-	rm -f $(BIN) $(LOG) $(OBJ) test.log* *.out
+	rm -f $(BIN) $(LOG) $(OBJ) test.log*

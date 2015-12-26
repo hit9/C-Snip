@@ -2,11 +2,12 @@
 
 #include "log.h"
 
-void
+char
 make_segmentfault()
 {
     char *s = NULL;
     char ch = s[1]; // segment fault
+    return ch;
 }
 
 int main(int argc, const char *argv[])

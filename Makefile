@@ -1,6 +1,12 @@
 # vim:set noet:
 
-default: runtest
+runtests:
+	make runtests -C test
 
-.DEFAULT:
-	make $@ -C src
+examples:
+	make example -C example
+
+clean:
+	rm -f src/*.o
+	make clean -C test
+	make clean -C example
