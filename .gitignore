@@ -8,3 +8,4 @@ src/test
 test.log.*
 test/test
 example/*_example
+bench/bench
