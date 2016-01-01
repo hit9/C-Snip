@@ -7,6 +7,7 @@ heap        alpha
 ketama      alpha
 list        alpha
 log         alpha
+map         alpha
 queue       alpha
 skiplist    alpha
 stack       alpha
