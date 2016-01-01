@@ -17,7 +17,7 @@ case_map_set()
     assert(map_get(m, key) == val);
     /* set multiple times */
     int i;
-    for (i = 0; i < 1024; i++) {
+    for (i = 0; i < 10000; i++) {
         char key[11];
         char val[21];
         strings_rand(key, 10);
