@@ -2,4 +2,4 @@ sudo: required
 dist: trusty
 language: c
 install: sudo apt-get install -qq gcc-4.8
-script: make
+script: make runtests && make runbench
