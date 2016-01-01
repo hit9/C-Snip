@@ -43,6 +43,15 @@ static struct bench_case heap_bench_cases[] = {
 };
 
 /**
+ * log_bench
+ */
+void case_log_devnull(struct bench_ctx *ctx);
+static struct bench_case log_bench_cases[] = {
+    { "log_devnull", &case_log_devnull, 1000000 },
+    { NULL, NULL, 0 },
+};
+
+/**
  * map_bench
  */
 void case_map_set(struct bench_ctx *ctx);
@@ -68,7 +77,20 @@ static struct bench_case skiplist_bench_cases[] = {
     { "skiplist_get", &case_skiplist_get, 1000000 },
     { "skiplist_pop", &case_skiplist_pop, 1000000 },
     { "skiplist_first", &case_skiplist_first, 1000000 },
-    { NULL, NULL, 0 }
+    { NULL, NULL, 0 },
+};
+
+/**
+ * strings_bench
+ */
+void case_strings_search(struct bench_ctx *ctx);
+void case_strings_replace(struct bench_ctx *ctx);
+void case_strings_rand(struct bench_ctx *ctx);
+static struct bench_case strings_bench_cases[] = {
+    { "strings_search", &case_strings_search, 1000000 },
+    { "strings_replace", &case_strings_replace, 1000000 },
+    { "strings_rand", &case_strings_rand, 1000000 },
+    { NULL, NULL, 0 },
 };
 
 /**
@@ -104,19 +126,19 @@ run_cases(const char *name, struct bench_case cases[])
         double end_at = ctx.end_at;
         if (end_at < 0) end_at = datetime_stamp_now();
         idx += 1;
-        fprintf(stderr, "%ld\t\t%ldns/op\n", c.n,
+        fprintf(stderr, "%-17ld%17ldns/op\n", c.n,
                 (long)(1000000.0*(end_at-start_at)/(double)c.n));
     }
 }
 
 int main(int argc, const char *argv[])
 {
-    fprintf(stderr, "=========== bench start ========\n");
     run_cases("buf_bench", buf_bench_cases);
     run_cases("dict_bench", dict_bench_cases);
     run_cases("heap_bench", heap_bench_cases);
+    run_cases("log_stderr", log_bench_cases);
     run_cases("map_bench", map_bench_cases);
     run_cases("skiplist_bench", skiplist_bench_cases);
-    fprintf(stderr, "=========== end start ========\n");
+    run_cases("strings_bench", strings_bench_cases);
     return 0;
 }

@@ -58,11 +58,12 @@ strings_rand(char *s, size_t len)
     static const char chs[] = "0123456789"
         "abcdefghijklmnopqrstuvwxyz"
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    static const int mask = 10 + 26 * 2 - 1;
 
     int i;
 
     for (i = 0; i < len; i++)
-        s[i] = chs[rand() % (10 + 26 * 2)];
+        s[i] = chs[rand() & mask];
 
     s[len] = 0;
     return s;

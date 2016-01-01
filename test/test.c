@@ -250,7 +250,7 @@ run_cases(const char *name, struct test_case cases[])
         (c.fn)();
         double end_at = datetime_stamp_now();
         idx += 1;
-        fprintf(stderr, "ok\t%-17s %-27s %.3fµs\n", name, c.name,
+        fprintf(stderr, "ok\t%-27s %-27s %17.3fµs\n", name, c.name,
                 1000.0*(end_at - start_at));
     }
 }
@@ -260,7 +260,6 @@ int main(int argc, const char *argv[])
 #ifdef __linux
     mtrace();
 #endif
-    fprintf(stderr, "=========== test start ========\n");
     run_cases("buf_test", buf_test_cases);
     run_cases("cfg_test", cfg_test_cases);
     run_cases("datetime_test", datetime_test_cases);
@@ -276,6 +275,5 @@ int main(int argc, const char *argv[])
     run_cases("stack_test", stack_test_cases);
     run_cases("strings_test", strings_test_cases);
     run_cases("utils_test", utils_test_cases);
-    fprintf(stderr, "=========== test end ========\n");
     return 0;
 }
