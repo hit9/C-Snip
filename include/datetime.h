@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-long datetime_stamp_now(void);
+double datetime_stamp_now(void);
 
 #if defined(__cplusplus)
 }

@@ -150,6 +150,25 @@ static struct test_case log_test_cases[] = {
 };
 
 /**
+ * map_test
+ */
+void case_map_set();
+void case_map_get();
+void case_map_pop();
+void case_map_has();
+void case_map_clear();
+void case_map_iter();
+static struct test_case map_test_cases[] = {
+    { "map_set", &case_map_set },
+    { "map_get", &case_map_get },
+    { "map_pop", &case_map_pop },
+    { "map_has", &case_map_has },
+    { "map_clear", &case_map_clear },
+    { "map_iter", &case_map_iter },
+    { NULL, NULL },
+};
+
+/**
  * queue_test
  */
 void case_queue_clear();
@@ -233,8 +252,8 @@ run_cases(const char *name, struct test_case cases[])
         (c.fn)();
         double end_at = datetime_stamp_now();
         idx += 1;
-        fprintf(stderr, "ok\t%s\t%s\t%.3fms\n", name, c.name,
-                end_at - start_at);
+        fprintf(stderr, "ok\t%-17s %-27s %.3fµs\n", name, c.name,
+                1000.0*(end_at - start_at));
     }
 }
 
@@ -253,6 +272,7 @@ int main(int argc, const char *argv[])
     run_cases("ketama_test", ketama_test_cases);
     run_cases("list_test", list_test_cases);
     run_cases("log_test", log_test_cases);
+    run_cases("map_test", map_test_cases);
     run_cases("queue_test", queue_test_cases);
     run_cases("skiplist_test", skiplist_test_cases);
     run_cases("stack_test", stack_test_cases);

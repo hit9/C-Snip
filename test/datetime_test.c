@@ -13,5 +13,5 @@ case_datetime_stamp_now()
     assert(datetime_stamp_now() > 1447502650543);
     /* assert that the code will run so fast the two getting results
      * diff should smaller than 1ms */
-    assert(datetime_stamp_now() == datetime_stamp_now());
+    assert((long)datetime_stamp_now() ==(long)datetime_stamp_now());
 }
