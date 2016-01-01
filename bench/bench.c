@@ -68,7 +68,20 @@ static struct bench_case skiplist_bench_cases[] = {
     { "skiplist_get", &case_skiplist_get, 1000000 },
     { "skiplist_pop", &case_skiplist_pop, 1000000 },
     { "skiplist_first", &case_skiplist_first, 1000000 },
-    { NULL, NULL, 0 }
+    { NULL, NULL, 0 },
+};
+
+/**
+ * strings_bench
+ */
+void case_strings_search(struct bench_ctx *ctx);
+void case_strings_replace(struct bench_ctx *ctx);
+void case_strings_rand(struct bench_ctx *ctx);
+static struct bench_case strings_bench_cases[] = {
+    { "strings_search", &case_strings_search, 1000000 },
+    { "strings_replace", &case_strings_replace, 1000000 },
+    { "strings_rand", &case_strings_rand, 1000000 },
+    { NULL, NULL, 0 },
 };
 
 /**
@@ -117,6 +130,7 @@ int main(int argc, const char *argv[])
     run_cases("heap_bench", heap_bench_cases);
     run_cases("map_bench", map_bench_cases);
     run_cases("skiplist_bench", skiplist_bench_cases);
+    run_cases("strings_bench", strings_bench_cases);
     fprintf(stderr, "=========== end start ========\n");
     return 0;
 }
