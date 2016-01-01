@@ -133,7 +133,6 @@ run_cases(const char *name, struct bench_case cases[])
 
 int main(int argc, const char *argv[])
 {
-    fprintf(stderr, "=========== bench start ========\n");
     run_cases("buf_bench", buf_bench_cases);
     run_cases("dict_bench", dict_bench_cases);
     run_cases("heap_bench", heap_bench_cases);
@@ -141,6 +140,5 @@ int main(int argc, const char *argv[])
     run_cases("map_bench", map_bench_cases);
     run_cases("skiplist_bench", skiplist_bench_cases);
     run_cases("strings_bench", strings_bench_cases);
-    fprintf(stderr, "=========== end start ========\n");
     return 0;
 }
