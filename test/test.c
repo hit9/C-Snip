@@ -155,10 +155,16 @@ static struct test_case log_test_cases[] = {
 void case_map_set();
 void case_map_get();
 void case_map_pop();
+void case_map_has();
+void case_map_clear();
+void case_map_iter();
 static struct test_case map_test_cases[] = {
     { "map_set", &case_map_set },
     { "map_get", &case_map_get },
     { "map_pop", &case_map_pop },
+    { "map_has", &case_map_has },
+    { "map_clear", &case_map_clear },
+    { "map_iter", &case_map_iter },
     { NULL, NULL },
 };
 

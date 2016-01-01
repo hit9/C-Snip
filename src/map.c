@@ -84,6 +84,7 @@ map_clear(struct map *m)
         free(m->table);
     m->cap = 0;
     m->len = 0;
+    m->table = NULL;
 }
 
 /* Resize and rehash map. */
@@ -199,13 +200,11 @@ map_get_node(struct map *m, char *key, size_t len)
 {
     int mask = m->cap - 1;
     size_t i = map_hash(key, len) & mask;
+    struct map_node *node = &m->table[i];
 
-    for (;; i = (i + 1) & mask) {
-        struct map_node *node = &m->table[i];
-        if (node->key != NULL &&
-                map_keycmp(node->key, node->len, key, len))
+    for (; node->key != NULL; i = (i + 1) & mask, node = &m->table[i])
+        if (map_keycmp(node->key, node->len, key, len))
             return node;
-    }
     return NULL;
 }
 
