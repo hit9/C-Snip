@@ -15,6 +15,10 @@
 extern "C" {
 #endif
 
+#define MAP_LOAD_LIMIT  0.72           /* load factor */
+#define MAP_CAP_MAX     1024*1024*1024 /* 1GB */
+#define MAP_CAP_INIT    16             /* init table size: must be 2** */
+
 #define map() map_new()
 #define map_iter(m) map_iter_new(m)
 #define map_each(iter, node) \
