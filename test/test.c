@@ -244,10 +244,8 @@ run_cases(const char *name, struct test_case cases[])
 
     while (1) {
         struct test_case c = cases[idx];
-
         if (c.name == NULL || c.fn == NULL)
             break;
-
         double start_at = datetime_stamp_now();
         (c.fn)();
         double end_at = datetime_stamp_now();
@@ -264,7 +262,7 @@ int main(int argc, const char *argv[])
 #endif
     printf("=========== test start ========\n");
     run_cases("buf_test", buf_test_cases);
-    run_cases("cfg_get", cfg_test_cases);
+    run_cases("cfg_test", cfg_test_cases);
     run_cases("datetime_test", datetime_test_cases);
     run_cases("dict_test", dict_test_cases);
     run_cases("event_test", event_test_cases);
