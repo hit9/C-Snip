@@ -8,6 +8,9 @@
 #ifndef _CW_MAP_H
 #define _CW_MAP_H 1
 
+#include <stdint.h>
+#include <stdlib.h>
+
 #if defined(__cplusplus)
 extern "C" {
 #endif
