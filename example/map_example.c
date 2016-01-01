@@ -25,6 +25,8 @@ int main(int argc, const char *argv[])
     assert(map_set(m, "key3", "val3") == MAP_OK);
     assert(map_set(m, "key4", "val4") == MAP_OK);
     assert(map_set(m, "key5", "val5") == MAP_OK);
+    assert(map_set(m, "key6", "val6") == MAP_OK);
+    assert(map_set(m, "key7", "val7") == MAP_OK);
     /* iterate the map */
     struct map_iter iter = {m};
     struct map_node *node = NULL;
