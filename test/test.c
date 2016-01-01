@@ -260,7 +260,7 @@ int main(int argc, const char *argv[])
 #ifdef __linux
     mtrace();
 #endif
-    printf("=========== test start ========\n");
+    fprintf(stderr, "=========== test start ========\n");
     run_cases("buf_test", buf_test_cases);
     run_cases("cfg_test", cfg_test_cases);
     run_cases("datetime_test", datetime_test_cases);
@@ -276,6 +276,6 @@ int main(int argc, const char *argv[])
     run_cases("stack_test", stack_test_cases);
     run_cases("strings_test", strings_test_cases);
     run_cases("utils_test", utils_test_cases);
-    printf("=========== test end ========\n");
+    fprintf(stderr, "=========== test end ========\n");
     return 0;
 }
