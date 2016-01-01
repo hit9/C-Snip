@@ -17,19 +17,6 @@ static struct bench_case buf_bench_cases[] = {
 };
 
 /**
- * map_bench
- */
-void case_map_set(struct bench_ctx *ctx);
-void case_map_get(struct bench_ctx *ctx);
-void case_map_pop(struct bench_ctx *ctx);
-static struct bench_case map_bench_cases[] = {
-    { "map_set", &case_map_set, 1000000 },
-    { "map_get", &case_map_get, 1000000 },
-    { "map_pop", &case_map_pop, 1000000 },
-    { NULL, NULL, 0 },
-};
-
-/**
  * dict_bench
  */
 void case_dict_set(struct bench_ctx *ctx);
@@ -39,6 +26,32 @@ static struct bench_case dict_bench_cases[] = {
     { "dict_set", &case_dict_set, 1000000 },
     { "dict_get", &case_dict_get, 1000000 },
     { "dict_pop", &case_dict_pop, 1000000 },
+    { NULL, NULL, 0 },
+};
+
+/**
+ * heap_bench
+ */
+void case_heap_push(struct bench_ctx *ctx);
+void case_heap_pop(struct bench_ctx *ctx);
+void case_heap_top(struct bench_ctx *ctx);
+static struct bench_case heap_bench_cases[] = {
+    { "heap_push", &case_heap_push, 1000000 },
+    { "heap_pop", &case_heap_pop, 1000000 },
+    { "heap_top", &case_heap_top, 1000000 },
+    { NULL, NULL, 0 },
+};
+
+/**
+ * map_bench
+ */
+void case_map_set(struct bench_ctx *ctx);
+void case_map_get(struct bench_ctx *ctx);
+void case_map_pop(struct bench_ctx *ctx);
+static struct bench_case map_bench_cases[] = {
+    { "map_set", &case_map_set, 1000000 },
+    { "map_get", &case_map_get, 1000000 },
+    { "map_pop", &case_map_pop, 1000000 },
     { NULL, NULL, 0 },
 };
 
@@ -100,8 +113,9 @@ int main(int argc, const char *argv[])
 {
     fprintf(stderr, "=========== bench start ========\n");
     run_cases("buf_bench", buf_bench_cases);
-    run_cases("map_bench", map_bench_cases);
     run_cases("dict_bench", dict_bench_cases);
+    run_cases("heap_bench", heap_bench_cases);
+    run_cases("map_bench", map_bench_cases);
     run_cases("skiplist_bench", skiplist_bench_cases);
     fprintf(stderr, "=========== end start ========\n");
     return 0;
