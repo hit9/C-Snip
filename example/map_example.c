@@ -21,6 +21,16 @@ int main(int argc, const char *argv[])
     /* get data by key */
     assert(map_get(m, key1) == val1);
     assert(map_get(m, key2) == val2);
+    /* set some key values more */
+    assert(map_set(m, "key3", "val3") == MAP_OK);
+    assert(map_set(m, "key4", "val4") == MAP_OK);
+    assert(map_set(m, "key5", "val5") == MAP_OK);
+    /* iterate the map */
+    struct map_iter iter = {m};
+    struct map_node *node = NULL;
+    map_each(&iter, node) {
+        printf("%s => %s\n", node->key, (char *)node->val);
+    }
     /* free the map */
     map_free(m);
     return 0;

@@ -7,6 +7,10 @@
 #include <string.h>
 #include "map.h"
 
+#define MAP_LOAD_LIMIT  0.7            /* load factor */
+#define MAP_CAP_MAX     1024*1024*1024 /* 1GB */
+#define MAP_CAP_INIT    16             /* init table size: must be 2** */
+
 /* Hash function. */
 static uint32_t
 map_hash(char *key, size_t len)
@@ -91,11 +95,11 @@ map_resize(struct map *m)
     size_t cap = m->cap * 2;
 
     /* validate new cap */
+    if (cap < 1)
+        cap = MAP_CAP_INIT;
+
     if (cap > MAP_CAP_MAX)
         return MAP_ENOMEM;
-
-    if (cap == 0)
-        cap = MAP_CAP_INIT;
 
     /* create new table */
     struct map_node *table = malloc(cap * sizeof(struct map_node));
@@ -112,15 +116,17 @@ map_resize(struct map *m)
     int mask = cap - 1;
     for (i = 0; i < m->cap; i++) {
         struct map_node *node = &m->table[i];
+
         if (node->key == NULL)
             continue;
+
         int j = map_hash(node->key, node->len) & mask;
         for(;; j = (j + 1) & mask) {
             if (table[j].key != NULL)
                 continue;
-            table[i].key = node->key;
-            table[i].len = node->len;
-            table[i].val = node->val;
+            table[j].key = node->key;
+            table[j].len = node->len;
+            table[j].val = node->val;
             break;
         }
     }
@@ -154,9 +160,10 @@ map_iset(struct map *m, char *key, size_t len, void *val)
     assert(key != NULL);
 
     /* if require resize */
-    if ((m->cap * MAP_LOAD_LIMIT < m->len || m->cap == 0) &&
+    if ((m->cap * MAP_LOAD_LIMIT < m->len ||
+                m->cap < MAP_CAP_INIT) &&
             map_resize(m) != MAP_OK)
-    return MAP_ENOMEM;
+        return MAP_ENOMEM;
 
     /* try to find this key */
     int mask = m->cap - 1;
@@ -164,11 +171,15 @@ map_iset(struct map *m, char *key, size_t len, void *val)
 
     for (;; i = (i + 1) & mask) {
         struct map_node *node = &m->table[i];
-        if (node->key == NULL || map_keycmp(node->key, node->len, key, len)) {
+        if (node->key == NULL) {
             node->key = key;
             node->len = len;
             node->val = val;
             m->len++;
+            return MAP_OK;
+        }
+        if (map_keycmp(node->key, node->len, key, len)) {
+            node->val = val;
             return MAP_OK;
         }
     }
@@ -258,4 +269,55 @@ void *
 map_pop(struct map *m, char *key)
 {
     return map_ipop(m, key, strlen(key));
+}
+
+/* Create map iter. */
+struct map_iter *
+map_iter_new(struct map *m)
+{
+    assert(m != NULL);
+    struct map_iter *iter = malloc(sizeof(struct map_iter));
+
+    if (iter != NULL) {
+        iter->m = m;
+        iter->i = 0;
+    }
+    return iter;
+}
+
+/* Free map iter. */
+void
+map_iter_free(struct map_iter *iter)
+{
+    if (iter != NULL)
+        free(iter);
+}
+
+/* Get next. */
+struct map_node *
+map_iter_next(struct map_iter *iter)
+{
+    assert(iter != NULL && iter->m != NULL);
+
+    struct map *m = iter->m;
+
+    if (m->table == NULL)
+        return NULL;
+
+    for (; iter->i < m->cap; iter->i++) {
+        struct map_node *node = &m->table[iter->i];
+        if (node->key != NULL) {
+            iter->i++;
+            return node;
+        }
+    }
+    return NULL;
+}
+
+/* Rewind map iter. */
+void
+map_iter_rewind(struct map_iter *iter)
+{
+    assert(iter != NULL);
+    iter->i = 0;
 }
