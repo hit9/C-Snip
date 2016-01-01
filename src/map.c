@@ -8,10 +8,6 @@
 #include <string.h>
 #include "map.h"
 
-#define MAP_LOAD_LIMIT  0.7            /* load factor */
-#define MAP_CAP_MAX     1024*1024*1024 /* 1GB */
-#define MAP_CAP_INIT    16             /* init table size: must be 2** */
-
 /* Hash function. */
 static uint32_t
 map_hash(char *key, size_t len)

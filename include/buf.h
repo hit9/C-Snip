@@ -15,7 +15,7 @@
 extern "C" {
 #endif
 
-#define BUF_CAP_MAX    16*1024*1024   /* max buffer capacity: 16mb */
+#define BUF_CAP_MAX    64*1024*1024   /* max buffer capacity: 64mb */
 #define BUF_UNIT_MIN   1              /* min buffer realloc unit: 1 */
 #define BUF_UNIT_MAX   1024*1024      /* max buffer realloc unit: 1mb */
 
