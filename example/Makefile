@@ -16,6 +16,7 @@ heap_example: heap_example.c ../src/heap.c
 ketama_example: ketama_example.c ../src/md5.c ../src/ketama.c
 list_example: list_example.c ../src/list.c
 log_example: log_example.c ../src/log.c
+map_example: map_example.c ../src/map.c
 md5_example: md5_example.c ../src/md5.c
 queue_example: queue_example.c ../src/queue.c
 signals_example: signals_example.c ../src/event.c
@@ -33,6 +34,7 @@ example: buf_example\
 	ketama_example\
 	list_example\
 	log_example\
+	map_example\
 	md5_example\
 	queue_example\
 	signals_example\
