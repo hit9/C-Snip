@@ -77,6 +77,7 @@ static struct bench_case skiplist_bench_cases[] = {
     { "skiplist_get", &case_skiplist_get, 1000000 },
     { "skiplist_pop", &case_skiplist_pop, 1000000 },
     { "skiplist_first", &case_skiplist_first, 1000000 },
+    { "skiplist_popfirst", &case_skiplist_popfirst, 1000000 },
     { NULL, NULL, 0 },
 };
 
