@@ -21,7 +21,7 @@ int main(int argc, const char *argv[])
     /* but info and warn, error message can be seen */
     log_info("info message");
     log_warn("warn message");
-    log_error("error message");
+    log_error("error message: %s", "someting wrong");
     /* will log trace back on segmentfault automatically */
     make_segmentfault();
     return 0;

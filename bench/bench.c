@@ -12,6 +12,7 @@
  */
 void case_buf_puts(struct bench_ctx *ctx);
 static struct bench_case buf_bench_cases[] = {
+    { "buf_puts", &case_buf_puts, 10000 },
     { "buf_puts", &case_buf_puts, 1000000 },
     { NULL, NULL, 0},
 };
@@ -23,8 +24,11 @@ void case_dict_set(struct bench_ctx *ctx);
 void case_dict_get(struct bench_ctx *ctx);
 void case_dict_pop(struct bench_ctx *ctx);
 static struct bench_case dict_bench_cases[] = {
+    { "dict_set", &case_dict_set, 10000 },
     { "dict_set", &case_dict_set, 1000000 },
+    { "dict_get", &case_dict_get, 10000 },
     { "dict_get", &case_dict_get, 1000000 },
+    { "dict_pop", &case_dict_pop, 10000 },
     { "dict_pop", &case_dict_pop, 1000000 },
     { NULL, NULL, 0 },
 };
@@ -36,8 +40,11 @@ void case_heap_push(struct bench_ctx *ctx);
 void case_heap_pop(struct bench_ctx *ctx);
 void case_heap_top(struct bench_ctx *ctx);
 static struct bench_case heap_bench_cases[] = {
+    { "heap_push", &case_heap_push, 10000 },
     { "heap_push", &case_heap_push, 1000000 },
+    { "heap_pop", &case_heap_pop, 10000 },
     { "heap_pop", &case_heap_pop, 1000000 },
+    { "heap_top", &case_heap_top, 10000 },
     { "heap_top", &case_heap_top, 1000000 },
     { NULL, NULL, 0 },
 };
@@ -58,8 +65,11 @@ void case_map_set(struct bench_ctx *ctx);
 void case_map_get(struct bench_ctx *ctx);
 void case_map_pop(struct bench_ctx *ctx);
 static struct bench_case map_bench_cases[] = {
+    { "map_set", &case_map_set, 10000 },
     { "map_set", &case_map_set, 1000000 },
+    { "map_get", &case_map_get, 10000 },
     { "map_get", &case_map_get, 1000000 },
+    { "map_pop", &case_map_pop, 10000 },
     { "map_pop", &case_map_pop, 1000000 },
     { NULL, NULL, 0 },
 };
@@ -73,10 +83,16 @@ void case_skiplist_pop(struct bench_ctx *ctx);
 void case_skiplist_popfirst(struct bench_ctx *ctx);
 void case_skiplist_first(struct bench_ctx *ctx);
 static struct bench_case skiplist_bench_cases[] = {
+    { "skiplist_push", &case_skiplist_push, 10000 },
     { "skiplist_push", &case_skiplist_push, 1000000 },
+    { "skiplist_get", &case_skiplist_get, 10000 },
     { "skiplist_get", &case_skiplist_get, 1000000 },
+    { "skiplist_pop", &case_skiplist_pop, 10000 },
     { "skiplist_pop", &case_skiplist_pop, 1000000 },
+    { "skiplist_first", &case_skiplist_first, 10000 },
     { "skiplist_first", &case_skiplist_first, 1000000 },
+    { "skiplist_popfirst", &case_skiplist_popfirst, 10000 },
+    { "skiplist_popfirst", &case_skiplist_popfirst, 1000000 },
     { NULL, NULL, 0 },
 };
 
@@ -119,14 +135,14 @@ run_cases(const char *name, struct bench_case cases[])
         struct bench_case c = cases[idx];
         if (c.name == NULL || c.fn == NULL)
             break;
-        fprintf(stderr, "%-17s %-27s ", name, c.name);
+        fprintf(stderr, "%-17s %-20s ", name, c.name);
         struct bench_ctx ctx = {datetime_stamp_now(), -1, c.n};
         (c.fn)(&ctx);
         double start_at = ctx.start_at;
         double end_at = ctx.end_at;
         if (end_at < 0) end_at = datetime_stamp_now();
         idx += 1;
-        fprintf(stderr, "%-17ld%17ldns/op\n", c.n,
+        fprintf(stderr, "%10ld%10ldns/op\n", c.n,
                 (long)(1000000.0*(end_at-start_at)/(double)c.n));
     }
 }
