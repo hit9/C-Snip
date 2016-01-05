@@ -13,6 +13,7 @@ case_log_devnull(struct bench_ctx *ctx)
     bench_ctx_reset_start_at(ctx);
     int i;
     for (i = 0; i < ctx->n; i++) {
-        log_info("hello world");
+        log_info("hello %s", "world");
     }
+    bench_ctx_reset_end_at(ctx);
 }
