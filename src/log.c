@@ -20,6 +20,7 @@
 #include "log.h"
 
 static struct logger logger;
+static long log_pid;
 
 static void
 on_sigsegv(int signal)
@@ -64,8 +65,15 @@ log_open(char *name, char *filename, size_t rotate_size)
             return LOG_ESTAT;
         l->fsize = st.st_size;
     }
-
-    // register traceback handler on segmentation fault
+    /* Initialize global log_pid */
+    #ifdef __linux__
+    /* using syacall to get tid, or `pid` on system view */
+    log_pid = (long)syscall(SYS_gettid);
+    #else
+    /* I can't find a way to get tid from system view, only print the pid */
+    log_pid = getpid();
+    #endif
+    /* register traceback handler on segmentation fault. */
     struct sigaction signal_action;
     sigemptyset(&signal_action.sa_mask);
     signal_action.sa_flags = 0;
@@ -170,29 +178,19 @@ log_log(int level, char *levelname, const char *fmt, ...)
 
     char buf[size + 1];
 
-    // readable time with ms
+    /* Format time and name, level, pid */
     struct timeval tv;
     gettimeofday(&tv, NULL);
-
     len += strftime(buf + len, size - len, "%Y-%m-%d %H:%M:%S.", localtime(&tv.tv_sec));
-    len += snprintf(buf + len, size - len, "%03ld", (long)tv.tv_usec/1000);
-    // level
-    len += snprintf(buf + len, size - len, " %-5s", levelname);
-    // name and pid and tid
-#ifdef __linux__
-    /* using syacall to get tid, or `pid` on system view */
-    long pid = (long)syscall(SYS_gettid);
-#else
-    /* I can't find a way to get tid from system view, only print the pid */
-    long pid = getpid();
-#endif
-    len += snprintf(buf + len, size - len, " %s[%ld] ", l->name, pid);
-
+    len += snprintf(buf + len, size - len, "%03ld %-5s %s[%ld] ", (long)tv.tv_usec/1000, levelname,
+            l->name, log_pid);
+    /* Format message with args */
     va_list args;
     va_start(args, fmt);
     len += vsnprintf(buf + len, size - len, fmt, args);
     va_end(args);
 
+    /* log line long */
     if (len > LOG_LINE_LEN_MAX) {
         log_error("the log is too large");
         return LOG_ELINESIZE;
