@@ -17,6 +17,10 @@ event_time_now(void)
     return (1000000 * tv.tv_sec + tv.tv_usec) / 1000;
 }
 
+/**
+ * Event timer heap
+ */
+
 /* Create a timer heap. */
 struct event_timer_heap *
 event_timer_heap_new(void)
@@ -166,9 +170,13 @@ event_timer_heap_replace(struct event_timer_heap *heap, struct event_timer *time
     return EVENT_OK;
 }
 
-/* Get nearest timer, this will do an O(EVENT_TIMER_ID_MAX) loop to
- * search timer with the smallest `next_fire_at`, `NULL` on not found
- * (that means `event_wait` will block forever for a file event to fire). */
+/**
+ * Event loop.
+ */
+
+/**
+ * Get the nearest timer to fire from timer heap.
+ */
 struct event_timer *
 event_nearest_timer(struct event_loop *loop)
 {
@@ -176,8 +184,9 @@ event_nearest_timer(struct event_loop *loop)
     return event_timer_heap_top(loop->timer_heap);
 }
 
-/* Fire timed out timers and update each of them `next_fire_at` with
- * `interval`. */
+/**
+ * Fire timed out timers from heap and update their fire_at.
+ */
 void
 event_process_timers(struct event_loop *loop)
 {
