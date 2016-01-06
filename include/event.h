@@ -14,7 +14,7 @@ extern "C" {
 
 #define EVENT_MIN_RESERVED_FDS  32
 #define EVENT_FDSET_INCR        96
-#define EVENT_TIMER_ID_MAX      1024
+#define EVENT_TIMER_ID_MAX      1024*10
 
 #define EVENT_NONE              0b000
 #define EVENT_READABLE          0b001
@@ -71,8 +71,13 @@ struct event_timer {
     int id;              /* timer identifier [0, EVENT_TIMER_ID_MAX) */
     event_timer_cb_t cb; /* callback function on timer fired */
     long interval;       /* periodicity interval to fire (ms) */
-    long next_fire_at;   /* the time for the next fire (ms) */
+    long fire_at;        /* the time for the next fire (ms) */
     void *data;          /* user defined data */
+};
+
+struct event_timer_heap {
+    struct event_timer *timers[EVENT_TIMER_ID_MAX];
+    size_t len;
 };
 
 struct event_loop {
@@ -82,6 +87,7 @@ struct event_loop {
     struct event *events; /* struct event[] */
     struct event_api *api;/* to be implemented */
     struct event_timer timers[EVENT_TIMER_ID_MAX]; /* struct event_timers[MAX] */
+    struct event_timer_heap *timer_heap;
 };
 
 struct event_loop *event_loop_new(int size);
