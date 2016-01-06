@@ -44,6 +44,8 @@ main(int argc, const char *argv[])
     event_add_timer(loop, 5000, &beatonce, NULL);
     /* start event loop */
     event_loop_start(loop);
+    /* stop event loop */
+    event_loop_stop(loop);
     /* free event loop */
     event_loop_free(loop);
     return 0;
