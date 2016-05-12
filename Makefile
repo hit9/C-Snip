@@ -9,6 +9,12 @@ examples:
 runbench:
 	make runbench -C bench
 
+lint:
+	python lint.py
+
+lintfix:
+	python lint.py fix
+
 clean:
 	rm -f src/*.o
 	make clean -C test
