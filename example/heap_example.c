@@ -6,7 +6,6 @@
 
 /* heap node comparator type, return negative if arg#0 < arg#1 */
 int cmp(void *a, void *b) { return *(int *)a - *(int *)b; }
-
 int main(int argc, const char *argv[]) {
     /* allocate empty heap with comparator */
     struct heap *heap = heap(cmp);

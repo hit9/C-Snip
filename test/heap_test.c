@@ -7,7 +7,6 @@
 #include "heap.h"
 
 int heap_cmp(void *a, void *b) { return *(int *)a - *(int *)b; }
-
 void case_heap_clear() {
     struct heap *heap = heap(heap_cmp);
     int a = 1;

@@ -4,9 +4,7 @@
 #include "signals.h"
 
 void on_keyboardinterrupt(int signal) { printf("keyboardinterrupt!\n"); }
-
 void on_signalterm(int signal) { printf("signal term received!\n"); }
-
 void beat1000(struct event_loop *loop, int id, void *data) {
     printf("heartbeat every 1s\n");
 }

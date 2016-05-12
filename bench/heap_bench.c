@@ -7,7 +7,6 @@
 #include "heap.h"
 
 int heap_bench_cmp(void *a, void *b) { return *(int *)a - *(int *)b; }
-
 void case_heap_push(struct bench_ctx *ctx) {
     struct heap *heap = heap(&heap_bench_cmp);
     int i;

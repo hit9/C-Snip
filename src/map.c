@@ -208,7 +208,6 @@ int map_ihas(struct map *m, char *key, size_t len) {
 
 /* Test if a key is in map by a NULL-terminated key. */
 int map_has(struct map *m, char *key) { return map_ihas(m, key, strlen(key)); }
-
 /* Pop a key from map, NULL on not found. */
 void *map_ipop(struct map *m, char *key, size_t len) {
     assert(m != NULL);

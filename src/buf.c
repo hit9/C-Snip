@@ -33,7 +33,6 @@ struct buf *buf_new(const char *s) {
 struct buf *buf_empty(void) {
     return buf_new(NULL);
 }
-
 /* Free a buffer and its data, no operation is performed
  * if the buffer is NULL. */
 void buf_free(struct buf *buf) {
