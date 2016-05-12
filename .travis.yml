@@ -1,5 +1,7 @@
 sudo: required
 dist: trusty
 language: c
-install: sudo apt-get install -qq gcc-4.8
+install:
+    - sudo apt-get install -qq gcc-4.8
+    - sudo apt-get install -qq clang-format-3.9
 script: make lint && make runtests && make runbench
