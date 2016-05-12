@@ -18,6 +18,7 @@ CLANGFOMART_NAMES = ['clang-format', 'clang-format-3.5', 'clang-format-3.6']
 CLANGFORMAT_LINT_OPTIONS = ['-output-replacements-xml', '-style=file']
 CLANGFORMAT_FIX_OPTIONS = ['-i', '-style=file']
 
+
 def print_usage():
     print "Usage: ./lint.py [fix]"
 
