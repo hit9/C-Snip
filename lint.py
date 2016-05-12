@@ -14,6 +14,7 @@ import subprocess
 import xml.etree.ElementTree as ET
 
 FILE_EXTENSIONS = ('.h', '.c')
+CLANGFOMART_NAMES = ['clang-format', 'clang-format-3.5', 'clang-format-3.6']
 CLANGFORMAT_LINT_OPTIONS = ['-output-replacements-xml', '-style=file']
 CLANGFORMAT_FIX_OPTIONS = ['-i', '-style=file']
 
@@ -32,12 +33,24 @@ def traverse_files():
     return paths
 
 
+def get_clang_format_bin():
+    for name in CLANGFOMART_NAMES:
+        try:
+            subprocess.check_output([name, "-version"])
+        except OSError:
+            continue
+        else:
+            return name
+    raise Exception("No clang-format command available.")
+
+
 def lint(fix=False):
     num_errors = 0
     num_error_files = 0
     num_fixed_files = 0
+    clangformat_bin = get_clang_format_bin()
     for path in traverse_files():
-        cmd = ['clang-format', path]
+        cmd = [clangformat_bin, path]
         cmd.extend(CLANGFORMAT_LINT_OPTIONS)
         out = subprocess.check_output(cmd)
         root = ET.fromstring(out)
@@ -52,7 +65,7 @@ def lint(fix=False):
         if has_error:
             num_error_files += 1
         if fix:
-            cmd = ['clang-format', path]
+            cmd = [clangformat_bin, path]
             cmd.extend(CLANGFORMAT_FIX_OPTIONS)
             if subprocess.call(cmd) == 0:
                 num_fixed_files += 1
