@@ -5,28 +5,7 @@ Lint script via clang-format.
 
 Usage
 
-    $ ./lint.py [fix] [BasedOnStyle=<google|llvm|chromium|mozilla|webkit>...]
-
-Example
-
-To lint with google style:
-
-    $ ./lint.py BasedOnStyle=google
-
-To use indent width as 2:
-
-    $ ./lint.py IndentWidth=2
-
-To fix lint errors in place:
-
-    $ ./lint.py fix
-
-Defaults
-
-Default BasedOnStyle is google.
-Default IndentWidth is 4.
-
-
+    $ ./lint.py [fix]
 """
 
 import sys
@@ -35,57 +14,11 @@ import subprocess
 import xml.etree.ElementTree as ET
 
 FILE_EXTENSIONS = ('.h', '.c')
-
-DEFAULT_CLANGFORMAT_STYLE_OPTIONS = {
-    'BasedOnStyle': 'google',
-    'IndentWidth': '4',
-    'PointerAlignment': 'Right',
-    'DerivePointerAlignment': 'false',
-}
-
+CLANGFORMAT_LINT_OPTIONS = ['-output-replacements-xml', '-style=file']
+CLANGFORMAT_FIX_OPTIONS = ['-i', '-style=file']
 
 def print_usage():
-    print """Usage:
-      ./lint.py [fix] [<style-name>=<value>]
-Examples
-      To lint: ./lint.py
-      To lint with style llvm: ./lint.py BasedOnStyle=google
-      To fix lint errors in place: ./lint.py fix"""
-
-
-def get_clangformat_style_options(args):
-    """Get clangformat style options by command line args.
-    """
-    kvs = DEFAULT_CLANGFORMAT_STYLE_OPTIONS.copy()
-    for arg in args:
-        key, value = arg.split('=')
-        kvs[key] = value
-    pairs = []
-    for key, value in kvs.items():
-        pairs.append("{0}: {1}".format(key, value))
-    if pairs:
-        return "-style={{{0}}}".format(','.join(pairs))
-    return None
-
-
-def get_clangformat_lint_options(style_options):
-    """Get clangformat full options by style options string for lint purpose.
-    """
-    options = ['-output-replacements-xml']
-    if style_options is None:
-        return options
-    options.append(style_options)
-    return options
-
-
-def get_clangformat_fix_options(style_options):
-    """Get clangformat full options by style options string for fix purpose.
-    """
-    options = ['-i']
-    if style_options is None:
-        return options
-    options.append(style_options)
-    return options
+    print "Usage: ./lint.py [fix]"
 
 
 def traverse_files():
@@ -99,14 +32,13 @@ def traverse_files():
     return paths
 
 
-def lint(args, fix=False):
+def lint(fix=False):
     num_errors = 0
     num_error_files = 0
     num_fixed_files = 0
-    style_options = get_clangformat_style_options(args)
     for path in traverse_files():
         cmd = ['clang-format', path]
-        cmd.extend(get_clangformat_lint_options(style_options))
+        cmd.extend(CLANGFORMAT_LINT_OPTIONS)
         out = subprocess.check_output(cmd)
         root = ET.fromstring(out)
         has_error = False
@@ -121,7 +53,7 @@ def lint(args, fix=False):
             num_error_files += 1
         if fix:
             cmd = ['clang-format', path]
-            cmd.extend(get_clangformat_fix_options(style_options))
+            cmd.extend(CLANGFORMAT_FIX_OPTIONS)
             if subprocess.call(cmd) == 0:
                 num_fixed_files += 1
                 if has_error:
@@ -132,10 +64,8 @@ def lint(args, fix=False):
 
 if __name__ == '__main__':
     if len(sys.argv) <= 1:  # Case ./program
-        lint([], fix=False)
-    elif sys.argv[1] == 'fix':  # Case ./program fix [pairs]
-        lint(sys.argv[2:], fix=True)
-    elif '=' in sys.argv[1]:  # Case ./program [pairs]
-        lint(sys.argv[1:], fix=False)
+        lint(fix=False)
+    elif sys.argv[1] == 'fix':  # Case ./program fix
+        lint(fix=True)
     else:
         print_usage()
