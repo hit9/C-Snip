@@ -5,23 +5,20 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "dict.h"
 
 static size_t dict_table_sizes[] = {
-    7,          17,         37,         79,         163,
-    331,        673,        1361,       2729,       5471,
-    10949,      21911,      43853,      87719,      175447,
-    350899,     701819,     1403641,    2807303,    5614657,
-    11229331,   44917381,   89834777,   179669557,  359339171,
-    718678369,  1437356741, 2147483647,
+    7,        17,       37,        79,        163,       331,        673,
+    1361,     2729,     5471,      10949,     21911,     43853,      87719,
+    175447,   350899,   701819,    1403641,   2807303,   5614657,    11229331,
+    44917381, 89834777, 179669557, 359339171, 718678369, 1437356741, 2147483647,
 };
 
-static size_t dict_idx_max = sizeof(dict_table_sizes)/\
-                             sizeof(dict_table_sizes[0])-1;  /* 28 */
+static size_t dict_idx_max =
+    sizeof(dict_table_sizes) / sizeof(dict_table_sizes[0]) - 1; /* 28 */
 
-static uint32_t
-dict_hash(char *key, size_t len)
-{
+static uint32_t dict_hash(char *key, size_t len) {
     /* DJBX33A hash function from PHP */
     register int hash = 5381;
     for (; len >= 8; len -= 8) {
@@ -35,39 +32,41 @@ dict_hash(char *key, size_t len)
         hash = ((hash << 5) + hash) + *key++;
     }
     switch (len) {
-        case 7: hash = ((hash << 5) + hash) + *key++;
-        case 6: hash = ((hash << 5) + hash) + *key++;
-        case 5: hash = ((hash << 5) + hash) + *key++;
-        case 4: hash = ((hash << 5) + hash) + *key++;
-        case 3: hash = ((hash << 5) + hash) + *key++;
-        case 2: hash = ((hash << 5) + hash) + *key++;
-        case 1: hash = ((hash << 5) + hash) + *key++; break;
-        case 0: break;
+        case 7:
+            hash = ((hash << 5) + hash) + *key++;
+        case 6:
+            hash = ((hash << 5) + hash) + *key++;
+        case 5:
+            hash = ((hash << 5) + hash) + *key++;
+        case 4:
+            hash = ((hash << 5) + hash) + *key++;
+        case 3:
+            hash = ((hash << 5) + hash) + *key++;
+        case 2:
+            hash = ((hash << 5) + hash) + *key++;
+        case 1:
+            hash = ((hash << 5) + hash) + *key++;
+            break;
+        case 0:
+            break;
     }
     return hash;
 }
 
 /* Get table size idx. */
-size_t
-dict_table_idx(size_t idx, char *key, size_t len)
-{
+size_t dict_table_idx(size_t idx, char *key, size_t len) {
     assert(idx <= dict_idx_max);
     return dict_hash(key, len) % dict_table_sizes[idx];
 }
 
 /* If two key equals. */
-int
-dict_key_equals(char *key1, size_t len1, char *key2, size_t len2)
-{
-    if (len1 == len2 && (memcmp(key1, key2, len1) == 0))
-        return 1;
+int dict_key_equals(char *key1, size_t len1, char *key2, size_t len2) {
+    if (len1 == len2 && (memcmp(key1, key2, len1) == 0)) return 1;
     return 0;
 }
 
 /* Create dict node. */
-struct dict_node *
-dict_node_new(char *key, size_t len, void *val)
-{
+struct dict_node *dict_node_new(char *key, size_t len, void *val) {
     struct dict_node *node = malloc(sizeof(struct dict_node));
 
     if (node != NULL) {
@@ -80,32 +79,25 @@ dict_node_new(char *key, size_t len, void *val)
 }
 
 /* Free dict node. */
-void
-dict_node_free(struct dict_node *node)
-{
-    if (node != NULL)
-        free(node);
+void dict_node_free(struct dict_node *node) {
+    if (node != NULL) free(node);
 }
 
 /* Resize and rehash dict. */
-int
-dict_resize(struct dict *dict)
-{
+int dict_resize(struct dict *dict) {
     assert(dict != NULL && dict->idx <= dict_idx_max);
 
     size_t new_idx = dict->idx + 1;
 
-    if (new_idx > dict_idx_max)
-        return DICT_ENOMEM;
+    if (new_idx > dict_idx_max) return DICT_ENOMEM;
 
     size_t new_table_size = dict_table_sizes[new_idx];
-    struct dict_node **new_table = malloc(
-            new_table_size * sizeof(struct dict_node *));
+    struct dict_node **new_table =
+        malloc(new_table_size * sizeof(struct dict_node *));
 
     /* init table to all NULL */
     size_t index;
-    for (index = 0; index < new_table_size; index++)
-        new_table[index] = NULL;
+    for (index = 0; index < new_table_size; index++) new_table[index] = NULL;
 
     size_t table_size = dict_table_sizes[dict->idx];
 
@@ -113,22 +105,20 @@ dict_resize(struct dict *dict)
         struct dict_node *node = (dict->table)[index];
 
         while (node != NULL) {
-            struct dict_node *new_node = dict_node_new(
-                    node->key, node->len, node->val);
+            struct dict_node *new_node =
+                dict_node_new(node->key, node->len, node->val);
 
-            if (new_node == NULL)
-                return DICT_ENOMEM;
+            if (new_node == NULL) return DICT_ENOMEM;
 
-            size_t new_index = dict_table_idx(
-                    new_idx, new_node->key, new_node->len);
+            size_t new_index =
+                dict_table_idx(new_idx, new_node->key, new_node->len);
             struct dict_node *cursor = new_table[new_index];
 
             if (cursor == NULL) {
                 /* set as head node */
                 new_table[new_index] = new_node;
             } else {
-                while (cursor->next != NULL)
-                    cursor = cursor->next;
+                while (cursor->next != NULL) cursor = cursor->next;
                 /* set as last node */
                 cursor->next = new_node;
             }
@@ -146,9 +136,7 @@ dict_resize(struct dict *dict)
 }
 
 /* Create new empty dict. */
-struct dict *
-dict_new(void)
-{
+struct dict *dict_new(void) {
     struct dict *dict = malloc(sizeof(struct dict));
 
     if (dict != NULL) {
@@ -158,8 +146,7 @@ dict_new(void)
         size_t table_size = dict_table_sizes[dict->idx];
         dict->table = malloc(table_size * sizeof(struct node *));
 
-        if (dict->table == NULL)
-            return NULL;
+        if (dict->table == NULL) return NULL;
 
         size_t index;
 
@@ -170,9 +157,7 @@ dict_new(void)
 }
 
 /* Clear dict. */
-void
-dict_clear(struct dict *dict)
-{
+void dict_clear(struct dict *dict) {
     assert(dict != NULL && dict->idx <= dict_idx_max);
 
     size_t index;
@@ -193,43 +178,34 @@ dict_clear(struct dict *dict)
 }
 
 /* Free dict. */
-void
-dict_free(struct dict *dict)
-{
+void dict_free(struct dict *dict) {
     if (dict != NULL) {
         dict_clear(dict);
 
-        if (dict->table != NULL)
-            free(dict->table);
+        if (dict->table != NULL) free(dict->table);
 
         free(dict);
     }
 }
 
 /* Get dict length. */
-size_t
-dict_len(struct dict *dict)
-{
+size_t dict_len(struct dict *dict) {
     assert(dict != NULL);
     return dict->len;
 }
 
 /* Get dict capacity. */
-size_t
-dict_cap(struct dict *dict)
-{
+size_t dict_cap(struct dict *dict) {
     assert(dict != NULL);
     return dict_table_sizes[dict->idx];
 }
 
 /* Set a key into dict. */
-int
-dict_iset(struct dict *dict, char *key, size_t len, void *val)
-{
+int dict_iset(struct dict *dict, char *key, size_t len, void *val) {
     assert(dict != NULL);
 
     if ((dict_table_sizes[dict->idx] * DICT_LOAD_LIMIT < dict->len + 1) &&
-            dict_resize(dict) != DICT_OK)
+        dict_resize(dict) != DICT_OK)
         return DICT_ENOMEM;
 
     size_t index = dict_table_idx(dict->idx, key, len);
@@ -249,8 +225,7 @@ dict_iset(struct dict *dict, char *key, size_t len, void *val)
     /* create node if not found */
     struct dict_node *new_node = dict_node_new(key, len, val);
 
-    if (new_node == NULL)
-        return DICT_ENOMEM;
+    if (new_node == NULL) return DICT_ENOMEM;
 
     /* rewind to list head */
     node = (dict->table)[index];
@@ -260,8 +235,7 @@ dict_iset(struct dict *dict, char *key, size_t len, void *val)
         (dict->table)[index] = new_node;
     } else {
         /* else append as tail node */
-        while (node->next != NULL)
-            node = node->next;
+        while (node->next != NULL) node = node->next;
         node->next = new_node;
     }
 
@@ -270,24 +244,19 @@ dict_iset(struct dict *dict, char *key, size_t len, void *val)
 }
 
 /* Set a NULL-terminated key into dict. */
-int
-dict_set(struct dict *dict, char *key, void *val)
-{
+int dict_set(struct dict *dict, char *key, void *val) {
     return dict_iset(dict, key, strlen(key), val);
 }
 
 /* Get val by key from dict, NULL on not found. */
-void *
-dict_iget(struct dict *dict, char *key, size_t len)
-{
+void *dict_iget(struct dict *dict, char *key, size_t len) {
     assert(dict != NULL);
 
     size_t index = dict_table_idx(dict->idx, key, len);
     struct dict_node *node = (dict->table)[index];
 
     while (node != NULL) {
-        if (dict_key_equals(node->key, node->len, key, len))
-            return node->val;
+        if (dict_key_equals(node->key, node->len, key, len)) return node->val;
         node = node->next;
     }
 
@@ -295,24 +264,19 @@ dict_iget(struct dict *dict, char *key, size_t len)
 }
 
 /* Get val by NULL-terminated key from dict, NULL on not found. */
-void *
-dict_get(struct dict *dict, char *key)
-{
+void *dict_get(struct dict *dict, char *key) {
     return dict_iget(dict, key, strlen(key));
 }
 
 /* Test if a key is in dict. */
-int
-dict_ihas(struct dict *dict, char *key, size_t len)
-{
+int dict_ihas(struct dict *dict, char *key, size_t len) {
     assert(dict != NULL);
 
     size_t index = dict_table_idx(dict->idx, key, len);
     struct dict_node *node = (dict->table)[index];
 
     while (node != NULL) {
-        if (dict_key_equals(node->key, node->len, key, len))
-            return 1;
+        if (dict_key_equals(node->key, node->len, key, len)) return 1;
         node = node->next;
     }
 
@@ -320,16 +284,12 @@ dict_ihas(struct dict *dict, char *key, size_t len)
 }
 
 /* Test if a key is in dict by a NULL-terminated key. */
-int
-dict_has(struct dict *dict, char *key)
-{
+int dict_has(struct dict *dict, char *key) {
     return dict_ihas(dict, key, strlen(key));
 }
 
 /* Pop a key from dict, NULL on not found. */
-void *
-dict_ipop(struct dict *dict, char *key, size_t len)
-{
+void *dict_ipop(struct dict *dict, char *key, size_t len) {
     assert(dict != NULL);
 
     size_t index = dict_table_idx(dict->idx, key, len);
@@ -357,9 +317,7 @@ dict_ipop(struct dict *dict, char *key, size_t len)
 }
 
 /* Pop a key from dict by NULL-terminated key, NULL on not found. */
-void *
-dict_pop(struct dict *dict, char *key)
-{
+void *dict_pop(struct dict *dict, char *key) {
     return dict_ipop(dict, key, strlen(key));
 }
 
@@ -392,10 +350,8 @@ dict_pop(struct dict *dict, char *key)
  *      node->val..
  *   }
  * */
-struct dict_iter *
-dict_iter_new(struct dict *dict)
-{
-    assert (dict != NULL);
+struct dict_iter *dict_iter_new(struct dict *dict) {
+    assert(dict != NULL);
 
     struct dict_iter *iter = malloc(sizeof(struct dict_iter));
 
@@ -408,19 +364,13 @@ dict_iter_new(struct dict *dict)
 }
 
 /* Free dict iter. */
-void
-dict_iter_free(struct dict_iter *iter)
-{
-    if (iter != NULL)
-        free(iter);
+void dict_iter_free(struct dict_iter *iter) {
+    if (iter != NULL) free(iter);
 }
 
 /* Get current node and seek next, NULL on end. */
-struct dict_node *
-dict_iter_next(struct dict_iter *iter)
-{
-    assert(iter != NULL &&
-            iter->dict != NULL);
+struct dict_node *dict_iter_next(struct dict_iter *iter) {
+    assert(iter != NULL && iter->dict != NULL);
 
     struct dict *dict = iter->dict;
 
@@ -432,24 +382,19 @@ dict_iter_next(struct dict_iter *iter)
     assert(dict->idx <= dict_idx_max);
     size_t table_size = dict_table_sizes[dict->idx];
 
-    if (iter->index >= table_size)
-        return NULL;
+    if (iter->index >= table_size) return NULL;
 
-    if (iter->node != NULL)
-        iter->node = iter->node->next;
+    if (iter->node != NULL) iter->node = iter->node->next;
 
     while (iter->node == NULL) {
-        if (iter->index >= table_size)
-            return NULL;
+        if (iter->index >= table_size) return NULL;
         iter->node = (dict->table)[iter->index++];
     }
     return iter->node;
 }
 
 /* Rewind dict iter. */
-void
-dict_iter_rewind(struct dict_iter *iter)
-{
+void dict_iter_rewind(struct dict_iter *iter) {
     assert(iter != NULL);
     iter->node = NULL;
     iter->index = 0;

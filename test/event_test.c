@@ -3,29 +3,25 @@
  */
 
 #include <assert.h>
+#include <fcntl.h>
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <pthread.h>
 #include <unistd.h>
-#include <fcntl.h>
 
 #include "event.h"
 
 int fds[2];
 
-void *
-write_data(void *data)
-{
+void *write_data(void *data) {
     usleep(1000);
     char buf[256] = "abcdef";
     assert(write(fds[1], buf, 6) == 6);
     return NULL;
 }
 
-void
-read_data(struct event_loop *loop, int fd, int mask, void *data)
-{
+void read_data(struct event_loop *loop, int fd, int mask, void *data) {
     char buf[256];
 
     if (fd == fds[0]) {
@@ -35,9 +31,7 @@ read_data(struct event_loop *loop, int fd, int mask, void *data)
     }
 }
 
-void
-case_event_simple()
-{
+void case_event_simple() {
     assert(pipe(fds) == 0);
 
     struct event_loop *loop = event_loop_new(100);

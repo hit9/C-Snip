@@ -7,9 +7,7 @@
 #include "bench.h"
 #include "skiplist.h"
 
-void
-case_skiplist_push(struct bench_ctx *ctx)
-{
+void case_skiplist_push(struct bench_ctx *ctx) {
     struct skiplist *sl = skiplist(NULL);
 
     int i;
@@ -21,9 +19,7 @@ case_skiplist_push(struct bench_ctx *ctx)
     skiplist_free(sl);
 }
 
-void
-case_skiplist_get(struct bench_ctx *ctx)
-{
+void case_skiplist_get(struct bench_ctx *ctx) {
     struct skiplist *sl = skiplist(NULL);
 
     int i;
@@ -38,9 +34,7 @@ case_skiplist_get(struct bench_ctx *ctx)
     skiplist_free(sl);
 }
 
-void
-case_skiplist_pop(struct bench_ctx *ctx)
-{
+void case_skiplist_pop(struct bench_ctx *ctx) {
     struct skiplist *sl = skiplist(NULL);
 
     int i;
@@ -55,9 +49,7 @@ case_skiplist_pop(struct bench_ctx *ctx)
     skiplist_free(sl);
 }
 
-void
-case_skiplist_popfirst(struct bench_ctx *ctx)
-{
+void case_skiplist_popfirst(struct bench_ctx *ctx) {
     struct skiplist *sl = skiplist(NULL);
 
     int i;
@@ -72,9 +64,7 @@ case_skiplist_popfirst(struct bench_ctx *ctx)
     skiplist_free(sl);
 }
 
-void
-case_skiplist_first(struct bench_ctx *ctx)
-{
+void case_skiplist_first(struct bench_ctx *ctx) {
     struct skiplist *sl = skiplist(NULL);
 
     int i;

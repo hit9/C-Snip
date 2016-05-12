@@ -4,11 +4,10 @@
 
 #include <assert.h>
 #include <string.h>
+
 #include "strings.h"
 
-void
-case_strings_search()
-{
+void case_strings_search() {
     char s1[] = "this is a simple example";
     assert(strings_search(s1, "this", 0) == 0);
     assert(strings_search(s1, "is", 0) == 2);
@@ -24,9 +23,7 @@ case_strings_search()
     assert(strings_search(s2, "是", 6) == 12);
 }
 
-void
-case_strings_rand()
-{
+void case_strings_rand() {
     /* we are going to assert n times random strings (with length 16)
      * are not the same with each other */
     int n = 100;
@@ -36,14 +33,11 @@ case_strings_rand()
 
     for (i = 0; i < n; i++) {
         strings_rand(strings[i], 16);
-        for (j = 0; j < i; j++)
-            assert(strcmp(strings[i], strings[j]) != 0);
+        for (j = 0; j < i; j++) assert(strcmp(strings[i], strings[j]) != 0);
     }
 }
 
-void
-case_strings_replace()
-{
+void case_strings_replace() {
     char *src = "abcdbcefghbcio";
     char *sub = "bc";
     char *rep = "xyz";

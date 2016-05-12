@@ -6,9 +6,7 @@
 #include "bench.h"
 #include "strings.h"
 
-void
-case_strings_search(struct bench_ctx *ctx)
-{
+void case_strings_search(struct bench_ctx *ctx) {
     /* suite */
     int i;
     char strs[ctx->n][32];
@@ -25,9 +23,7 @@ case_strings_search(struct bench_ctx *ctx)
     bench_ctx_reset_end_at(ctx);
 }
 
-void
-case_strings_replace(struct bench_ctx *ctx)
-{
+void case_strings_replace(struct bench_ctx *ctx) {
     /* suite */
     int i;
     char strs[ctx->n][32];
@@ -45,9 +41,7 @@ case_strings_replace(struct bench_ctx *ctx)
     bench_ctx_reset_end_at(ctx);
 }
 
-void
-case_strings_rand(struct bench_ctx *ctx)
-{
+void case_strings_rand(struct bench_ctx *ctx) {
     int i;
     for (i = 0; i < ctx->n; i++) {
         char s[32];

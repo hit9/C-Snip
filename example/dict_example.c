@@ -5,8 +5,7 @@
 #include <string.h>
 #include "dict.h"
 
-int main(int argc, const char *argv[])
-{
+int main(int argc, const char *argv[]) {
     /* allocate a new dict */
     struct dict *dict = dict();
     /* set key and values to dict */

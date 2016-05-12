@@ -3,18 +3,12 @@
  */
 
 #include <assert.h>
+
 #include "heap.h"
 
+int heap_cmp(void *a, void *b) { return *(int *)a - *(int *)b; }
 
-int
-heap_cmp(void *a, void *b)
-{
-    return *(int *)a - *(int *)b;
-}
-
-void
-case_heap_clear()
-{
+void case_heap_clear() {
     struct heap *heap = heap(heap_cmp);
     int a = 1;
     assert(heap_push(heap, (void *)&a) == HEAP_OK);
@@ -25,9 +19,7 @@ case_heap_clear()
     heap_free(heap);
 }
 
-void
-case_heap_len()
-{
+void case_heap_len() {
     struct heap *heap = heap(heap_cmp);
     assert(heap_len(heap) == 0);
     int a = 1, b = 2, c = 3;
@@ -38,9 +30,7 @@ case_heap_len()
     heap_free(heap);
 }
 
-void
-case_heap_cap()
-{
+void case_heap_cap() {
     struct heap *heap = heap(heap_cmp);
     assert(heap_cap(heap) == 0);
     int a = 1, b = 2, c = 3;
@@ -53,9 +43,7 @@ case_heap_cap()
     heap_free(heap);
 }
 
-void
-case_heap_push()
-{
+void case_heap_push() {
     struct heap *heap = heap(heap_cmp);
     int a = 3, b = 1, c = 2;
     assert(heap_push(heap, (void *)&a) == HEAP_OK);
@@ -68,9 +56,7 @@ case_heap_push()
     heap_free(heap);
 }
 
-void
-case_heap_pop()
-{
+void case_heap_pop() {
     struct heap *heap = heap(heap_cmp);
     int a = 3, b = 1, c = 2, d = 4;
     assert(heap_push(heap, (void *)&a) == HEAP_OK);
@@ -86,9 +72,7 @@ case_heap_pop()
     heap_free(heap);
 }
 
-void
-case_heap_top()
-{
+void case_heap_top() {
     struct heap *heap = heap(heap_cmp);
     int a = 3, b = 2, c = 4, d = 1;
     assert(heap_push(heap, (void *)&a) == HEAP_OK);
@@ -102,9 +86,7 @@ case_heap_top()
     heap_free(heap);
 }
 
-void
-case_heap_pushpop()
-{
+void case_heap_pushpop() {
     struct heap *heap = heap(heap_cmp);
     int a = 3, b = 2, c = 4;
     assert(*(int *)heap_pushpop(heap, (void *)&a) == 3);
@@ -114,9 +96,7 @@ case_heap_pushpop()
     heap_free(heap);
 }
 
-void
-case_heap_del()
-{
+void case_heap_del() {
     struct heap *heap = heap(heap_cmp);
     int a = 3, b = 2, c = 5, d = 7, e = 4, f = 6, g = 1;
     assert(heap_push(heap, (void *)&a) == HEAP_OK);

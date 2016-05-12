@@ -3,7 +3,7 @@
 default: example
 
 CC=cc -std=c99
-CFLAGS=-Wall -I../include -D_GNU_SOURCE
+CFLAGS=-Wall -I../src -D_GNU_SOURCE
 LDFLAGS=-Wall
 
 buf_example: buf_example.c ../src/buf.c

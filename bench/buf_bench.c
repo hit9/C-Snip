@@ -5,9 +5,7 @@
 #include "bench.h"
 #include "buf.h"
 
-void
-case_buf_puts(struct bench_ctx *ctx)
-{
+void case_buf_puts(struct bench_ctx *ctx) {
     struct buf *buf = buf(NULL);
     int i;
     bench_ctx_reset_start_at(ctx);

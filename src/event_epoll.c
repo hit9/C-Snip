@@ -4,28 +4,27 @@
 
 #include <assert.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <sys/epoll.h>
+#include <unistd.h>
+
 #include "event.h"
 
-#define EVENT_EPOLL_ALWAYS_ET   1
+#define EVENT_EPOLL_ALWAYS_ET 1
 
 struct event_api {
-    int ep;                      /* epoll descriptor */
-    struct epoll_event *events;  /* struct epoll_events[], with size `loop->size` */
+    int ep; /* epoll descriptor */
+    struct epoll_event
+        *events; /* struct epoll_events[], with size `loop->size` */
 };
 
-static int
-event_api_loop_new(struct event_loop *loop)
-{
+static int event_api_loop_new(struct event_loop *loop) {
     assert(loop != NULL);
     assert(loop->size > 0);
     assert(loop->api == NULL);
 
     struct event_api *api = malloc(sizeof(struct event_api));
 
-    if (api == NULL)
-        return EVENT_ENOMEM;
+    if (api == NULL) return EVENT_ENOMEM;
 
     api->ep = epoll_create(loop->size);
 
@@ -46,31 +45,25 @@ event_api_loop_new(struct event_loop *loop)
     return EVENT_OK;
 }
 
-void
-event_api_loop_free(struct event_loop *loop)
-{
+void event_api_loop_free(struct event_loop *loop) {
     assert(loop != NULL);
 
     if (loop->api != NULL) {
-        if (loop->api->ep > 0)
-            close(loop->api->ep);
-        if (loop->api->events != NULL)
-            free(loop->api->events);
+        if (loop->api->ep > 0) close(loop->api->ep);
+        if (loop->api->events != NULL) free(loop->api->events);
         free(loop->api);
     }
 }
 
-int
-event_api_add(struct event_loop *loop, int fd, int mask)
-{
+int event_api_add(struct event_loop *loop, int fd, int mask) {
     assert(loop != NULL);
     assert(loop->events != NULL);
     assert(loop->api != NULL);
 
     struct epoll_event ev;
 
-    int op = loop->events[fd].mask == EVENT_NONE ?
-        EPOLL_CTL_ADD : EPOLL_CTL_MOD;
+    int op =
+        loop->events[fd].mask == EVENT_NONE ? EPOLL_CTL_ADD : EPOLL_CTL_MOD;
 
     ev.events = 0;
     ev.data.fd = fd;
@@ -82,15 +75,12 @@ event_api_add(struct event_loop *loop, int fd, int mask)
     if (mask & EVENT_WRITABLE) ev.events |= EPOLLOUT;
     if (mask & EVENT_ERROR) ev.events |= EPOLLERR;
 
-    if (epoll_ctl(loop->api->ep, op, fd, &ev) < 0)
-        return EVENT_EFAILED;
+    if (epoll_ctl(loop->api->ep, op, fd, &ev) < 0) return EVENT_EFAILED;
 
     return EVENT_OK;
 }
 
-int
-event_api_del(struct event_loop *loop, int fd, int delmask)
-{
+int event_api_del(struct event_loop *loop, int fd, int delmask) {
     assert(loop != NULL);
     assert(loop->events != NULL);
     assert(loop->api != NULL);
@@ -117,9 +107,7 @@ event_api_del(struct event_loop *loop, int fd, int delmask)
     return EVENT_OK;
 }
 
-int
-event_api_wait(struct event_loop *loop, int timeout)
-{
+int event_api_wait(struct event_loop *loop, int timeout) {
     assert(loop != NULL);
     assert(loop->events != NULL);
 
@@ -156,8 +144,7 @@ event_api_wait(struct event_loop *loop, int timeout)
     }
 
     if (nfds == 0) {
-        if (timeout >= 0)
-            return EVENT_OK;
+        if (timeout >= 0) return EVENT_OK;
     }
 
     return EVENT_EFAILED;

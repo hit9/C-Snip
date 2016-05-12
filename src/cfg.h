@@ -34,8 +34,7 @@
 extern "C" {
 #endif
 
-#define cfg_each(cfg, err) \
-    while (((err) = cfg_get(&(cfg))) == CFG_OK)
+#define cfg_each(cfg, err) while (((err) = cfg_get(&(cfg))) == CFG_OK)
 
 enum {
     CFG_OK = 0,      /* operation is ok */
@@ -44,13 +43,13 @@ enum {
 };
 
 struct cfg {
-    char *data;      /* currnt cfg data */
-    size_t len;      /* currnt cfg data length */
-    size_t lineno;   /* cfg lineno */
-    char *key;       /* current key */
-    size_t key_len;  /* current key length */
-    char *val;       /* current val */
-    size_t val_len;  /* current val length */
+    char *data;     /* currnt cfg data */
+    size_t len;     /* currnt cfg data length */
+    size_t lineno;  /* cfg lineno */
+    char *key;      /* current key */
+    size_t key_len; /* current key length */
+    char *val;      /* current val */
+    size_t val_len; /* current val length */
 };
 
 int cfg_get(struct cfg *cfg);

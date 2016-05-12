@@ -6,15 +6,9 @@
 #include "bench.h"
 #include "heap.h"
 
-int
-heap_bench_cmp(void *a, void *b)
-{
-    return *(int *)a - *(int *)b;
-}
+int heap_bench_cmp(void *a, void *b) { return *(int *)a - *(int *)b; }
 
-void
-case_heap_push(struct bench_ctx *ctx)
-{
+void case_heap_push(struct bench_ctx *ctx) {
     struct heap *heap = heap(&heap_bench_cmp);
     int i;
     bench_ctx_reset_start_at(ctx);
@@ -25,9 +19,7 @@ case_heap_push(struct bench_ctx *ctx)
     heap_free(heap);
 }
 
-void
-case_heap_pop(struct bench_ctx *ctx)
-{
+void case_heap_pop(struct bench_ctx *ctx) {
     struct heap *heap = heap(&heap_bench_cmp);
     int i;
     for (i = 0; i < ctx->n; i++) {
@@ -41,9 +33,7 @@ case_heap_pop(struct bench_ctx *ctx)
     heap_free(heap);
 }
 
-void
-case_heap_top(struct bench_ctx *ctx)
-{
+void case_heap_top(struct bench_ctx *ctx) {
     struct heap *heap = heap(&heap_bench_cmp);
     int i;
     for (i = 0; i < ctx->n; i++) {

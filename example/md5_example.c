@@ -4,8 +4,7 @@
 #include <string.h>
 #include "md5.h"
 
-int main(int argc, const char *argv[])
-{
+int main(int argc, const char *argv[]) {
     char *key = "key";
     unsigned long len = strlen(key);
     /* get hashing number by key */
@@ -14,7 +13,6 @@ int main(int argc, const char *argv[])
     unsigned char results[16];
     md5_signature((unsigned char *)key, len, results);
     int i;
-    for (i = 0; i < 16; i++)
-        printf("%x", results[i]);
+    for (i = 0; i < 16; i++) printf("%x", results[i]);
     return 0;
 }

@@ -4,8 +4,7 @@
 #include <stdio.h>
 #include "queue.h"
 
-int main(int argc, const char *argv[])
-{
+int main(int argc, const char *argv[]) {
     /* allocate a new empty queue */
     struct queue *queue = queue();
     /* push data to queue */

@@ -6,15 +6,12 @@
 #include "bench.h"
 #include "map.h"
 
-void
-case_map_set(struct bench_ctx *ctx)
-{
+void case_map_set(struct bench_ctx *ctx) {
     struct map *m = map();
     /* keys suite */
     int i;
     char keys[ctx->n][4];
-    for (i = 0; i < ctx->n; i++)
-        sprintf(keys[i], "%d", i & 999);
+    for (i = 0; i < ctx->n; i++) sprintf(keys[i], "%d", i & 999);
     /* bench */
     bench_ctx_reset_start_at(ctx);
     for (i = 0; i < ctx->n; i++) {
@@ -24,9 +21,7 @@ case_map_set(struct bench_ctx *ctx)
     map_free(m);
 }
 
-void
-case_map_get(struct bench_ctx *ctx)
-{
+void case_map_get(struct bench_ctx *ctx) {
     struct map *m = map();
     /* suite */
     int i;
@@ -44,9 +39,7 @@ case_map_get(struct bench_ctx *ctx)
     map_free(m);
 }
 
-void
-case_map_pop(struct bench_ctx *ctx)
-{
+void case_map_pop(struct bench_ctx *ctx) {
     struct map *m = map();
     /* suite */
     int i;

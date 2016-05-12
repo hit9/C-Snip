@@ -22,17 +22,17 @@ void case_buf_lrm();
 void case_buf_len();
 void case_buf_cap();
 static struct test_case buf_test_cases[] = {
-    { "buf_clear", &case_buf_clear },
-    { "buf_put", &case_buf_put },
-    { "buf_puts", &case_buf_puts },
-    { "buf_putc", &case_buf_putc },
-    { "buf_str", &case_buf_str },
-    { "buf_isempty", &case_buf_isempty },
-    { "buf_sprintf", &case_buf_sprintf },
-    { "buf_lrm", &case_buf_lrm },
-    { "buf_len", &case_buf_len },
-    { "buf_cap", &case_buf_cap },
-    { NULL, NULL },
+    {"buf_clear", &case_buf_clear},
+    {"buf_put", &case_buf_put},
+    {"buf_puts", &case_buf_puts},
+    {"buf_putc", &case_buf_putc},
+    {"buf_str", &case_buf_str},
+    {"buf_isempty", &case_buf_isempty},
+    {"buf_sprintf", &case_buf_sprintf},
+    {"buf_lrm", &case_buf_lrm},
+    {"buf_len", &case_buf_len},
+    {"buf_cap", &case_buf_cap},
+    {NULL, NULL},
 };
 
 /**
@@ -40,8 +40,7 @@ static struct test_case buf_test_cases[] = {
  */
 void case_cfg_get();
 static struct test_case cfg_test_cases[] = {
-    { "cfg_get", &case_cfg_get },
-    { NULL, NULL },
+    {"cfg_get", &case_cfg_get}, {NULL, NULL},
 };
 
 /**
@@ -49,8 +48,7 @@ static struct test_case cfg_test_cases[] = {
  */
 void case_datetime_stamp_now();
 static struct test_case datetime_test_cases[] = {
-    { "datetime_stamp_now", &case_datetime_stamp_now },
-    { NULL, NULL },
+    {"datetime_stamp_now", &case_datetime_stamp_now}, {NULL, NULL},
 };
 
 /**
@@ -64,14 +62,10 @@ void case_dict_clear();
 void case_dict_resize();
 void case_dict_iter();
 static struct test_case dict_test_cases[] = {
-    { "dict_set", &case_dict_set },
-    { "dict_get", &case_dict_get },
-    { "dict_pop", &case_dict_pop },
-    { "dict_has", &case_dict_has },
-    { "dict_clear", &case_dict_clear },
-    { "dict_resize", &case_dict_resize },
-    { "dict_iter", &case_dict_iter },
-    { NULL, NULL },
+    {"dict_set", &case_dict_set},     {"dict_get", &case_dict_get},
+    {"dict_pop", &case_dict_pop},     {"dict_has", &case_dict_has},
+    {"dict_clear", &case_dict_clear}, {"dict_resize", &case_dict_resize},
+    {"dict_iter", &case_dict_iter},   {NULL, NULL},
 };
 
 /**
@@ -79,8 +73,7 @@ static struct test_case dict_test_cases[] = {
  */
 void case_event_simple();
 static struct test_case event_test_cases[] = {
-    { "event_simple", &case_event_simple },
-    { NULL, NULL },
+    {"event_simple", &case_event_simple}, {NULL, NULL},
 };
 
 /**
@@ -95,15 +88,15 @@ void case_heap_top();
 void case_heap_pushpop();
 void case_heap_del();
 static struct test_case heap_test_cases[] = {
-    { "heap_clear", &case_heap_clear },
-    { "heap_len", &case_heap_len },
-    { "heap_cap", &case_heap_cap },
-    { "heap_push", &case_heap_push },
-    { "heap_pop", &case_heap_pop },
-    { "heap_top", &case_heap_top },
-    { "heap_pushpop", &case_heap_pushpop },
-    { "heap_del", &case_heap_del },
-    { NULL, NULL },
+    {"heap_clear", &case_heap_clear},
+    {"heap_len", &case_heap_len},
+    {"heap_cap", &case_heap_cap},
+    {"heap_push", &case_heap_push},
+    {"heap_pop", &case_heap_pop},
+    {"heap_top", &case_heap_top},
+    {"heap_pushpop", &case_heap_pushpop},
+    {"heap_del", &case_heap_del},
+    {NULL, NULL},
 };
 
 /**
@@ -112,9 +105,9 @@ static struct test_case heap_test_cases[] = {
 void case_ketama_balance();
 void case_ketama_consistence();
 static struct test_case ketama_test_cases[] = {
-    { "ketama_balance", &case_ketama_balance },
-    { "ketama_consistence", &case_ketama_consistence },
-    { NULL, NULL },
+    {"ketama_balance", &case_ketama_balance},
+    {"ketama_consistence", &case_ketama_consistence},
+    {NULL, NULL},
 };
 
 /**
@@ -127,13 +120,13 @@ void case_list_lpop();
 void case_list_rpop();
 void case_list_iter();
 static struct test_case list_test_cases[] = {
-    { "list_clear", &case_list_clear },
-    { "list_lpush", &case_list_lpush },
-    { "list_rpush", &case_list_rpush },
-    { "list_lpop", &case_list_lpop },
-    { "list_rpop", &case_list_rpop },
-    { "list_iter", &case_list_iter },
-    { NULL, NULL },
+    {"list_clear", &case_list_clear},
+    {"list_lpush", &case_list_lpush},
+    {"list_rpush", &case_list_rpush},
+    {"list_lpop", &case_list_lpop},
+    {"list_rpop", &case_list_rpop},
+    {"list_iter", &case_list_iter},
+    {NULL, NULL},
 };
 
 /**
@@ -143,10 +136,10 @@ void case_log_open_close();
 void case_log_log();
 void case_log_rotate();
 static struct test_case log_test_cases[] = {
-    { "log_open_close", &case_log_open_close },
-    { "log_log", &case_log_log },
-    { "log_rotate", &case_log_rotate},
-    { NULL, NULL },
+    {"log_open_close", &case_log_open_close},
+    {"log_log", &case_log_log},
+    {"log_rotate", &case_log_rotate},
+    {NULL, NULL},
 };
 
 /**
@@ -159,13 +152,13 @@ void case_map_has();
 void case_map_clear();
 void case_map_iter();
 static struct test_case map_test_cases[] = {
-    { "map_set", &case_map_set },
-    { "map_get", &case_map_get },
-    { "map_pop", &case_map_pop },
-    { "map_has", &case_map_has },
-    { "map_clear", &case_map_clear },
-    { "map_iter", &case_map_iter },
-    { NULL, NULL },
+    {"map_set", &case_map_set},
+    {"map_get", &case_map_get},
+    {"map_pop", &case_map_pop},
+    {"map_has", &case_map_has},
+    {"map_clear", &case_map_clear},
+    {"map_iter", &case_map_iter},
+    {NULL, NULL},
 };
 
 /**
@@ -174,9 +167,9 @@ static struct test_case map_test_cases[] = {
 void case_queue_clear();
 void case_queue_push_pop_top();
 static struct test_case queue_test_cases[] = {
-    { "queue_clear", &case_queue_clear },
-    { "queue_push_pop_top", &case_queue_push_pop_top },
-    { NULL, NULL },
+    {"queue_clear", &case_queue_clear},
+    {"queue_push_pop_top", &case_queue_push_pop_top},
+    {NULL, NULL},
 };
 
 /**
@@ -189,13 +182,13 @@ void case_skiplist_popfirst();
 void case_skiplist_poplast();
 void case_skiplist_get();
 static struct test_case skiplist_test_cases[] = {
-    { "skiplist_base", &case_skiplist_base },
-    { "skiplist_push", &case_skiplist_push },
-    { "skiplist_pop", &case_skiplist_pop },
-    { "skiplist_popfirst", &case_skiplist_popfirst },
-    { "skiplist_poplast", &case_skiplist_poplast },
-    { "skiplist_get", &case_skiplist_get },
-    { NULL, NULL },
+    {"skiplist_base", &case_skiplist_base},
+    {"skiplist_push", &case_skiplist_push},
+    {"skiplist_pop", &case_skiplist_pop},
+    {"skiplist_popfirst", &case_skiplist_popfirst},
+    {"skiplist_poplast", &case_skiplist_poplast},
+    {"skiplist_get", &case_skiplist_get},
+    {NULL, NULL},
 };
 
 /**
@@ -206,11 +199,11 @@ void case_stack_push();
 void case_stack_pop();
 void case_stack_top();
 static struct test_case stack_test_cases[] = {
-    { "stack_clear", &case_stack_clear },
-    { "stack_push", &case_stack_push },
-    { "stack_pop", &case_stack_pop },
-    { "stack_top", &case_stack_top },
-    { NULL, NULL },
+    {"stack_clear", &case_stack_clear},
+    {"stack_push", &case_stack_push},
+    {"stack_pop", &case_stack_pop},
+    {"stack_top", &case_stack_top},
+    {NULL, NULL},
 };
 
 /**
@@ -220,10 +213,10 @@ void case_strings_search();
 void case_strings_rand();
 void case_strings_replace();
 static struct test_case strings_test_cases[] = {
-    { "strings_search", &case_strings_search },
-    { "strings_rand", &case_strings_rand },
-    { "strings_replace", &case_strings_replace },
-    { NULL, NULL },
+    {"strings_search", &case_strings_search},
+    {"strings_rand", &case_strings_rand},
+    {"strings_replace", &case_strings_replace},
+    {NULL, NULL},
 };
 
 /**
@@ -232,31 +225,27 @@ static struct test_case strings_test_cases[] = {
 void case_utils_min();
 void case_utils_max();
 static struct test_case utils_test_cases[] = {
-    { "utils_min", &case_utils_min },
-    { "utils_max", &case_utils_max },
-    { NULL, NULL },
+    {"utils_min", &case_utils_min},
+    {"utils_max", &case_utils_max},
+    {NULL, NULL},
 };
 
-static void
-run_cases(const char *name, struct test_case cases[])
-{
+static void run_cases(const char *name, struct test_case cases[]) {
     int idx = 0;
 
     while (1) {
         struct test_case c = cases[idx];
-        if (c.name == NULL || c.fn == NULL)
-            break;
+        if (c.name == NULL || c.fn == NULL) break;
         double start_at = datetime_stamp_now();
         (c.fn)();
         double end_at = datetime_stamp_now();
         idx += 1;
         fprintf(stderr, "ok\t%-27s %-27s %17.3fµs\n", name, c.name,
-                1000.0*(end_at - start_at));
+                1000.0 * (end_at - start_at));
     }
 }
 
-int main(int argc, const char *argv[])
-{
+int main(int argc, const char *argv[]) {
 #ifdef __linux
     mtrace();
 #endif

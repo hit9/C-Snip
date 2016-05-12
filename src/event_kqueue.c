@@ -4,30 +4,28 @@
 
 #include <assert.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
 #include <sys/event.h>
 #include <sys/time.h>
+#include <sys/types.h>
+#include <unistd.h>
+
 #include "event.h"
 
-#define EVENT_KQUEUE_ALWAYS_CLEAR   1
+#define EVENT_KQUEUE_ALWAYS_CLEAR 1
 
 struct event_api {
-    int kp;                 /* kqueue descriptor */
-    struct kevent *events;  /* struct kevent[], with size `loop->size` */
+    int kp;                /* kqueue descriptor */
+    struct kevent *events; /* struct kevent[], with size `loop->size` */
 };
 
-static int
-event_api_loop_new(struct event_loop *loop)
-{
+static int event_api_loop_new(struct event_loop *loop) {
     assert(loop != NULL);
     assert(loop->size > 0);
     assert(loop->api == NULL);
 
     struct event_api *api = malloc(sizeof(struct event_api));
 
-    if (api == NULL)
-        return EVENT_ENOMEM;
+    if (api == NULL) return EVENT_ENOMEM;
 
     api->kp = kqueue();
 
@@ -48,23 +46,17 @@ event_api_loop_new(struct event_loop *loop)
     return EVENT_OK;
 }
 
-void
-event_api_loop_free(struct event_loop *loop)
-{
+void event_api_loop_free(struct event_loop *loop) {
     assert(loop != NULL);
 
     if (loop->api != NULL) {
-        if (loop->api->kp > 0)
-            close(loop->api->kp);
-        if (loop->api->events != NULL)
-            free(loop->api->events);
+        if (loop->api->kp > 0) close(loop->api->kp);
+        if (loop->api->events != NULL) free(loop->api->events);
         free(loop->api);
     }
 }
 
-int
-event_api_add(struct event_loop *loop, int fd, int mask)
-{
+int event_api_add(struct event_loop *loop, int fd, int mask) {
     assert(loop != NULL);
     assert(loop->api != NULL);
 
@@ -73,26 +65,21 @@ event_api_add(struct event_loop *loop, int fd, int mask)
 
     int op = EV_ADD;
 
-    if (EVENT_KQUEUE_ALWAYS_CLEAR)
-        op |= EV_CLEAR;
+    if (EVENT_KQUEUE_ALWAYS_CLEAR) op |= EV_CLEAR;
 
     if (mask & EVENT_READABLE) {
         EV_SET(&ev, fd, EVFILT_READ, op, 0, 0, NULL);
-        if (kevent(api->kp, &ev, 1, NULL, 0, NULL) < 0)
-            return  EVENT_EFAILED;
+        if (kevent(api->kp, &ev, 1, NULL, 0, NULL) < 0) return EVENT_EFAILED;
     }
 
     if (mask & EVENT_WRITABLE) {
         EV_SET(&ev, fd, EVFILT_WRITE, op, 0, 0, NULL);
-        if (kevent(api->kp, &ev, 1, NULL, 0, NULL) < 0)
-            return EVENT_EFAILED;
+        if (kevent(api->kp, &ev, 1, NULL, 0, NULL) < 0) return EVENT_EFAILED;
     }
     return EVENT_OK;
 }
 
-int
-event_api_del(struct event_loop *loop, int fd, int mask)
-{
+int event_api_del(struct event_loop *loop, int fd, int mask) {
     assert(loop != NULL);
     assert(loop->api != NULL);
 
@@ -101,27 +88,22 @@ event_api_del(struct event_loop *loop, int fd, int mask)
 
     int op = EV_DELETE;
 
-    if (EVENT_KQUEUE_ALWAYS_CLEAR)
-        op |= EV_CLEAR;
+    if (EVENT_KQUEUE_ALWAYS_CLEAR) op |= EV_CLEAR;
 
     if (mask & EVENT_READABLE) {
         EV_SET(&ev, fd, EVFILT_READ, op, 0, 0, NULL);
-        if (kevent(api->kp, &ev, 1, NULL, 0, NULL) < 0)
-            return  EVENT_EFAILED;
+        if (kevent(api->kp, &ev, 1, NULL, 0, NULL) < 0) return EVENT_EFAILED;
     }
 
     if (mask & EVENT_WRITABLE) {
         EV_SET(&ev, fd, EVFILT_WRITE, op, 0, 0, NULL);
-        if (kevent(api->kp, &ev, 1, NULL, 0, NULL) < 0)
-            return EVENT_EFAILED;
+        if (kevent(api->kp, &ev, 1, NULL, 0, NULL) < 0) return EVENT_EFAILED;
     }
 
     return EVENT_OK;
 }
 
-int
-event_api_wait(struct event_loop *loop, int timeout)
-{
+int event_api_wait(struct event_loop *loop, int timeout) {
     assert(loop != NULL);
 
     struct event_api *api = loop->api;
@@ -131,7 +113,7 @@ event_api_wait(struct event_loop *loop, int timeout)
 
     int nfds;
 
-    if (timeout >= 0 ) {
+    if (timeout >= 0) {
         struct timespec tv;
         tv.tv_sec = timeout / 1000;
         tv.tv_nsec = (timeout - tv.tv_sec * 1000) * 1000000;
@@ -166,8 +148,7 @@ event_api_wait(struct event_loop *loop, int timeout)
     }
 
     if (nfds == 0) {
-        if (timeout >= 0)
-            return EVENT_OK;
+        if (timeout >= 0) return EVENT_OK;
     }
 
     return EVENT_EFAILED;

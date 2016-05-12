@@ -5,14 +5,13 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "strings.h"
 
 /* Search null-terminated string `sub` in string `s`, simple version via
  * Boyer Moore string search algorithm. Return the first position of the
  * `sub` in the `s`, return the `s`'s length on failure. */
-size_t
-strings_search(char *s, char *sub, size_t start)
-{
+size_t strings_search(char *s, char *sub, size_t start) {
     assert(s != NULL && sub != NULL);
 
     size_t s_len = strlen(s);
@@ -23,11 +22,9 @@ strings_search(char *s, char *sub, size_t start)
     size_t table[256] = {0};
 
     /* build bad char table */
-    for (idx = 0; idx < 256; idx++)
-        table[idx] = len;
+    for (idx = 0; idx < 256; idx++) table[idx] = len;
 
-    for (idx = 0; idx < len; idx++)
-        table[(int)sub[idx]] = last - idx;
+    for (idx = 0; idx < len; idx++) table[(int)sub[idx]] = last - idx;
 
     /* do search */
     size_t i, j, k, t, skip;
@@ -38,7 +35,7 @@ strings_search(char *s, char *sub, size_t start)
             k = last - j;
             if (sub[k] != s[i + k]) {
                 t = table[(int)s[i + k]];
-                skip = t > j? t - j : 1;
+                skip = t > j ? t - j : 1;
                 break;
             }
         }
@@ -52,18 +49,16 @@ strings_search(char *s, char *sub, size_t start)
 
 /* Create random string with length `len`, you may want
  * to set rand seed before all your `rand` calls. */
-char *
-strings_rand(char *s, size_t len)
-{
-    static const char chs[] = "0123456789"
+char *strings_rand(char *s, size_t len) {
+    static const char chs[] =
+        "0123456789"
         "abcdefghijklmnopqrstuvwxyz"
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     static const int mask = 10 + 26 * 2 - 1;
 
     int i;
 
-    for (i = 0; i < len; i++)
-        s[i] = chs[rand() & mask];
+    for (i = 0; i < len; i++) s[i] = chs[rand() & mask];
 
     s[len] = 0;
     return s;
@@ -72,9 +67,7 @@ strings_rand(char *s, size_t len)
 /* Replace all `sub` in string `src` with `rep` and concat the
  * result into `dst`. All the arguments are NULL-terminated c
  * string, return  */
-char *
-strings_replace(char *dst, char *src, char *sub, char *rep)
-{
+char *strings_replace(char *dst, char *src, char *sub, char *rep) {
     size_t src_len = strlen(src);
     size_t sub_len = strlen(sub);
     size_t rep_len = strlen(rep);

@@ -3,13 +3,11 @@
  */
 
 #include <assert.h>
-#include <time.h>
 #include <sys/time.h>
+#include <time.h>
 
 /* Get timestamp (in milliseconds) for now. */
-double
-datetime_stamp_now(void)
-{
+double datetime_stamp_now(void) {
 #if defined CLOCK_REALTIME
     struct timespec ts;
     int rc = clock_gettime(CLOCK_REALTIME, &ts);

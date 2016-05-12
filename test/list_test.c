@@ -3,11 +3,10 @@
  */
 
 #include <assert.h>
+
 #include "list.h"
 
-void
-case_list_clear()
-{
+void case_list_clear() {
     struct list *list = list();
     char *s1 = "s1", *s2 = "s2", *s3 = "s3";
     assert(list_lpush(list, s1) == LIST_OK);
@@ -21,9 +20,7 @@ case_list_clear()
     list_free(list);
 }
 
-void
-case_list_lpush()
-{
+void case_list_lpush() {
     struct list *list = list();
     char *s1 = "s1", *s2 = "s2", *s3 = "s3";
     assert(list_lpush(list, s1) == LIST_OK);
@@ -41,9 +38,7 @@ case_list_lpush()
     list_free(list);
 }
 
-void
-case_list_rpush()
-{
+void case_list_rpush() {
     struct list *list = list();
     char *s1 = "s1", *s2 = "s2", *s3 = "s3";
     assert(list_rpush(list, s1) == LIST_OK);
@@ -61,9 +56,7 @@ case_list_rpush()
     list_free(list);
 }
 
-void
-case_list_lpop()
-{
+void case_list_lpop() {
     struct list *list = list();
     char *s1 = "s1", *s2 = "s2", *s3 = "s3";
     assert(list_rpush(list, s1) == LIST_OK);
@@ -83,9 +76,7 @@ case_list_lpop()
     list_free(list);
 }
 
-void
-case_list_rpop()
-{
+void case_list_rpop() {
     struct list *list = list();
     char *s1 = "s1", *s2 = "s2", *s3 = "s3";
     assert(list_lpush(list, s1) == LIST_OK);
@@ -105,9 +96,7 @@ case_list_rpop()
     list_free(list);
 }
 
-void
-case_list_iter()
-{
+void case_list_iter() {
     struct list *list = list();
     char *s1 = "s1", *s2 = "s2", *s3 = "s3";
     list_push(list, s1);

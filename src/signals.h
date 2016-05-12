@@ -6,17 +6,16 @@
  */
 
 #ifndef _CW_SIGNALS_H
-#define _CW_STGNALS_H  1
+#define _CW_STGNALS_H 1
 
 #include <signal.h>
+#include <stdlib.h>
 
 #if defined(__cplusplus)
 extern "C" {
 #endif
 
-void
-signals_register(int signal, void (*handler)(int))
-{
+void signals_register(int signal, void (*handler)(int)) {
     struct sigaction signal_action;
     sigemptyset(&signal_action.sa_mask);
     signal_action.sa_flags = 0;

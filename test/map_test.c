@@ -4,12 +4,11 @@
 
 #include <assert.h>
 #include <string.h>
+
 #include "map.h"
 #include "strings.h"
 
-void
-case_map_set()
-{
+void case_map_set() {
     struct map *m = map();
     char *key = "key", *val = "val";
     assert(map_set(m, key, val) == MAP_OK);
@@ -28,9 +27,7 @@ case_map_set()
     map_free(m);
 }
 
-void
-case_map_get()
-{
+void case_map_get() {
     struct map *m = map();
     char *key = "key", *val = "val";
     assert(map_set(m, key, val) == MAP_OK);
@@ -40,9 +37,7 @@ case_map_get()
     map_free(m);
 }
 
-void
-case_map_pop()
-{
+void case_map_pop() {
     struct map *m = map();
     char *key = "key", *val = "val";
     assert(map_set(m, key, val) == MAP_OK);
@@ -53,9 +48,7 @@ case_map_pop()
     map_free(m);
 }
 
-void
-case_map_has()
-{
+void case_map_has() {
     struct map *m = map();
     char *key = "key", *val = "val";
     assert(map_set(m, key, val) == MAP_OK);
@@ -64,9 +57,7 @@ case_map_has()
     map_free(m);
 }
 
-void
-case_map_clear()
-{
+void case_map_clear() {
     struct map *m = map();
     assert(map_set(m, "key1", "val1") == MAP_OK);
     assert(map_set(m, "key2", "val2") == MAP_OK);
@@ -79,9 +70,7 @@ case_map_clear()
     map_free(m);
 }
 
-void
-case_map_iter()
-{
+void case_map_iter() {
     struct map *m = map();
     char *key1 = "key1";
     char *key2 = "key2";

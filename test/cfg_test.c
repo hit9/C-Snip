@@ -5,15 +5,15 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "cfg.h"
 
-void
-case_cfg_get()
-{
-    char s[1024] = "# this is an proxy example cfg.\n"
-                   "port 8125  # port to bind\n"
-                   "# backend server nodes\n"
-                   "node 127.0.0.1:8001\n";
+void case_cfg_get() {
+    char s[1024] =
+        "# this is an proxy example cfg.\n"
+        "port 8125  # port to bind\n"
+        "# backend server nodes\n"
+        "node 127.0.0.1:8001\n";
     struct cfg cfg;
     cfg.data = s;
     cfg.len = strlen(s);

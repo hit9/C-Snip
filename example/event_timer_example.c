@@ -1,40 +1,30 @@
 // cc event_timer_example.c event.c
 
 #include <stdio.h>
-#include <unistd.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "event.h"
 
-void
-beat1000(struct event_loop *loop, int id, void *data)
-{
+void beat1000(struct event_loop *loop, int id, void *data) {
     printf("heartbeat every 1s\n");
 }
 
-void
-beat2000(struct event_loop *loop, int id, void *data)
-{
+void beat2000(struct event_loop *loop, int id, void *data) {
     printf("heartbeat every 2s\n");
 }
 
-void
-beat3000(struct event_loop *loop, int id, void *data)
-{
+void beat3000(struct event_loop *loop, int id, void *data) {
     printf("heartbeat every 3s\n");
 }
 
-void
-beatonce(struct event_loop *loop, int id, void *data)
-{
+void beatonce(struct event_loop *loop, int id, void *data) {
     printf("heartbeat only once after 5s\n");
     /* stop this timer */
     event_del_timer(loop, id);
 }
 
-int
-main(int argc, const char *argv[])
-{
+int main(int argc, const char *argv[]) {
     /* allocate a new event loop with no fire events */
     struct event_loop *loop = event_loop(0);
     /* add some timer events */

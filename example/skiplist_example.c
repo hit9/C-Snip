@@ -4,13 +4,11 @@
 #include <stdio.h>
 #include "skiplist.h"
 
-int main(int argc, const char *argv[])
-{
+int main(int argc, const char *argv[]) {
     /* allocate a new empty skiplist (using default score comparator) */
     struct skiplist *skiplist = skiplist(NULL);
     /* push data into skiplist */
-    unsigned long a = 4, b = 2, c = 3, d = 7, e = 5, f = 6,
-                  g = 9, h = 8, i = 1;
+    unsigned long a = 4, b = 2, c = 3, d = 7, e = 5, f = 6, g = 9, h = 8, i = 1;
     assert(skiplist_push(skiplist, a, "a") == SKIPLIST_OK);
     assert(skiplist_push(skiplist, b, "b") == SKIPLIST_OK);
     assert(skiplist_push(skiplist, c, "c") == SKIPLIST_OK);
@@ -34,15 +32,15 @@ int main(int argc, const char *argv[])
     skiplist_print(skiplist);
     /* iterate the skiplist */
     struct skiplist_node *node;
-    skiplist_each(skiplist, node) {
-        printf("%lu ", node->score);
-    }
+    skiplist_each(skiplist, node) { printf("%lu ", node->score); }
     printf("\n");
     /* get the first and last node */
     struct skiplist_node *first = skiplist_first(skiplist);
     struct skiplist_node *last = skiplist_last(skiplist);
-    printf("first node => score: %ld, data: '%s'\n", first->score, (char *)first->data);
-    printf("last node  => score: %ld, data: '%s'\n", last->score, (char *)last->data);
+    printf("first node => score: %ld, data: '%s'\n", first->score,
+           (char *)first->data);
+    printf("last node  => score: %ld, data: '%s'\n", last->score,
+           (char *)last->data);
     /* pop the first and last node */
     printf("pop first node, data: '%s'\n", (char *)skiplist_popfirst(skiplist));
     printf("pop last node, data: '%s'\n", (char *)skiplist_poplast(skiplist));

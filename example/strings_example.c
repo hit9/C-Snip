@@ -2,9 +2,7 @@
 #include <stdio.h>
 #include "strings.h"
 
-void
-example_search()
-{
+void example_search() {
     /* search string via Boyer Moore algorithm */
     char *s = "this is a simple example";
     char *sub = "mp";
@@ -14,9 +12,7 @@ example_search()
     printf("'%s' is seen in '%s' again at index %zu\n", sub, s, second_idx);
 }
 
-void
-example_rand()
-{
+void example_rand() {
     /* get some random strings (length 20) */
     char s[20];
     printf("random string with length 20: %s\n", strings_rand(s, 20));
@@ -24,9 +20,7 @@ example_rand()
     printf("random string with length 20: %s\n", strings_rand(s, 20));
 }
 
-void
-example_replace()
-{
+void example_replace() {
     /* replace string example */
     char *src = "this is a simple example";
     char *sub = "mp";
@@ -36,8 +30,7 @@ example_replace()
     printf("replace '%s' in '%s' with '%s': '%s'\n", sub, src, rep, dst);
 }
 
-int main(int argc, const char *argv[])
-{
+int main(int argc, const char *argv[]) {
     example_search();
     example_rand();
     example_replace();

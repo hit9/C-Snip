@@ -2,13 +2,17 @@
  * This is an OpenSSL-compatible implementation of the RSA Data Security, Inc.
  * MD5 Message-Digest Algorithm (RFC 1321).
  *
- * Homepage: http://openwall.info/wiki/people/solar/software/public-domain-source-code/md5
+ * Homepage:
+ * http://openwall.info/wiki/people/solar/software/public-domain-source-code/md5
  *
- * Author: Alexander Peslyak, better known as Solar Designer <solar at openwall.com>
+ * Author: Alexander Peslyak, better known as Solar Designer <solar at
+ * openwall.com>
  */
 
-#include <string.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "md5.h"
 
 typedef unsigned int MD5_u32plus;
@@ -27,18 +31,18 @@ typedef struct {
  * architectures that lack an AND-NOT instruction, just like in Colin Plumb's
  * implementation.
  */
-#define F(x, y, z)			((z) ^ ((x) & ((y) ^ (z))))
-#define G(x, y, z)			((y) ^ ((z) & ((x) ^ (y))))
-#define H(x, y, z)			((x) ^ (y) ^ (z))
-#define I(x, y, z)			((y) ^ ((x) | ~(z)))
+#define F(x, y, z) ((z) ^ ((x) & ((y) ^ (z))))
+#define G(x, y, z) ((y) ^ ((z) & ((x) ^ (y))))
+#define H(x, y, z) ((x) ^ (y) ^ (z))
+#define I(x, y, z) ((y) ^ ((x) | ~(z)))
 
 /*
  * The MD5 transformation for all four rounds.
  */
-#define STEP(f, a, b, c, d, x, t, s)                            \
-	(a) += f((b), (c), (d)) + (x) + (t);                        \
-	(a) = (((a) << (s)) | (((a) & 0xffffffff) >> (32 - (s))));  \
-	(a) += (b);
+#define STEP(f, a, b, c, d, x, t, s)                         \
+    (a) += f((b), (c), (d)) + (x) + (t);                     \
+    (a) = (((a) << (s)) | (((a)&0xffffffff) >> (32 - (s)))); \
+    (a) += (b);
 
 /*
  * SET reads 4 input bytes in little-endian byte order and stores them
@@ -49,28 +53,22 @@ typedef struct {
  * doesn't work.
  */
 #if defined(__i386__) || defined(__x86_64__) || defined(__vax__)
-#define SET(n) \
-    (*(MD5_u32plus *)&ptr[(n) * 4])
-#define GET(n) \
-    SET(n)
+#define SET(n) (*(MD5_u32plus *)&ptr[(n)*4])
+#define GET(n) SET(n)
 #else
-#define SET(n)                                  \
-    (ctx->block[(n)] =                          \
-    (MD5_u32plus)ptr[(n) * 4] |                 \
-    ((MD5_u32plus)ptr[(n) * 4 + 1] << 8) |      \
-    ((MD5_u32plus)ptr[(n) * 4 + 2] << 16) |     \
-    ((MD5_u32plus)ptr[(n) * 4 + 3] << 24))
-#define GET(n) \
-    (ctx->block[(n)])
+#define SET(n)                                               \
+    (ctx->block[(n)] = (MD5_u32plus)ptr[(n)*4] |             \
+                       ((MD5_u32plus)ptr[(n)*4 + 1] << 8) |  \
+                       ((MD5_u32plus)ptr[(n)*4 + 2] << 16) | \
+                       ((MD5_u32plus)ptr[(n)*4 + 3] << 24))
+#define GET(n) (ctx->block[(n)])
 #endif
 
 /*
  * This processes one or more 64-byte data blocks, but does NOT update
  * the bit counters.  There are no alignment requirements.
  */
-static void *
-body(MD5_CTX *ctx, void *data, unsigned long size)
-{
+static void *body(MD5_CTX *ctx, void *data, unsigned long size) {
     unsigned char *ptr;
     MD5_u32plus a, b, c, d;
     MD5_u32plus saved_a, saved_b, saved_c, saved_d;
@@ -82,7 +80,7 @@ body(MD5_CTX *ctx, void *data, unsigned long size)
     c = ctx->c;
     d = ctx->d;
 
-	do {
+    do {
         saved_a = a;
         saved_b = b;
         saved_c = c;
@@ -176,9 +174,7 @@ body(MD5_CTX *ctx, void *data, unsigned long size)
     return ptr;
 }
 
-void
-MD5_Init(MD5_CTX *ctx)
-{
+void MD5_Init(MD5_CTX *ctx) {
     ctx->a = 0x67452301;
     ctx->b = 0xefcdab89;
     ctx->c = 0x98badcfe;
@@ -188,9 +184,7 @@ MD5_Init(MD5_CTX *ctx)
     ctx->hi = 0;
 }
 
-void
-MD5_Update(MD5_CTX *ctx, void *data, unsigned long size)
-{
+void MD5_Update(MD5_CTX *ctx, void *data, unsigned long size) {
     MD5_u32plus saved_lo;
     unsigned long used, free;
 
@@ -224,9 +218,7 @@ MD5_Update(MD5_CTX *ctx, void *data, unsigned long size)
     memcpy(ctx->buffer, data, size);
 }
 
-void
-MD5_Final(unsigned char *result, MD5_CTX *ctx)
-{
+void MD5_Final(unsigned char *result, MD5_CTX *ctx) {
     unsigned long used, free;
 
     used = ctx->lo & 0x3f;
@@ -280,9 +272,8 @@ MD5_Final(unsigned char *result, MD5_CTX *ctx)
  * Just a simple method for getting the signature
  * result must be == 16
  */
-void
-md5_signature(unsigned char *key, unsigned long length, unsigned char *result)
-{
+void md5_signature(unsigned char *key, unsigned long length,
+                   unsigned char *result) {
     MD5_CTX my_md5;
 
     MD5_Init(&my_md5);
@@ -290,15 +281,12 @@ md5_signature(unsigned char *key, unsigned long length, unsigned char *result)
     MD5_Final(result, &my_md5);
 }
 
-uint32_t
-hash_md5(const char *key, size_t key_length)
-{
+uint32_t hash_md5(const char *key, size_t key_length) {
     unsigned char results[16];
 
-    md5_signature((unsigned char*)key, (unsigned long)key_length, results);
+    md5_signature((unsigned char *)key, (unsigned long)key_length, results);
 
-    return ((uint32_t) (results[3] & 0xFF) << 24) |
-           ((uint32_t) (results[2] & 0xFF) << 16) |
-           ((uint32_t) (results[1] & 0xFF) << 8) |
-           (results[0] & 0xFF);
+    return ((uint32_t)(results[3] & 0xFF) << 24) |
+           ((uint32_t)(results[2] & 0xFF) << 16) |
+           ((uint32_t)(results[1] & 0xFF) << 8) | (results[0] & 0xFF);
 }

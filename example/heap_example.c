@@ -5,14 +5,9 @@
 #include "heap.h"
 
 /* heap node comparator type, return negative if arg#0 < arg#1 */
-int
-cmp(void *a, void *b)
-{
-    return *(int *)a - *(int *)b;
-}
+int cmp(void *a, void *b) { return *(int *)a - *(int *)b; }
 
-int main(int argc, const char *argv[])
-{
+int main(int argc, const char *argv[]) {
     /* allocate empty heap with comparator */
     struct heap *heap = heap(cmp);
     /* push data into heap */
@@ -28,8 +23,7 @@ int main(int argc, const char *argv[])
     /* get current smallest data */
     printf("smallest: %d\n", *(int *)heap_top(heap));
     /* pop and print all data (should be in order) */
-    while (heap_len(heap) != 0)
-        printf("%d\n", *(int *)heap_pop(heap));
+    while (heap_len(heap) != 0) printf("%d\n", *(int *)heap_pop(heap));
     /* free heap */
     heap_free(heap);
     return 0;

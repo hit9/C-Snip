@@ -4,27 +4,25 @@
 
 #include <assert.h>
 #include <execinfo.h>
+#include <pthread.h>
+#include <signal.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
+#include <sys/stat.h>
+#include <sys/syscall.h>
 #include <sys/time.h>
 #include <sys/types.h>
-#include <sys/stat.h>
+#include <time.h>
 #include <unistd.h>
-#include <sys/syscall.h>
-#include <pthread.h>
-#include <signal.h>
 
 #include "log.h"
 
 static struct logger logger;
 static long log_pid;
 
-static void
-on_sigsegv(int signal)
-{
+static void on_sigsegv(int signal) {
     if (signal == SIGSEGV) {
         log_critical("Segmentfault received!");
         log_trace();
@@ -35,9 +33,7 @@ on_sigsegv(int signal)
 /* Open global logger, if `filename` is NULL, use stderr.
  * The `rotate_size` only works when logging to a file,
  * and `rotate_size==0` means no rotation. */
-int
-log_open(char *name, char *filename, size_t rotate_size)
-{
+int log_open(char *name, char *filename, size_t rotate_size) {
     assert(name != NULL);
 
     struct logger *l = &logger;
@@ -61,18 +57,17 @@ log_open(char *name, char *filename, size_t rotate_size)
         }
 
         struct stat st;
-        if (fstat(l->fd, &st) != 0)
-            return LOG_ESTAT;
+        if (fstat(l->fd, &st) != 0) return LOG_ESTAT;
         l->fsize = st.st_size;
     }
-    /* Initialize global log_pid */
-    #ifdef __linux__
+/* Initialize global log_pid */
+#ifdef __linux__
     /* using syacall to get tid, or `pid` on system view */
     log_pid = (long)syscall(SYS_gettid);
-    #else
+#else
     /* I can't find a way to get tid from system view, only print the pid */
     log_pid = getpid();
-    #endif
+#endif
     /* register traceback handler on segmentation fault. */
     struct sigaction signal_action;
     sigemptyset(&signal_action.sa_mask);
@@ -80,33 +75,25 @@ log_open(char *name, char *filename, size_t rotate_size)
     signal_action.sa_handler = &on_sigsegv;
     sigaction(SIGSEGV, &signal_action, NULL);
 
-    if (LOG_THREAD_SAFE)
-        pthread_mutex_init(&(l->lock), NULL);
+    if (LOG_THREAD_SAFE) pthread_mutex_init(&(l->lock), NULL);
     return LOG_OK;
 }
 
 /* Close global logger. */
-void
-log_close(void)
-{
+void log_close(void) {
     struct logger *l = &logger;
 
-    if (LOG_THREAD_SAFE)
-        pthread_mutex_destroy(&(l->lock));
+    if (LOG_THREAD_SAFE) pthread_mutex_destroy(&(l->lock));
 
-    if (l->fd < 0 || l->fd == STDERR_FILENO)
-        return;
+    if (l->fd < 0 || l->fd == STDERR_FILENO) return;
     close(l->fd);
 }
 
 /* Reopen logging file. */
-int
-log_reopen(void)
-{
+int log_reopen(void) {
     struct logger *l = &logger;
 
-    if (l->fd < 0 || l->fd == STDERR_FILENO)
-        return LOG_OK;
+    if (l->fd < 0 || l->fd == STDERR_FILENO) return LOG_OK;
 
     close(l->fd);
 
@@ -114,15 +101,12 @@ log_reopen(void)
 
     l->fd = open(l->filename, LOG_FILE_PERM, LOG_FILE_MODE);
 
-    if (l->fd < 0)
-        return LOG_EOPEN;
+    if (l->fd < 0) return LOG_EOPEN;
     return LOG_OK;
 }
 
 /* Set logger's level. */
-void
-log_setlevel(int level)
-{
+void log_setlevel(int level) {
     struct logger *l = &logger;
 
     if (level > LOG_CRITICAL) {
@@ -135,8 +119,7 @@ log_setlevel(int level)
 }
 
 /* Rotate log file. */
-int
-log_rotate(void) {
+int log_rotate(void) {
     struct logger *l = &logger;
 
     assert(l->name != NULL);
@@ -150,29 +133,24 @@ log_rotate(void) {
     gettimeofday(&tv, NULL);
     sec = tv.tv_sec;
     tm = localtime(&sec);
-    sprintf(buf, "%s.%04d%02d%02d-%02d%02d%03d",
-            l->filename,
-            tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday,
-            tm->tm_hour, tm->tm_min, tm->tm_sec);
+    sprintf(buf, "%s.%04d%02d%02d-%02d%02d%03d", l->filename,
+            tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday, tm->tm_hour,
+            tm->tm_min, tm->tm_sec);
 
-    if (rename(l->filename, buf))
-        return LOG_ERENAME;
+    if (rename(l->filename, buf)) return LOG_ERENAME;
     l->fsize = 0;
     return log_reopen();
 }
 
 /* Format logging message to file/stderr. */
-int
-log_log(int level, char *levelname, const char *fmt, ...)
-{
+int log_log(int level, char *levelname, const char *fmt, ...) {
     struct logger *l = &logger;
 
     assert(levelname != NULL);
     assert(l->name != NULL);
     assert(l->fd == STDERR_FILENO || l->fd > 0);
 
-    if (level < l->level)
-        return LOG_OK;
+    if (level < l->level) return LOG_OK;
 
     int len = 0, size = LOG_LINE_LEN_MAX;
 
@@ -181,9 +159,10 @@ log_log(int level, char *levelname, const char *fmt, ...)
     /* Format time and name, level, pid */
     struct timeval tv;
     gettimeofday(&tv, NULL);
-    len += strftime(buf + len, size - len, "%Y-%m-%d %H:%M:%S.", localtime(&tv.tv_sec));
-    len += snprintf(buf + len, size - len, "%03ld %-5s %s[%ld] ", (long)tv.tv_usec/1000, levelname,
-            l->name, log_pid);
+    len += strftime(buf + len, size - len, "%Y-%m-%d %H:%M:%S.",
+                    localtime(&tv.tv_sec));
+    len += snprintf(buf + len, size - len, "%03ld %-5s %s[%ld] ",
+                    (long)tv.tv_usec / 1000, levelname, l->name, log_pid);
     /* Format message with args */
     va_list args;
     va_start(args, fmt);
@@ -200,15 +179,12 @@ log_log(int level, char *levelname, const char *fmt, ...)
     return log_write(buf, len);
 }
 
-int
-log_trace(void)
-{
+int log_trace(void) {
     void *stack[32];
     size_t size = backtrace(stack, 32);
     char **symbols = backtrace_symbols(stack, size);
 
-    if (symbols == NULL || size <= 0)
-        return LOG_OK;
+    if (symbols == NULL || size <= 0) return LOG_OK;
 
     size_t len_max = 1024 * size;
     char buf[len_max];
@@ -221,29 +197,23 @@ log_trace(void)
     return log_write(buf, len);
 }
 
-int
-log_write(char *buf, size_t len)
-{
+int log_write(char *buf, size_t len) {
     assert(buf != NULL);
-    if (len == 0)
-        return LOG_OK;
+    if (len == 0) return LOG_OK;
 
     struct logger *l = &logger;
 
-    if (LOG_THREAD_SAFE)
-        pthread_mutex_lock(&(l->lock));
+    if (LOG_THREAD_SAFE) pthread_mutex_lock(&(l->lock));
 
     if (write(l->fd, buf, len) < 0) {
         return LOG_EWRITE;
     } else if (l->filename != NULL) {
         l->fsize += len;
         if (l->rotate_size != 0) {
-            if (l->fsize > l->rotate_size)
-                log_rotate();
+            if (l->fsize > l->rotate_size) log_rotate();
         }
     }
 
-    if (LOG_THREAD_SAFE)
-        pthread_mutex_unlock(&(l->lock));
+    if (LOG_THREAD_SAFE) pthread_mutex_unlock(&(l->lock));
     return LOG_OK;
 }

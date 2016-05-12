@@ -6,7 +6,7 @@
  */
 
 #ifndef _CW_STRINGS_H
-#define _CW_STRINGS_H  1
+#define _CW_STRINGS_H 1
 
 #include <stdlib.h>
 
@@ -14,9 +14,11 @@
 extern "C" {
 #endif
 
-size_t strings_search(char *s, char *sub, size_t start); /* best O(N/M), worst O(M*N) */
+size_t strings_search(char *s, char *sub,
+                      size_t start);     /* best O(N/M), worst O(M*N) */
 char *strings_rand(char *s, size_t len); /* O(N) */
-char *strings_replace(char *dst, char *src, char *sub, char *rep); /* best O(N), worst O(N*N) */
+char *strings_replace(char *dst, char *src, char *sub,
+                      char *rep); /* best O(N), worst O(N*N) */
 
 #if defined(__cplusplus)
 }

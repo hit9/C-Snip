@@ -5,7 +5,7 @@ default: runbench
 NAME=bench
 CC=cc -std=c99
 OPTIMIZATION?=-O2
-CFLAGS=-Wall $(OPTIMIZATION) -D_GNU_SOURCE -g -I../include
+CFLAGS=-Wall $(OPTIMIZATION) -D_GNU_SOURCE -g -I../src
 LDFLAGS=-Wall -pthread
 BIN=$(NAME)
 SRC:=$(wildcard ../src/*.c) $(wildcard *.c)

@@ -4,8 +4,7 @@
 #include <stdio.h>
 #include "stack.h"
 
-int main(int argc, const char *argv[])
-{
+int main(int argc, const char *argv[]) {
     /* allocate a new empty stack with memory capacity 1 */
     struct stack *stack = stack(1);
     /* push data to stack */

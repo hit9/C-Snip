@@ -4,8 +4,7 @@
 #include <string.h>
 #include "ketama.h"
 
-int main(int argc, const char *argv[])
-{
+int main(int argc, const char *argv[]) {
     /* ketama node array */
     struct ketama_node nodes[4] = {
         {"127.0.0.1:8000", 1, "server a"},

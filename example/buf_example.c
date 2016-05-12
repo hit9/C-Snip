@@ -4,8 +4,7 @@
 #include <stdio.h>
 #include "buf.h"
 
-int main(int argc, const char *argv[])
-{
+int main(int argc, const char *argv[]) {
     struct buf *buf = buf("example");
     /* test if buffer is empty or NULL */
     assert(buf != NULL && !buf_isempty(buf));
@@ -18,7 +17,8 @@ int main(int argc, const char *argv[])
     /* print buffer, should be "exampleabcdefg123" */
     printf("%s\n", str(buf));
     /* get buffer length */
-    printf("current buffer length is %zu, capacity is %zu\n", buf_len(buf), buf_cap(buf));
+    printf("current buffer length is %zu, capacity is %zu\n", buf_len(buf),
+           buf_cap(buf));
     /* free buffer */
     buf_free(buf);
     return 0;

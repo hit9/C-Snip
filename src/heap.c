@@ -4,12 +4,11 @@
 
 #include <assert.h>
 #include <stdlib.h>
+
 #include "heap.h"
 
 /* Create an empty heap. */
-struct heap *
-heap_new(heap_cmp_t cmp)
-{
+struct heap *heap_new(heap_cmp_t cmp) {
     struct heap *heap = malloc(sizeof(struct heap));
 
     if (heap != NULL) {
@@ -22,84 +21,63 @@ heap_new(heap_cmp_t cmp)
 }
 
 /* Free heap. */
-void
-heap_free(struct heap *heap)
-{
+void heap_free(struct heap *heap) {
     if (heap != NULL) {
-        if (heap->data != NULL)
-            free(heap->data);
+        if (heap->data != NULL) free(heap->data);
         free(heap);
     }
 }
 
 /* Clear a heap. */
-void
-heap_clear(struct heap *heap)
-{
+void heap_clear(struct heap *heap) {
     assert(heap != NULL);
     heap->len = 0;
 }
 
 /* Get heap length. */
-size_t
-heap_len(struct heap *heap)
-{
+size_t heap_len(struct heap *heap) {
     assert(heap != NULL);
     return heap->len;
 }
 
 /* Get heap cap. */
-size_t
-heap_cap(struct heap *heap)
-{
+size_t heap_cap(struct heap *heap) {
     assert(heap != NULL);
     return heap->cap;
 }
 
 /* Grow a heap's memory capacity to given cap. */
-int
-heap_grow(struct heap *heap, size_t cap)
-{
+int heap_grow(struct heap *heap, size_t cap) {
     assert(heap != NULL);
 
-    if (cap > HEAP_CAP_MAX)
-        return HEAP_ENOMEM;
+    if (cap > HEAP_CAP_MAX) return HEAP_ENOMEM;
 
-    if (cap <= heap->cap)
-        return HEAP_OK;
+    if (cap <= heap->cap) return HEAP_OK;
 
     size_t unit = heap->cap;
 
-    if (unit > HEAP_UNIT_MAX)
-        unit = HEAP_UNIT_MAX;
+    if (unit > HEAP_UNIT_MAX) unit = HEAP_UNIT_MAX;
 
-    if (unit < HEAP_UNIT_MIN)
-        unit = HEAP_UNIT_MIN;
+    if (unit < HEAP_UNIT_MIN) unit = HEAP_UNIT_MIN;
 
     size_t new_cap = heap->cap + unit;
-    while (new_cap < cap)
-        new_cap += unit;
+    while (new_cap < cap) new_cap += unit;
 
     void **data = realloc(heap->data, new_cap * sizeof(void *));
-    if (data == NULL)
-        return HEAP_ENOMEM;
+    if (data == NULL) return HEAP_ENOMEM;
 
     heap->data = data;
     heap->cap = new_cap;
 
-    if (heap->len > new_cap)
-        heap->len = new_cap;
+    if (heap->len > new_cap) heap->len = new_cap;
     return HEAP_OK;
 }
 
 /* Push data to heap. */
-int
-heap_push(struct heap *heap, void *data)
-{
+int heap_push(struct heap *heap, void *data) {
     assert(heap != NULL);
 
-    if (heap->len <= heap->cap &&
-            heap_grow(heap, heap->len + 1) != HEAP_OK)
+    if (heap->len <= heap->cap && heap_grow(heap, heap->len + 1) != HEAP_OK)
         return HEAP_ENOMEM;
 
     assert(heap->data != NULL);
@@ -109,20 +87,16 @@ heap_push(struct heap *heap, void *data)
 }
 
 /* Pop data from heap, NULL on empty. */
-void *
-heap_pop(struct heap *heap)
-{
+void *heap_pop(struct heap *heap) {
     assert(heap != NULL);
 
-    if (heap->len == 0)
-        return NULL;
+    if (heap->len == 0) return NULL;
 
     assert(heap->data != NULL && heap->len >= 1);
 
     void *tail = heap->data[--heap->len];
 
-    if (heap->len == 0)
-        return tail;
+    if (heap->len == 0) return tail;
     void *head = heap->data[0];
     heap->data[0] = tail;
     heap_siftup(heap, 0);
@@ -131,13 +105,10 @@ heap_pop(struct heap *heap)
 
 /* Push data to heap and pop the top, this runs more efficiently
  * than `heap_push` followed by a separate call to `heap_pop`. */
-void *
-heap_pushpop(struct heap *heap, void *data)
-{
+void *heap_pushpop(struct heap *heap, void *data) {
     assert(heap != NULL);
 
-    if (heap->len == 0)
-        return data;
+    if (heap->len == 0) return data;
 
     assert(heap->data != NULL);
 
@@ -152,36 +123,28 @@ heap_pushpop(struct heap *heap, void *data)
 }
 
 /* Get the smallest data from heap, NULL on empty. */
-void *
-heap_top(struct heap *heap)
-{
+void *heap_top(struct heap *heap) {
     assert(heap != NULL);
 
-    if (heap->len == 0)
-        return NULL;
+    if (heap->len == 0) return NULL;
 
     assert(heap->data != NULL && heap->len >= 1);
     return heap->data[0];
 }
 
 /* Delete node by index and return the data., NULL on not found. */
-void *
-heap_del(struct heap *heap, size_t idx)
-{
+void *heap_del(struct heap *heap, size_t idx) {
     assert(heap != NULL);
 
-    if (heap->len == 0)
-        return NULL;
+    if (heap->len == 0) return NULL;
 
-    if (idx >= heap->len)
-        return NULL;
+    if (idx >= heap->len) return NULL;
 
     assert(heap->data != NULL && heap->len >= 1);
 
     void *tail = heap->data[--heap->len];
 
-    if (heap->len == 0)
-        return tail;
+    if (heap->len == 0) return tail;
 
     void *data = heap->data[idx];
     heap->data[idx] = tail;
@@ -190,9 +153,7 @@ heap_del(struct heap *heap, size_t idx)
 }
 
 /* Sift down the heap. */
-void
-heap_siftdown(struct heap *heap, size_t start_idx, size_t idx)
-{
+void heap_siftdown(struct heap *heap, size_t start_idx, size_t idx) {
     assert(heap != NULL && heap->data != NULL);
 
     size_t parent_idx;
@@ -215,9 +176,7 @@ heap_siftdown(struct heap *heap, size_t start_idx, size_t idx)
 }
 
 /* Sift up the heap. */
-void
-heap_siftup(struct heap *heap, size_t idx)
-{
+void heap_siftup(struct heap *heap, size_t idx) {
     assert(heap != NULL && heap->data != NULL);
 
     void *data = heap->data[idx];
@@ -231,7 +190,7 @@ heap_siftup(struct heap *heap, size_t idx)
         right_idx = child_idx + 1;
 
         if (right_idx < len &&
-                (heap->cmp)(heap->data[child_idx], heap->data[right_idx]) >= 0)
+            (heap->cmp)(heap->data[child_idx], heap->data[right_idx]) >= 0)
             child_idx = right_idx;
         heap->data[idx] = heap->data[child_idx];
         idx = child_idx;

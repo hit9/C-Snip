@@ -8,8 +8,8 @@
 #include "datetime.h"
 
 struct test_case {
-    const char  *name;    /* test case name */
-    void        (*fn)();  /* test case function */
+    const char *name; /* test case name */
+    void (*fn)();     /* test case function */
 };
 
 static void run_cases(const char *name, struct test_case cases[]);

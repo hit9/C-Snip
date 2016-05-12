@@ -8,9 +8,7 @@
 #include "list.h"
 
 /* Create list node with data. */
-struct list_node *
-list_node_new(void *data)
-{
+struct list_node *list_node_new(void *data) {
     struct list_node *node = malloc(sizeof(struct list_node));
 
     if (node != NULL) {
@@ -22,17 +20,12 @@ list_node_new(void *data)
 }
 
 /* Free list node. */
-void
-list_node_free(struct list_node *node)
-{
-    if (node != NULL)
-        free(node);
+void list_node_free(struct list_node *node) {
+    if (node != NULL) free(node);
 }
 
 /* Create an empty list. */
-struct list *
-list_new(void)
-{
+struct list *list_new(void) {
     struct list *list = malloc(sizeof(struct list));
 
     if (list != NULL) {
@@ -44,9 +37,7 @@ list_new(void)
 }
 
 /* Free list. */
-void
-list_free(struct list *list)
-{
+void list_free(struct list *list) {
     if (list != NULL) {
         list_clear(list);
         free(list);
@@ -54,31 +45,25 @@ list_free(struct list *list)
 }
 
 /* Clear list. */
-void
-list_clear(struct list *list) {
+void list_clear(struct list *list) {
     assert(list != NULL);
 
-    while (list_len(list) != 0)
-        list_lpop(list);
+    while (list_len(list) != 0) list_lpop(list);
 }
 
 /* Get list length. */
-size_t
-list_len(struct list *list) {
+size_t list_len(struct list *list) {
     assert(list != NULL);
     return list->len;
 }
 
 /* Push an item to list on the left. */
-int
-list_lpush(struct list *list, void *data)
-{
+int list_lpush(struct list *list, void *data) {
     assert(list != NULL);
 
     struct list_node *node = list_node_new(data);
 
-    if (node == NULL)
-        return LIST_ENOMEM;
+    if (node == NULL) return LIST_ENOMEM;
 
     if (list->len == 0) {
         assert(list->head == NULL && list->tail == NULL);
@@ -98,15 +83,12 @@ list_lpush(struct list *list, void *data)
 }
 
 /* Push an item to list on the right. */
-int
-list_rpush(struct list *list, void *data)
-{
+int list_rpush(struct list *list, void *data) {
     assert(list != NULL);
 
     struct list_node *node = list_node_new(data);
 
-    if (node == NULL)
-        return LIST_ENOMEM;
+    if (node == NULL) return LIST_ENOMEM;
 
     if (list->len == 0) {
         assert(list->head == NULL && list->tail == NULL);
@@ -126,9 +108,7 @@ list_rpush(struct list *list, void *data)
 }
 
 /* Pop an item from list on the left. */
-void *
-list_lpop(struct list *list)
-{
+void *list_lpop(struct list *list) {
     assert(list != NULL);
 
     if (list->len == 0) {
@@ -158,9 +138,7 @@ list_lpop(struct list *list)
 }
 
 /* Pop an item from list on the right. */
-void *
-list_rpop(struct list *list)
-{
+void *list_rpop(struct list *list) {
     assert(list != NULL);
 
     if (list->len == 0) {
@@ -190,9 +168,7 @@ list_rpop(struct list *list)
 }
 
 /* Get the head node data, NULL on empty list. */
-void *
-list_head(struct list *list)
-{
+void *list_head(struct list *list) {
     assert(list != NULL);
 
     if (list->len == 0) {
@@ -205,9 +181,7 @@ list_head(struct list *list)
 }
 
 /* Get the tail node data, NULL on empty list. */
-void *
-list_tail(struct list *list)
-{
+void *list_tail(struct list *list) {
     assert(list != NULL);
 
     if (list->len == 0) {
@@ -245,9 +219,7 @@ list_tail(struct list *list)
  *        node.data..
  *    }
  */
-struct list_iter *
-list_iter_new(struct list *list)
-{
+struct list_iter *list_iter_new(struct list *list) {
     assert(list != NULL);
 
     struct list_iter *iter = malloc(sizeof(struct list_iter));
@@ -260,55 +232,42 @@ list_iter_new(struct list *list)
 }
 
 /* Free list iter. */
-void
-list_iter_free(struct list_iter *iter)
-{
-    if (iter != NULL)
-        free(iter);
+void list_iter_free(struct list_iter *iter) {
+    if (iter != NULL) free(iter);
 }
 
 /* Get current node data and seek next, NULL on tail. */
-void *
-list_iter_next(struct list_iter *iter)
-{
+void *list_iter_next(struct list_iter *iter) {
     assert(iter != NULL);
 
     struct list_node *node = iter->node;
 
-    if (node == NULL)
-        return NULL;
+    if (node == NULL) return NULL;
 
     iter->node = node->next;
     return node->data;
 }
 
 /* Get current node data and seek prev, NULL on head. */
-void *
-list_iter_prev(struct list_iter *iter)
-{
+void *list_iter_prev(struct list_iter *iter) {
     assert(iter != NULL);
 
     struct list_node *node = iter->node;
 
-    if (node == NULL)
-        return NULL;
+    if (node == NULL) return NULL;
 
     iter->node = node->prev;
     return node->data;
 }
 
 /* Seek iter to list's head. */
-void
-list_iter_seek_head(struct list_iter *iter)
-{
+void list_iter_seek_head(struct list_iter *iter) {
     assert(iter != NULL && iter->list != NULL);
     iter->node = iter->list->head;
 }
 
 /* Seek iter to list's tail. */
-void
-list_iter_seek_tail(struct list_iter *iter)
-{
+void list_iter_seek_tail(struct list_iter *iter) {
     assert(iter != NULL && iter->list != NULL);
     iter->node = iter->list->tail;
 }

@@ -4,14 +4,13 @@
 
 #include <assert.h>
 #include <stdlib.h>
-#include <time.h>
 #include <sys/time.h>
+#include <time.h>
+
 #include "event.h"
 
 /* Get time now in milliseconds. */
-static long
-event_time_now(void)
-{
+static long event_time_now(void) {
     struct timeval tv;
     gettimeofday(&tv, NULL);
     return (1000000 * tv.tv_sec + tv.tv_usec) / 1000;
@@ -22,27 +21,20 @@ event_time_now(void)
  */
 
 /* Create a timer heap. */
-struct event_timer_heap *
-event_timer_heap_new(void)
-{
+struct event_timer_heap *event_timer_heap_new(void) {
     struct event_timer_heap *heap = malloc(sizeof(struct event_timer_heap));
-    if (heap != NULL)
-        heap->len = 0;
+    if (heap != NULL) heap->len = 0;
     return heap;
 }
 
 /* Free a timer heap. */
-void
-event_timer_heap_free(struct event_timer_heap *heap)
-{
-    if (heap != NULL)
-        free(heap);
+void event_timer_heap_free(struct event_timer_heap *heap) {
+    if (heap != NULL) free(heap);
 }
 
 /* Sift down the timer heap. */
-void
-event_timer_heap_siftdown(struct event_timer_heap *heap, size_t start_idx, size_t idx)
-{
+void event_timer_heap_siftdown(struct event_timer_heap *heap, size_t start_idx,
+                               size_t idx) {
     assert(heap != NULL && heap->timers != NULL);
 
     size_t parent_idx;
@@ -63,9 +55,7 @@ event_timer_heap_siftdown(struct event_timer_heap *heap, size_t start_idx, size_
 }
 
 /* Sift up the timer heap. */
-void
-event_timer_heap_siftup(struct event_timer_heap *heap, size_t idx)
-{
+void event_timer_heap_siftup(struct event_timer_heap *heap, size_t idx) {
     assert(heap != NULL && heap->timers != NULL);
 
     size_t len = heap->len;
@@ -77,7 +67,8 @@ event_timer_heap_siftup(struct event_timer_heap *heap, size_t idx)
     while (child_idx < len) {
         right_idx = child_idx + 1;
         if (right_idx < len &&
-                heap->timers[child_idx]->fire_at >= heap->timers[right_idx]->fire_at)
+            heap->timers[child_idx]->fire_at >=
+                heap->timers[right_idx]->fire_at)
             child_idx = right_idx;
         heap->timers[idx] = heap->timers[child_idx];
         idx = child_idx;
@@ -89,13 +80,11 @@ event_timer_heap_siftup(struct event_timer_heap *heap, size_t idx)
 }
 
 /* Push a timer into timer heap. */
-int
-event_timer_heap_push(struct event_timer_heap *heap, struct event_timer *timer)
-{
+int event_timer_heap_push(struct event_timer_heap *heap,
+                          struct event_timer *timer) {
     assert(heap != NULL && heap->timers != NULL);
 
-    if (heap->len >= EVENT_TIMER_ID_MAX)
-        return EVENT_ERANGE;
+    if (heap->len >= EVENT_TIMER_ID_MAX) return EVENT_ERANGE;
 
     heap->timers[heap->len++] = timer;
     event_timer_heap_siftdown(heap, 0, heap->len - 1);
@@ -103,17 +92,13 @@ event_timer_heap_push(struct event_timer_heap *heap, struct event_timer *timer)
 }
 
 /* Pop a timer from heap, NULL on empty. */
-struct event_timer *
-event_timer_heap_pop(struct event_timer_heap *heap)
-{
+struct event_timer *event_timer_heap_pop(struct event_timer_heap *heap) {
     assert(heap != NULL && heap->timers != NULL);
 
-    if (heap->len == 0)
-        return NULL;
+    if (heap->len == 0) return NULL;
 
     struct event_timer *tail = heap->timers[--heap->len];
-    if (heap->len == 0)
-        return tail;
+    if (heap->len == 0) return tail;
     struct event_timer *head = heap->timers[0];
     heap->timers[0] = tail;
     event_timer_heap_siftup(heap, 0);
@@ -121,27 +106,20 @@ event_timer_heap_pop(struct event_timer_heap *heap)
 }
 
 /* Get the smallest timer from heap, NULL on empty. */
-struct event_timer *
-event_timer_heap_top(struct event_timer_heap *heap)
-{
+struct event_timer *event_timer_heap_top(struct event_timer_heap *heap) {
     assert(heap != NULL && heap->timers != NULL);
 
-    if (heap->len == 0)
-        return NULL;
+    if (heap->len == 0) return NULL;
     return heap->timers[0];
 }
 
 /* Delete timer by id from heap. */
-int
-event_timer_heap_del(struct event_timer_heap *heap, int id)
-{
+int event_timer_heap_del(struct event_timer_heap *heap, int id) {
     assert(heap != NULL && heap->timers != NULL);
 
-    if (id < 0 || id >= EVENT_TIMER_ID_MAX)
-        return EVENT_ERANGE;
+    if (id < 0 || id >= EVENT_TIMER_ID_MAX) return EVENT_ERANGE;
 
-    if (heap->len == 0)
-        return EVENT_ENOTFOUND;
+    if (heap->len == 0) return EVENT_ENOTFOUND;
 
     int i;
     for (i = 0; i < heap->len; i++) {
@@ -158,13 +136,11 @@ event_timer_heap_del(struct event_timer_heap *heap, int id)
 }
 
 /* Replace the top item with another. */
-int
-event_timer_heap_replace(struct event_timer_heap *heap, struct event_timer *timer)
-{
+int event_timer_heap_replace(struct event_timer_heap *heap,
+                             struct event_timer *timer) {
     assert(heap != NULL && heap->timers != NULL);
 
-    if (heap->len == 0)
-        return EVENT_ERANGE;
+    if (heap->len == 0) return EVENT_ERANGE;
     heap->timers[0] = timer;
     event_timer_heap_siftup(heap, 0);
     return EVENT_OK;
@@ -177,9 +153,7 @@ event_timer_heap_replace(struct event_timer_heap *heap, struct event_timer *time
 /**
  * Get the nearest timer to fire from timer heap.
  */
-struct event_timer *
-event_nearest_timer(struct event_loop *loop)
-{
+struct event_timer *event_nearest_timer(struct event_loop *loop) {
     assert(loop != NULL && loop->timers != NULL && loop->timer_heap != NULL);
     return event_timer_heap_top(loop->timer_heap);
 }
@@ -187,22 +161,18 @@ event_nearest_timer(struct event_loop *loop)
 /**
  * Fire timed out timers from heap and update their fire_at.
  */
-void
-event_process_timers(struct event_loop *loop)
-{
+void event_process_timers(struct event_loop *loop) {
     assert(loop != NULL && loop->timers != NULL && loop->timer_heap);
 
     struct event_timer *timer;
 
     while (1) {
         timer = event_timer_heap_top(loop->timer_heap);
-        if (timer == NULL)
-            /* no waiting timers to be processed */
+        if (timer == NULL) /* no waiting timers to be processed */
             break;
         if (timer->fire_at <= event_time_now()) {
             /* fire this timeouted timer */
-            if (timer->cb != NULL)
-                (timer->cb)(loop, timer->id, timer->data);
+            if (timer->cb != NULL) (timer->cb)(loop, timer->id, timer->data);
             timer->fire_at += timer->interval;
             /* push back the timer */
             event_timer_heap_replace(loop->timer_heap, timer);

@@ -5,8 +5,7 @@
 #include <string.h>
 #include "map.h"
 
-int main(int argc, const char *argv[])
-{
+int main(int argc, const char *argv[]) {
     /* allocate a new map */
     struct map *m = map();
     /* set key and values to map */

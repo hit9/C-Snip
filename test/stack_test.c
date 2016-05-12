@@ -3,11 +3,10 @@
  */
 
 #include <assert.h>
+
 #include "stack.h"
 
-void
-case_stack_clear()
-{
+void case_stack_clear() {
     struct stack *stack = stack(5);
     stack_push(stack, "hello");
     stack_clear(stack);
@@ -17,9 +16,7 @@ case_stack_clear()
     stack_free(stack);
 }
 
-void
-case_stack_push()
-{
+void case_stack_push() {
     struct stack *stack = stack(1);
     char *s1 = "a", *s2 = "b";
     assert(stack_push(stack, s1) == STACK_OK);
@@ -33,9 +30,7 @@ case_stack_push()
     stack_free(stack);
 }
 
-void
-case_stack_pop()
-{
+void case_stack_pop() {
     struct stack *stack = stack(3);
     char *s1 = "a", *s2 = "b";
     assert(stack_push(stack, s1) == STACK_OK);
@@ -49,9 +44,7 @@ case_stack_pop()
     stack_free(stack);
 }
 
-void
-case_stack_top()
-{
+void case_stack_top() {
     struct stack *stack = stack(3);
     char *s1 = "a", *s2 = "b", *s3 = "c";
     assert(stack_push(stack, s1) == STACK_OK);

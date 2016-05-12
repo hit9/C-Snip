@@ -6,7 +6,7 @@
  */
 
 #ifndef _CW_BUF_H
-#define _CW_BUF_H       1
+#define _CW_BUF_H 1
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -15,23 +15,23 @@
 extern "C" {
 #endif
 
-#define BUF_CAP_MAX    64*1024*1024   /* max buffer capacity: 64mb */
-#define BUF_UNIT_MIN   1              /* min buffer realloc unit: 1 */
-#define BUF_UNIT_MAX   1024*1024      /* max buffer realloc unit: 1mb */
+#define BUF_CAP_MAX 64 * 1024 * 1024 /* max buffer capacity: 64mb */
+#define BUF_UNIT_MIN 1               /* min buffer realloc unit: 1 */
+#define BUF_UNIT_MAX 1024 * 1024     /* max buffer realloc unit: 1mb */
 
-#define buf(s)  buf_new(s)
-#define str(b)  buf_str(b)
+#define buf(s) buf_new(s)
+#define str(b) buf_str(b)
 
 enum {
-    BUF_OK = 0,       /* operation is ok */
-    BUF_ENOMEM = 1,   /* no memory error */
-    BUF_EFAILED = 2,  /* operation is failed */
+    BUF_OK = 0,      /* operation is ok */
+    BUF_ENOMEM = 1,  /* no memory error */
+    BUF_EFAILED = 2, /* operation is failed */
 };
 
 struct buf {
-    size_t len;  /* buffer length */
-    size_t cap;  /* buffer capacity */
-    char *data;  /* real buffer pointer */
+    size_t len; /* buffer length */
+    size_t cap; /* buffer capacity */
+    char *data; /* real buffer pointer */
 };
 
 struct buf *buf_new(const char *s);

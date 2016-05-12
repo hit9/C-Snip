@@ -4,11 +4,10 @@
 
 #include <assert.h>
 #include <string.h>
+
 #include "dict.h"
 
-void
-case_dict_set()
-{
+void case_dict_set() {
     struct dict *dict = dict();
     char *key = "key", *val = "val";
     assert(dict_set(dict, key, val) == DICT_OK);
@@ -20,9 +19,7 @@ case_dict_set()
     dict_free(dict);
 }
 
-void
-case_dict_get()
-{
+void case_dict_get() {
     struct dict *dict = dict();
     char *key = "key", *val = "val";
     assert(dict_set(dict, key, val) == DICT_OK);
@@ -32,9 +29,7 @@ case_dict_get()
     dict_free(dict);
 }
 
-void
-case_dict_pop()
-{
+void case_dict_pop() {
     struct dict *dict = dict();
     char *key = "key", *val = "val";
     assert(dict_set(dict, key, val) == DICT_OK);
@@ -46,9 +41,7 @@ case_dict_pop()
     dict_free(dict);
 }
 
-void
-case_dict_has()
-{
+void case_dict_has() {
     struct dict *dict = dict();
     char *key = "key", *val = "val";
     assert(dict_set(dict, key, val) == DICT_OK);
@@ -57,9 +50,7 @@ case_dict_has()
     dict_free(dict);
 }
 
-void
-case_dict_clear()
-{
+void case_dict_clear() {
     struct dict *dict = dict();
     assert(dict_set(dict, "key1", "val1") == DICT_OK);
     assert(dict_set(dict, "key2", "val2") == DICT_OK);
@@ -71,9 +62,7 @@ case_dict_clear()
     dict_free(dict);
 }
 
-void
-case_dict_resize()
-{
+void case_dict_resize() {
     struct dict *dict = dict();
     assert(dict_set(dict, "key1", "val1") == DICT_OK);
     assert(dict_set(dict, "key2", "val2") == DICT_OK);
@@ -88,9 +77,7 @@ case_dict_resize()
     dict_free(dict);
 }
 
-void
-case_dict_iter()
-{
+void case_dict_iter() {
     struct dict *dict = dict();
     char *key1 = "key1";
     char *key2 = "key2";
@@ -119,8 +106,8 @@ case_dict_iter()
     struct dict_iter iter2 = {dict};
     struct dict_node *node = NULL;
     dict_each(&iter2, node) {
-      assert(node != NULL);
-      assert(strlen((char *)node->val) == 4);
+        assert(node != NULL);
+        assert(strlen((char *)node->val) == 4);
     };
     dict_free(dict);
 }

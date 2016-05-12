@@ -3,11 +3,10 @@
  */
 
 #include <assert.h>
+
 #include "queue.h"
 
-void
-case_queue_clear()
-{
+void case_queue_clear() {
     struct queue *queue = queue();
     queue_push(queue, "a");
     queue_push(queue, "a");
@@ -18,9 +17,7 @@ case_queue_clear()
     queue_free(queue);
 }
 
-void
-case_queue_push_pop_top()
-{
+void case_queue_push_pop_top() {
     struct queue *queue = queue();
     char *s1 = "a", *s2 = "b", *s3 = "c";
     assert(queue_push(queue, s1) == QUEUE_OK);

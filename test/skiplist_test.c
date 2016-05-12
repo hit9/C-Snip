@@ -3,11 +3,10 @@
  */
 
 #include <assert.h>
+
 #include "skiplist.h"
 
-void
-case_skiplist_base()
-{
+void case_skiplist_base() {
     struct skiplist *skiplist = skiplist(NULL);
     assert(skiplist != NULL);
     assert(skiplist->len == 0);
@@ -28,9 +27,7 @@ case_skiplist_base()
     skiplist_free(skiplist);
 }
 
-void
-case_skiplist_push()
-{
+void case_skiplist_push() {
     struct skiplist *skiplist = skiplist(NULL);
     struct skiplist_iter *iter = skiplist_iter(skiplist);
     assert(skiplist != NULL && iter != NULL);
@@ -71,14 +68,11 @@ case_skiplist_push()
     skiplist_free(skiplist);
 }
 
-void
-case_skiplist_pop()
-{
+void case_skiplist_pop() {
     struct skiplist *skiplist = skiplist(NULL);
     struct skiplist_iter *iter = skiplist_iter(skiplist);
     assert(skiplist != NULL && iter != NULL);
-    int v1 = 1, v2 = 2, v3 = 3, v4 = 4, v5 = 5, v6 = 6, v7 = 7,
-        v8 = 8, v9 = 9;
+    int v1 = 1, v2 = 2, v3 = 3, v4 = 4, v5 = 5, v6 = 6, v7 = 7, v8 = 8, v9 = 9;
     assert(skiplist_push(skiplist, 3, (void *)(&v3)) == SKIPLIST_OK);
     assert(skiplist_push(skiplist, 9, (void *)(&v9)) == SKIPLIST_OK);
     assert(skiplist_push(skiplist, 7, (void *)(&v7)) == SKIPLIST_OK);
@@ -97,19 +91,16 @@ case_skiplist_pop()
     assert(skiplist_pop(skiplist, 1) == &v1);
     assert(skiplist_len(skiplist) == 5);
     assert(skiplist_first(skiplist)->score == 2);
-    assert(skiplist->head->forwards[skiplist->level-1] != NULL);
+    assert(skiplist->head->forwards[skiplist->level - 1] != NULL);
     skiplist_iter_free(iter);
     skiplist_free(skiplist);
 }
 
-void
-case_skiplist_popfirst()
-{
+void case_skiplist_popfirst() {
     struct skiplist *skiplist = skiplist(NULL);
     struct skiplist_iter *iter = skiplist_iter(skiplist);
     assert(skiplist != NULL && iter != NULL);
-    int v1 = 1, v2 = 2, v3 = 3, v4 = 4, v5 = 5, v6 = 6, v7 = 7,
-        v8 = 8, v9 = 9;
+    int v1 = 1, v2 = 2, v3 = 3, v4 = 4, v5 = 5, v6 = 6, v7 = 7, v8 = 8, v9 = 9;
     assert(skiplist_push(skiplist, 3, (void *)(&v3)) == SKIPLIST_OK);
     assert(skiplist_push(skiplist, 9, (void *)(&v9)) == SKIPLIST_OK);
     assert(skiplist_push(skiplist, 7, (void *)(&v7)) == SKIPLIST_OK);
@@ -127,7 +118,7 @@ case_skiplist_popfirst()
     assert(skiplist_popfirst(skiplist) == &v4);
     assert(skiplist_len(skiplist) == 5);
     assert(skiplist_level(skiplist) > 0);
-    assert(skiplist->head->forwards[skiplist->level-1] != NULL);
+    assert(skiplist->head->forwards[skiplist->level - 1] != NULL);
     struct skiplist_node *first = skiplist_iter_next(iter);
     struct skiplist_node *second = skiplist_iter_next(iter);
     assert(first->score == 5);
@@ -149,14 +140,11 @@ case_skiplist_popfirst()
     skiplist_free(skiplist);
 }
 
-void
-case_skiplist_poplast()
-{
+void case_skiplist_poplast() {
     struct skiplist *skiplist = skiplist(NULL);
     struct skiplist_iter *iter = skiplist_iter(skiplist);
     assert(skiplist != NULL && iter != NULL);
-    int v1 = 1, v2 = 2, v3 = 3, v4 = 4, v5 = 5, v6 = 6, v7 = 7,
-        v8 = 8, v9 = 9;
+    int v1 = 1, v2 = 2, v3 = 3, v4 = 4, v5 = 5, v6 = 6, v7 = 7, v8 = 8, v9 = 9;
     assert(skiplist_push(skiplist, 3, (void *)(&v3)) == SKIPLIST_OK);
     assert(skiplist_push(skiplist, 9, (void *)(&v9)) == SKIPLIST_OK);
     assert(skiplist_push(skiplist, 7, (void *)(&v7)) == SKIPLIST_OK);
@@ -178,17 +166,14 @@ case_skiplist_poplast()
     assert(skiplist->tail->score == 4);
     assert(skiplist->tail->backward->score == 3);
     assert(skiplist->tail->backward->backward->score == 2);
-    assert(skiplist->head->forwards[skiplist->level-1] != NULL);
+    assert(skiplist->head->forwards[skiplist->level - 1] != NULL);
     skiplist_iter_free(iter);
     skiplist_free(skiplist);
 }
 
-void
-case_skiplist_get()
-{
+void case_skiplist_get() {
     struct skiplist *skiplist = skiplist(NULL);
-    int v1 = 1, v2 = 2, v3 = 3, v4 = 4, v5 = 5, v6 = 6, v7 = 7,
-        v8 = 8, v9 = 9;
+    int v1 = 1, v2 = 2, v3 = 3, v4 = 4, v5 = 5, v6 = 6, v7 = 7, v8 = 8, v9 = 9;
     assert(skiplist_push(skiplist, 3, (void *)(&v3)) == SKIPLIST_OK);
     assert(skiplist_push(skiplist, 9, (void *)(&v9)) == SKIPLIST_OK);
     assert(skiplist_push(skiplist, 7, (void *)(&v7)) == SKIPLIST_OK);

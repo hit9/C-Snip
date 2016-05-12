@@ -6,9 +6,7 @@
 #include "bench.h"
 #include "log.h"
 
-void
-case_log_devnull(struct bench_ctx *ctx)
-{
+void case_log_devnull(struct bench_ctx *ctx) {
     log_open("bench", "/dev/null", 0);
     bench_ctx_reset_start_at(ctx);
     int i;

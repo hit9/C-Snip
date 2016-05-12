@@ -8,9 +8,7 @@
 #include "queue.h"
 
 /* Create new queue node. */
-struct queue_node *
-queue_node_new(void *data)
-{
+struct queue_node *queue_node_new(void *data) {
     struct queue_node *node = malloc(sizeof(struct queue_node));
 
     if (node != NULL) {
@@ -21,17 +19,12 @@ queue_node_new(void *data)
 }
 
 /* Free a queue node. */
-void
-queue_node_free(struct queue_node *node)
-{
-    if (node != NULL)
-        free(node);
+void queue_node_free(struct queue_node *node) {
+    if (node != NULL) free(node);
 }
 
 /* Create a empty queue */
-struct queue *
-queue_new(void)
-{
+struct queue *queue_new(void) {
     struct queue *queue = malloc(sizeof(struct queue));
     if (queue != NULL) {
         queue->head = NULL;
@@ -42,9 +35,7 @@ queue_new(void)
 }
 
 /* Free queue. */
-void
-queue_free(struct queue *queue)
-{
+void queue_free(struct queue *queue) {
     if (queue != NULL) {
         queue_clear(queue);
         free(queue);
@@ -52,32 +43,24 @@ queue_free(struct queue *queue)
 }
 
 /* Clear a queue. */
-void
-queue_clear(struct queue *queue)
-{
+void queue_clear(struct queue *queue) {
     assert(queue != NULL);
 
-    while (queue_len(queue) != 0)
-        queue_pop(queue);
+    while (queue_len(queue) != 0) queue_pop(queue);
 }
 
 /* Get queue length. */
-size_t
-queue_len(struct queue *queue)
-{
+size_t queue_len(struct queue *queue) {
     assert(queue != NULL);
     return queue->len;
 }
 
 /* Push an item into the queue. */
-int
-queue_push(struct queue *queue, void *data)
-{
+int queue_push(struct queue *queue, void *data) {
     assert(queue != NULL);
 
     struct queue_node *node = queue_node_new(data);
-    if (node == NULL)
-        return QUEUE_ENOMEM;
+    if (node == NULL) return QUEUE_ENOMEM;
 
     if (queue->len == 0) {
         assert(queue->head == NULL && queue->tail == NULL);
@@ -94,9 +77,7 @@ queue_push(struct queue *queue, void *data)
 }
 
 /* Pop an item from the queue, NULL on empty */
-void *
-queue_pop(struct queue *queue)
-{
+void *queue_pop(struct queue *queue) {
     assert(queue != NULL);
 
     if (queue->len == 0) {
@@ -120,9 +101,7 @@ queue_pop(struct queue *queue)
 }
 
 /* Get an item from the top if the queue, NULL on empty. */
-void *
-queue_top(struct queue *queue)
-{
+void *queue_top(struct queue *queue) {
     assert(queue != NULL);
 
     if (queue->len == 0) {
