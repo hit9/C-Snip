@@ -13,8 +13,8 @@
 
 struct event_api {
     int ep; /* epoll descriptor */
-    struct epoll_event
-        *events; /* struct epoll_events[], with size `loop->size` */
+    struct epoll_event *
+        events; /* struct epoll_events[], with size `loop->size` */
 };
 
 static int event_api_loop_new(struct event_loop *loop) {
