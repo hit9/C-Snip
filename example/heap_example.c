@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <stdio.h>
+
 #include "heap.h"
 
 /* heap node comparator type, return negative if arg#0 < arg#1 */

@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <stdio.h>
+
 #include "skiplist.h"
 
 int main(int argc, const char *argv[]) {

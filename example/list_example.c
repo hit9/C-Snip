@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <stdio.h>
+
 #include "list.h"
 
 int main(int argc, const char *argv[]) {

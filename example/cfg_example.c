@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <stdio.h>
+
 #include "buf.h"
 #include "cfg.h"
 

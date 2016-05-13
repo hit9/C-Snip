@@ -2,9 +2,10 @@
  * Copyright (c) 2015, Chao Wang <hit9@icloud.com>
  */
 
-#include "bench.h"
 #include <assert.h>
 #include <stdio.h>
+
+#include "bench.h"
 #include "datetime.h"
 
 /**

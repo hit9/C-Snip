@@ -4,6 +4,7 @@
 
 #include <assert.h>
 #include <stdio.h>
+
 #include "bench.h"
 #include "skiplist.h"
 

@@ -1,5 +1,6 @@
 // cc strings_example.c strings.c
 #include <stdio.h>
+
 #include "strings.h"
 
 void example_search() {

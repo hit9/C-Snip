@@ -1,6 +1,7 @@
 // cc datetime_example.c datetime.c
 
 #include <stdio.h>
+
 #include "datetime.h"
 
 int main(int argc, const char *argv[]) {

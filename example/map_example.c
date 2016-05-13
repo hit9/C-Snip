@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
+
 #include "map.h"
 
 int main(int argc, const char *argv[]) {

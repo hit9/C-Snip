@@ -3,6 +3,7 @@
  */
 
 #include <stdio.h>
+
 #include "bench.h"
 #include "strings.h"
 
