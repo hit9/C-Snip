@@ -16,8 +16,8 @@
  * openwall.com>
  */
 
-#ifndef _CW_MD5_H
-#define _CW_MD5_H 1
+#ifndef __MD5_H__
+#define __MD5_H__
 
 #include <stdlib.h>
 

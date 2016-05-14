@@ -5,8 +5,8 @@
  * deps: None
  */
 
-#ifndef _CW_MAP_H
-#define _CW_MAP_H 1
+#ifndef __MAP_H__
+#define __MAP_H__
 
 #include <stdint.h>
 #include <stdlib.h>

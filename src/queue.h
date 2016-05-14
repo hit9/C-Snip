@@ -5,8 +5,8 @@
  * deps: None.
  */
 
-#ifndef _CW_QUEUE_H
-#define _CW_QUEUE_H 1
+#ifndef __QUEUE_H__
+#define __QUEUE_H__
 
 #include <stdlib.h>
 

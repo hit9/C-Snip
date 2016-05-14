@@ -5,8 +5,8 @@
  * deps: None.
  */
 
-#ifndef _CW_HEAP_H
-#define _CW_HEAP_H 1
+#ifndef __HEAP_H__
+#define __HEAP_H__
 
 #include <stddef.h>
 

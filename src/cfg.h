@@ -25,8 +25,8 @@
  *     }
  */
 
-#ifndef _CW_CFG_H
-#define _CW_CFG_H 1
+#ifndef __CFG_H__
+#define __CFG_H__
 
 #include <stddef.h>
 

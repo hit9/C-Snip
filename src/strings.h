@@ -5,8 +5,8 @@
  * deps: None.
  */
 
-#ifndef _CW_STRINGS_H
-#define _CW_STRINGS_H 1
+#ifndef __STRINGS_H__
+#define __STRINGS_H__
 
 #include <stdlib.h>
 

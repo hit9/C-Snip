@@ -5,8 +5,8 @@
  * deps: None.
  */
 
-#ifndef _CW_SKIPLIST_H
-#define _CW_SKIPLIST_H 1
+#ifndef __SKIPLIST_H__
+#define __SKIPLIST_H__
 
 #include <stddef.h>
 

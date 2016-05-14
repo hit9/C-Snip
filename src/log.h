@@ -5,8 +5,8 @@
  * deps: None.
  */
 
-#ifndef _CW_LOG_H
-#define _CW_LOG_H 1
+#ifndef __LOG_H__
+#define __LOG_H__
 
 #include <fcntl.h>
 #include <pthread.h>

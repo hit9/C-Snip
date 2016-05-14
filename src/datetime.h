@@ -5,8 +5,8 @@
  * deps: None.
  */
 
-#ifndef _CW_DATETIME_H
-#define _CW_DATETIME_H 1
+#ifndef __DATETIME_H__
+#define __DATETIME_H__
 
 #if defined(__cplusplus)
 extern "C" {

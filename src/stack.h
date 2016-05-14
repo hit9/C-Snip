@@ -5,8 +5,8 @@
  * deps: None.
  */
 
-#ifndef _CW_STACK_H
-#define _CW_STACK_H 1
+#ifndef __STACK_H__
+#define __STACK_H__
 
 #include <stdlib.h>
 

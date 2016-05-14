@@ -5,8 +5,8 @@
  * deps: None
  */
 
-#ifndef _CW_DICT_H
-#define _CW_DICT_H 1
+#ifndef __DICT_H__
+#define __DICT_H__
 
 #include <stdint.h>
 #include <stdlib.h>

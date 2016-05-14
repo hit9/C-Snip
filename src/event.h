@@ -5,8 +5,8 @@
  * deps: event_epoll.c event_kqueue.c.
  */
 
-#ifndef _CW_EVENT_H
-#define _CW_EVENT_H 1
+#ifndef __EVENT_H__
+#define __EVENT_H__
 
 #if defined(__cplusplus)
 extern "C" {

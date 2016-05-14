@@ -3,8 +3,8 @@
  * deps: None.
  */
 
-#ifndef _CW_UTILS_H
-#define _CW_UTILS_H 1
+#ifndef __UTILS_H__
+#define __UTILS_H__
 
 #include <stdarg.h>
 #include <stdint.h>

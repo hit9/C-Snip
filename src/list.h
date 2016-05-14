@@ -5,8 +5,8 @@
  * deps: None.
  */
 
-#ifndef _CW_LIST_H
-#define _CW_LIST_H 1
+#ifndef __LIST_H__
+#define __LIST_H__
 
 #include <stdlib.h>
 

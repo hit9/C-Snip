@@ -5,8 +5,8 @@
  * deps: None.
  */
 
-#ifndef _CW_KETAMA_H
-#define _CW_KETAMA_H 1
+#ifndef __KETAMA_H__
+#define __KETAMA_H__
 
 #include <stdint.h>
 #include <stdlib.h>

@@ -5,8 +5,8 @@
  * deps: None.
  */
 
-#ifndef _CW_BUF_H
-#define _CW_BUF_H 1
+#ifndef __BUF_H__
+#define __BUF_H__
 
 #include <stdint.h>
 #include <stdlib.h>

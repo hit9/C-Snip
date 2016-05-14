@@ -5,8 +5,8 @@
  * deps: None.
  */
 
-#ifndef _CW_SIGNALS_H
-#define _CW_STGNALS_H 1
+#ifndef __SIGNALS_H__
+#define __SIGNALS_H__
 
 #include <signal.h>
 #include <stdlib.h>
