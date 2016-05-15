@@ -191,7 +191,11 @@ int event_del_timer(struct event_loop *loop, int id) {
 
     if (timer->id < 0) return EVENT_ENOTFOUND;
 
+    int error;
+    if ((error = event_timer_heap_del(loop->timer_heap, id)) != EVENT_OK)
+        return error;
+
     timer->id = -1;
     loop->num_timers -= 1;
-    return event_timer_heap_del(loop->timer_heap, id);
+    return EVENT_OK;
 }
