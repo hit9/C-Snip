@@ -152,6 +152,16 @@ void *heap_del(struct heap *heap, size_t idx) {
     return data;
 }
 
+/* Replace the top item and returns the original data. */
+void *heap_replace(struct heap *heap, void *data) {
+    assert(heap != NULL && heap->data != NULL);
+    if (heap->len == 0) return NULL;
+    void *orig = heap->data[0];
+    heap->data[0] = data;
+    heap_siftup(heap, 0);
+    return orig;
+}
+
 /* Sift down the heap. */
 void heap_siftdown(struct heap *heap, size_t start_idx, size_t idx) {
     assert(heap != NULL && heap->data != NULL);
