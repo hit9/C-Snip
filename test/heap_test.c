@@ -97,7 +97,7 @@ void case_heap_pushpop() {
 
 void case_heap_del() {
     struct heap *heap = heap(heap_cmp);
-    int a = 3, b = 2, c = 5, d = 7, e = 4, f = 6, g = 1;
+    int a = 3, b = 2, c = 5, d = 7, e = 4, f = 6, g = 1, h = 4;
     assert(heap_push(heap, (void *)&a) == HEAP_OK);
     assert(heap_push(heap, (void *)&b) == HEAP_OK);
     assert(heap_push(heap, (void *)&c) == HEAP_OK);
@@ -110,8 +110,27 @@ void case_heap_del() {
     assert(1 == *(int *)heap_pop(heap));
     assert(2 == *(int *)heap_pop(heap));
     assert(3 == *(int *)heap_pop(heap));
+    assert(heap_push(heap, (void *)&h) == HEAP_OK);
+    assert(4 == *(int *)heap_pop(heap));
     assert(5 == *(int *)heap_pop(heap));
     assert(6 == *(int *)heap_pop(heap));
     assert(7 == *(int *)heap_pop(heap));
+    heap_free(heap);
+}
+
+void case_heap_repalce() {
+    struct heap *heap = heap(heap_cmp);
+    int a = 3, b = 2, c = 5, d = 7, e = 4, f = 6, g = 1, h = 4;
+    assert(heap_push(heap, (void *)&a) == HEAP_OK);
+    assert(heap_push(heap, (void *)&b) == HEAP_OK);
+    assert(heap_push(heap, (void *)&c) == HEAP_OK);
+    assert(heap_push(heap, (void *)&d) == HEAP_OK);
+    assert(heap_push(heap, (void *)&e) == HEAP_OK);
+    assert(heap_push(heap, (void *)&f) == HEAP_OK);
+    assert(heap_push(heap, (void *)&g) == HEAP_OK);
+    assert(1 == *(int *)heap_replace(heap, (void *)&h));
+    assert(2 == *(int *)heap_pop(heap));
+    assert(3 == *(int *)heap_pop(heap));
+    assert(4 == *(int *)heap_pop(heap));
     heap_free(heap);
 }
