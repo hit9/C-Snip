@@ -108,9 +108,6 @@ int event_wait(struct event_loop *loop);
 int event_add_timer(struct event_loop *loop, long interval, event_timer_cb_t cb,
                     void *data); /* O(EVENT_TIMER_ID_MAX) */
 int event_del_timer(struct event_loop *loop, int id); /* O(1) */
-struct event_timer *event_nearest_timer(
-    struct event_loop *loop);                       /* O(EVENT_TIMER_ID_MAX) */
-void event_process_timers(struct event_loop *loop); /* O(EVENT_TIMER_ID_MAX) */
 
 #if defined(__cplusplus)
 }

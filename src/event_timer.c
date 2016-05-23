@@ -151,7 +151,7 @@ int event_timer_heap_replace(struct event_timer_heap *heap,
  */
 
 /**
- * Get the nearest timer to fire from timer heap.
+ * Get the nearest timer to fire from timer heap. O(1)
  */
 struct event_timer *event_nearest_timer(struct event_loop *loop) {
     assert(loop != NULL && loop->timers != NULL && loop->timer_heap != NULL);
@@ -159,7 +159,7 @@ struct event_timer *event_nearest_timer(struct event_loop *loop) {
 }
 
 /**
- * Fire timed out timers from heap and update their fire_at.
+ * Fire timed out timers from heap and update their fire_at. O(log(N)).
  */
 void event_process_timers(struct event_loop *loop) {
     assert(loop != NULL && loop->timers != NULL && loop->timer_heap);
