@@ -173,8 +173,11 @@ void event_process_timers(struct event_loop *loop) {
         if (timer->fire_at <= event_time_now()) {
             /* fire this timeouted timer */
             if (timer->cb != NULL) (timer->cb)(loop, timer->id, timer->data);
-            timer->fire_at += timer->interval;
+            if (timer->id < 0) {
+                continue;  // won't push back if the timer is invalid now.
+            }
             /* push back the timer */
+            timer->fire_at += timer->interval;
             event_timer_heap_replace(loop->timer_heap, timer);
             continue;
         }
