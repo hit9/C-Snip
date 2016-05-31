@@ -24,7 +24,7 @@ int main(int argc, const char *argv[]) {
     }
 
     if (err == CFG_EBADFMT) {
-        printf("bad format on line %ld\n", cfg.lineno);
+        printf("bad format on line %zd\n", cfg.lineno);
         return -2;
     }
 

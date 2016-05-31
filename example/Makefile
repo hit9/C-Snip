@@ -2,9 +2,9 @@
 
 default: example
 
-CC=cc -std=c99
-CFLAGS=-Wall -I../src -D_GNU_SOURCE
-LDFLAGS=-Wall
+CC?=cc -std=c99
+CFLAGS?=-Wall -I../src -D_GNU_SOURCE 
+LDFLAGS?=-Wall
 
 buf_example: buf_example.c ../src/buf.c
 cfg_example: cfg_example.c ../src/buf.c ../src/cfg.c

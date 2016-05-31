@@ -20,6 +20,7 @@
 #define __MD5_H__
 
 #include <stdlib.h>
+#include <stdint.h>
 
 #if defined(__cplusplus)
 extern "C" {
